@@ -7,45 +7,35 @@ type PopularResourcesProps = {
   resources: ResourceView[]
 }
 
-const categoryRules = [
-  {
-    title: '취업 BEST 자격증',
-    description: '처음 방문한 수험생이 가장 빠르게 고를 수 있는 대표 자료입니다.',
-    slugs: ['jeongchogi', 'sqld', 'comhwal'],
-  },
-  {
-    title: '데이터/SW 자격증',
-    description: '정보처리기사, SQLD처럼 검색 유입과 자료 판매 가능성이 높은 카테고리입니다.',
-    slugs: ['jeongchogi', 'sqld'],
-  },
-]
+// [화면 설정] 홈 자료실 섹션의 제목과 설명입니다.
+// 홈이 난잡해 보이지 않도록 지금은 카테고리를 여러 개로 쪼개지 않고 한 줄 진열만 씁니다.
+const sectionCopy = {
+  title: '인기 학습 자료',
+  description: '무료 요약노트와 유료 PDF를 한곳에 모아 보여줍니다.',
+}
 
 export default function PopularResources({ resources }: PopularResourcesProps) {
+  // [기능] 홈에는 자료를 너무 많이 보여주지 않습니다.
+  // 더 많은 자료는 /resources 페이지에서 보게 만드는 구조입니다.
+  const visibleResources = resources.slice(0, 4)
+
   return (
     <section className="max-w-6xl mx-auto px-4 py-12">
-      <div className="space-y-12">
-        {categoryRules.map((category) => {
-          const items = resources.filter((resource) => category.slugs.includes(resource.examSlug))
+      <div className="space-y-6">
+        {/* [화면] 자료 섹션 제목 */}
+        <div>
+          <h2 className="text-[22px] font-bold text-[var(--text-primary)]">{sectionCopy.title}</h2>
+          <p className="mt-1 text-[13px] text-[var(--text-secondary)]">{sectionCopy.description}</p>
+        </div>
 
-          if (!items.length) {
-            return null
-          }
+        {/* [화면 + 기능] resources 데이터가 ResourceCard로 반복 출력됩니다. */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {visibleResources.map((resource) => (
+            <ResourceCard key={resource.id} resource={resource} />
+          ))}
+        </div>
 
-          return (
-            <div key={category.title}>
-              <div className="mb-5">
-                <h2 className="text-[22px] font-bold text-[var(--text-primary)]">{category.title}</h2>
-                <p className="mt-1 text-[13px] text-[var(--text-secondary)]">{category.description}</p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {items.map((resource) => (
-                  <ResourceCard key={resource.id} resource={resource} />
-                ))}
-              </div>
-            </div>
-          )
-        })}
-
+        {/* [화면] 전체 자료실로 보내는 보조 CTA */}
         <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-subtle)] p-5 text-center">
           <p className="text-[14px] font-bold text-[var(--text-primary)]">전체 자료를 한 번에 둘러보고 싶나요?</p>
           <Link href="/resources" className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-bold text-[var(--primary)] hover:underline">

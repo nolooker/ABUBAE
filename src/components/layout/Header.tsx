@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { Search, Menu, X, BookOpen } from 'lucide-react'
 
+// [화면 데이터] 상단 메뉴입니다.
+// 아직 만들지 않은 페이지(/reviews, /premium 등)는 홈을 복잡하게 만들지 않기 위해 잠시 빼두었습니다.
 const navItems = [
   {
     label: '시험 정보',
@@ -14,10 +16,8 @@ const navItems = [
       { label: '컴퓨터활용능력 1급', href: '/exam/comhwal' },
     ],
   },
-  { label: '문제풀기', href: '/quiz' },
+  { label: '오늘의 문제', href: '/quiz/daily' },
   { label: '자료실', href: '/resources' },
-  { label: '합격후기', href: '/reviews' },
-  { label: '프리미엄', href: '/premium' },
 ]
 
 export default function Header() {
@@ -27,7 +27,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white border-b border-[var(--border)]">
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
 
-        {/* 로고 */}
+        {/* [화면] 로고 */}
         <Link href="/" className="flex items-center gap-2 shrink-0">
           <div className="w-7 h-7 rounded-lg bg-[var(--primary)] flex items-center justify-center">
             <BookOpen size={15} color="white" strokeWidth={2.5} />
@@ -37,7 +37,7 @@ export default function Header() {
           </span>
         </Link>
 
-        {/* 데스크탑 메뉴 */}
+        {/* [화면] 데스크탑 메뉴 */}
         <nav className="hidden md:flex items-center gap-1">
           {navItems.map((item) => (
             <Link
@@ -50,7 +50,7 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* 우측 버튼 */}
+        {/* [화면] 우측 검색/로그인/회원가입 버튼 */}
         <div className="flex items-center gap-2">
           <button className="hidden md:flex items-center justify-center w-8 h-8 rounded-md hover:bg-[var(--bg-muted)] text-[var(--text-secondary)] transition-colors">
             <Search size={16} />
@@ -68,7 +68,7 @@ export default function Header() {
             무료 시작
           </Link>
 
-          {/* 모바일 햄버거 */}
+          {/* [기능] 모바일 메뉴 열기/닫기 버튼 */}
           <button
             className="md:hidden flex items-center justify-center w-8 h-8 rounded-md hover:bg-[var(--bg-muted)]"
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -78,7 +78,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* 모바일 메뉴 */}
+      {/* [화면 + 기능] 모바일 메뉴. mobileOpen이 true일 때만 보입니다. */}
       {mobileOpen && (
         <div className="md:hidden border-t border-[var(--border)] bg-white px-4 py-3 flex flex-col gap-1">
           {navItems.map((item) => (
