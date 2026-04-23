@@ -1,101 +1,57 @@
 import Link from 'next/link'
-import { Download, Lock, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
+import ResourceCard from '@/components/resources/ResourceCard'
+import type { ResourceView } from '@/lib/data'
 
-// 나중에 Supabase에서 실제 데이터로 교체
-const mockResources = [
+type PopularResourcesProps = {
+  resources: ResourceView[]
+}
+
+const categoryRules = [
   {
-    id: '1',
-    title: '정처기 1과목 핵심 요약',
-    desc: '소프트웨어 설계 · 24페이지',
-    price: 0,
-    exam: '정처기',
-    color: 'bg-blue-100 text-blue-600',
-    href: '/resources/1',
+    title: '취업 BEST 자격증',
+    description: '처음 방문한 수험생이 가장 빠르게 고를 수 있는 대표 자료입니다.',
+    slugs: ['jeongchogi', 'sqld', 'comhwal'],
   },
   {
-    id: '2',
-    title: '정처기 2과목 핵심 요약',
-    desc: '소프트웨어 개발 · 28페이지',
-    price: 4900,
-    exam: '정처기',
-    color: 'bg-blue-100 text-blue-600',
-    href: '/resources/2',
-  },
-  {
-    id: '3',
-    title: 'SQLD 핵심 개념 정리',
-    desc: '데이터 모델링 · 32페이지',
-    price: 0,
-    exam: 'SQLD',
-    color: 'bg-emerald-100 text-emerald-600',
-    href: '/resources/3',
-  },
-  {
-    id: '4',
-    title: '정처기 실기 완벽 대비',
-    desc: '전 범위 핵심 정리 · 56페이지',
-    price: 9900,
-    exam: '정처기',
-    color: 'bg-blue-100 text-blue-600',
-    href: '/resources/4',
+    title: '데이터/SW 자격증',
+    description: '정보처리기사, SQLD처럼 검색 유입과 자료 판매 가능성이 높은 카테고리입니다.',
+    slugs: ['jeongchogi', 'sqld'],
   },
 ]
 
-export default function PopularResources() {
+export default function PopularResources({ resources }: PopularResourcesProps) {
   return (
-    <section className="max-w-6xl mx-auto px-4 py-14">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h2 className="text-[20px] font-bold text-[var(--text-primary)]">인기 자료</h2>
-          <p className="text-[13px] text-[var(--text-secondary)] mt-0.5">많은 분들이 다운받은 자료예요</p>
-        </div>
-        <Link
-          href="/resources"
-          className="flex items-center gap-1 text-[13px] font-medium text-[var(--primary)] hover:underline"
-        >
-          전체 보기 <ArrowRight size={13} />
-        </Link>
-      </div>
+    <section className="max-w-6xl mx-auto px-4 py-12">
+      <div className="space-y-12">
+        {categoryRules.map((category) => {
+          const items = resources.filter((resource) => category.slugs.includes(resource.examSlug))
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {mockResources.map((item) => (
-          <Link
-            key={item.id}
-            href={item.href}
-            className="group bg-white border border-[var(--border)] rounded-[var(--radius-lg)] p-4 hover:border-[var(--primary)] hover:shadow-md transition-all"
-          >
-            {/* 아이콘 영역 */}
-            <div className={`w-10 h-10 rounded-xl ${item.color} flex items-center justify-center mb-3`}>
-              {item.price === 0
-                ? <Download size={18} strokeWidth={2} />
-                : <Lock size={18} strokeWidth={2} />
-              }
+          if (!items.length) {
+            return null
+          }
+
+          return (
+            <div key={category.title}>
+              <div className="mb-5">
+                <h2 className="text-[22px] font-bold text-[var(--text-primary)]">{category.title}</h2>
+                <p className="mt-1 text-[13px] text-[var(--text-secondary)]">{category.description}</p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {items.map((resource) => (
+                  <ResourceCard key={resource.id} resource={resource} />
+                ))}
+              </div>
             </div>
+          )
+        })}
 
-            {/* 배지 */}
-            <div className="flex items-center gap-1.5 mb-2">
-              {item.price === 0
-                ? <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-green-50 text-green-700">FREE</span>
-                : <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-orange-50 text-orange-700">PRO</span>
-              }
-              <span className="text-[11px] text-[var(--text-muted)]">{item.exam}</span>
-            </div>
-
-            <p className="text-[14px] font-semibold text-[var(--text-primary)] leading-snug mb-1 group-hover:text-[var(--primary)] transition-colors">
-              {item.title}
-            </p>
-            <p className="text-[12px] text-[var(--text-secondary)]">{item.desc}</p>
-
-            <div className="mt-3 pt-3 border-t border-[var(--border)] flex items-center justify-between">
-              <span className="text-[13px] font-bold text-[var(--text-primary)]">
-                {item.price === 0 ? '무료' : `${item.price.toLocaleString()}원`}
-              </span>
-              <span className="text-[12px] text-[var(--primary)] font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                {item.price === 0 ? '다운로드 →' : '구매하기 →'}
-              </span>
-            </div>
+        <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-subtle)] p-5 text-center">
+          <p className="text-[14px] font-bold text-[var(--text-primary)]">전체 자료를 한 번에 둘러보고 싶나요?</p>
+          <Link href="/resources" className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-bold text-[var(--primary)] hover:underline">
+            전체 다운로드/자료실 보기 <ArrowRight size={14} />
           </Link>
-        ))}
+        </div>
       </div>
     </section>
   )

@@ -16,6 +16,52 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Admin Access
+
+The admin shell is available at `/admin`. Admin access uses a master code, separate from normal user login.
+
+Default local code:
+
+```bash
+master
+```
+
+For deployment, set a longer server-side code in `.env.local`:
+
+```bash
+ADMIN_MASTER_KEY=change-this-to-a-long-private-code
+```
+
+Then visit `/admin/login`, enter the master code, and continue to `/admin`.
+
+## Supabase Data Flow
+
+The app now reads through `src/lib/data.ts`.
+
+Data priority:
+
+```txt
+Supabase tables first
+fallback to src/lib/mock-data.ts if tables are empty or not created yet
+```
+
+Setup order:
+
+1. Open the Supabase project.
+2. Go to SQL Editor.
+3. Paste and run `supabase-setup.sql`.
+4. Add real rows to `exams`, `questions`, `choices`, and `resources`.
+5. Refresh the local site. Pages will use Supabase data automatically.
+
+Main tables used by the current UI:
+
+```txt
+exams
+questions
+choices
+resources
+```
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
