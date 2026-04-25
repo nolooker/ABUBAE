@@ -1,18 +1,20 @@
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+@import "tailwindcss";
 
 :root {
   --primary: #3B6EE8;
   --primary-hover: #2d5fd4;
+  --primary-dark: #2453C5;
   --primary-light: #EEF3FD;
   --accent: #F97316;
-  --accent-light: #FFF4ED;
+  --accent-hover: #ea6c0a;
+  --accent-light: #FFF3EA;
   --success: #22C55E;
+  --success-light: #EDFAF4;
   --warning: #EAB308;
+  --warning-light: #FEFCE8;
   --error: #EF4444;
+  --error-light: #FEF2F2;
   --text-primary: #1E293B;
   --text-secondary: #64748B;
   --text-muted: #94A3B8;
@@ -23,8 +25,12 @@
   --border-strong: #CBD5E1;
   --radius: 10px;
   --radius-lg: 14px;
+  --radius-xl: 20px;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.10);
+  --brand-blue: #3B6EE8;
+  --brand-orange: #F97316;
 }
 
 * { box-sizing: border-box; }
@@ -32,7 +38,103 @@
 body {
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--text-primary);
-  background: var(--bg);
+  background: var(--bg-subtle);
   -webkit-font-smoothing: antialiased;
   line-height: 1.6;
+}
+
+@layer components {
+  .ab-btn {
+    @apply inline-flex items-center justify-center rounded-lg font-semibold transition-colors;
+  }
+
+  .ab-btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+
+  .ab-btn-primary:hover {
+    background: var(--primary-hover);
+  }
+
+  .ab-btn-secondary {
+    background: white;
+    color: var(--primary);
+    border: 1.5px solid var(--primary);
+  }
+
+  .ab-btn-secondary:hover {
+    background: var(--primary-light);
+  }
+
+  .ab-btn-ghost {
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+
+  .ab-btn-ghost:hover {
+    background: #e5edff;
+  }
+
+  .ab-btn-orange {
+    background: var(--accent);
+    color: white;
+  }
+
+  .ab-btn-orange:hover {
+    background: var(--accent-hover);
+  }
+
+  .ab-btn-sm {
+    @apply px-3 py-1.5 text-[12px];
+  }
+
+  .ab-btn-md {
+    @apply px-4 py-2.5 text-[14px];
+  }
+
+  .ab-btn-lg {
+    @apply px-6 py-3 text-[15px];
+  }
+
+  .ab-badge {
+    @apply inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-bold;
+  }
+
+  .ab-badge-free {
+    background: #DCFCE7;
+    color: #15803D;
+  }
+
+  .ab-badge-pro {
+    background: #7C3AED;
+    color: white;
+  }
+
+  .ab-badge-exam {
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+
+  .ab-badge-new {
+    background: var(--accent-light);
+    color: #C2410C;
+  }
+
+  .ab-badge-hot {
+    background: #FEE2E2;
+    color: #B91C1C;
+  }
+
+  .ab-card {
+    @apply rounded-2xl border bg-white;
+    border-color: var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+@media (max-width: 768px) {
+  main {
+    padding-bottom: 80px;
+  }
 }

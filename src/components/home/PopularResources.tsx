@@ -20,10 +20,13 @@ export default function PopularResources({ resources }: PopularResourcesProps) {
   const visibleResources = resources.slice(0, 4)
 
   return (
-    <section className="max-w-6xl mx-auto px-4 py-12">
+    <section className="max-w-6xl mx-auto px-4 pb-12">
       <div className="space-y-6">
         {/* [화면] 자료 섹션 제목 */}
         <div>
+          <p className="mb-2 text-[11px] font-semibold tracking-[0.08em] text-[var(--text-muted)] uppercase">
+            자료 카드
+          </p>
           <h2 className="text-[22px] font-bold text-[var(--text-primary)]">{sectionCopy.title}</h2>
           <p className="mt-1 text-[13px] text-[var(--text-secondary)]">{sectionCopy.description}</p>
         </div>
@@ -36,9 +39,12 @@ export default function PopularResources({ resources }: PopularResourcesProps) {
         </div>
 
         {/* [화면] 전체 자료실로 보내는 보조 CTA */}
-        <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--bg-subtle)] p-5 text-center">
+        <div className="rounded-[18px] border border-[var(--border)] bg-white p-5 text-center shadow-sm">
           <p className="text-[14px] font-bold text-[var(--text-primary)]">전체 자료를 한 번에 둘러보고 싶나요?</p>
-          <Link href="/resources" className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-bold text-[var(--primary)] hover:underline">
+          <Link
+            href="/resources"
+            className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-bold text-[var(--primary)] hover:underline"
+          >
             전체 다운로드/자료실 보기 <ArrowRight size={14} />
           </Link>
         </div>

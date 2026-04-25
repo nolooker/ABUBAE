@@ -24,37 +24,65 @@ export default function ResourceCard({ resource }: ResourceCardProps) {
   return (
     <Link
       href={`/resources/${resource.id}`}
-      className="group flex h-full flex-col rounded-[var(--radius-lg)] border border-[var(--border)] bg-white p-4 transition-all hover:border-[var(--primary)] hover:shadow-md"
+      className="group flex h-full flex-col overflow-hidden rounded-[18px] border border-[var(--border)] bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:border-[var(--primary)] hover:shadow-md"
     >
-      {/* [화면] 카드 상단 아이콘 + FREE/PRO 배지 */}
-      <div className="mb-3 flex items-start justify-between gap-3">
-        <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${isFree ? 'bg-green-50 text-green-700' : 'bg-orange-50 text-orange-700'}`}>
-          {isFree ? <Download size={18} /> : <Lock size={18} />}
+      {/* [화면] 카드 상단 썸네일 영역 */}
+      <div
+        className={`flex h-[96px] items-center justify-center ${
+          isFree ? 'bg-[var(--primary-light)]' : 'bg-[var(--accent-light)]'
+        }`}
+      >
+        <div
+          className={`flex h-12 w-12 items-center justify-center rounded-2xl ${
+            isFree ? 'bg-white text-[var(--primary)]' : 'bg-white text-[var(--accent)]'
+          }`}
+        >
+          {isFree ? <Download size={20} /> : <Lock size={20} />}
         </div>
-        <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${isFree ? 'bg-green-50 text-green-700' : 'bg-orange-50 text-orange-700'}`}>
-          {isFree ? 'FREE' : 'PRO'}
-        </span>
       </div>
 
-      {/* [화면] 자료 제목/설명 */}
-      <p className="mb-1 text-[11px] font-semibold text-[var(--text-muted)]">
-        {exam?.shortName} · {resource.type} · {resource.pages}p
-      </p>
-      <h3 className="text-[15px] font-bold leading-snug text-[var(--text-primary)] transition-colors group-hover:text-[var(--primary)]">
-        {resource.title}
-      </h3>
-      <p className="mt-2 line-clamp-3 text-[12.5px] leading-relaxed text-[var(--text-secondary)]">
-        {resource.description}
-      </p>
+      <div className="flex h-full flex-col p-4">
+        {/* [화면] 카드 배지 */}
+        <div className="mb-3 flex flex-wrap gap-1.5">
+          <span
+            className={`rounded-md px-2 py-0.5 text-[10px] font-bold ${
+              isFree ? 'bg-green-50 text-green-700' : 'bg-violet-100 text-violet-700'
+            }`}
+          >
+            {isFree ? 'FREE' : 'PRO'}
+          </span>
+          {exam?.shortName && (
+            <span className="rounded-md bg-[var(--primary-light)] px-2 py-0.5 text-[10px] font-bold text-[var(--primary)]">
+              {exam.shortName}
+            </span>
+          )}
+        </div>
 
-      {/* [화면] 카드 하단 가격/행동 문구 */}
-      <div className="mt-auto flex items-center justify-between border-t border-[var(--border)] pt-3">
-        <span className="text-[13px] font-bold text-[var(--text-primary)]">
-          {isFree ? '무료' : `${resource.price.toLocaleString()}원`}
-        </span>
-        <span className="text-[12px] font-semibold text-[var(--primary)]">
-          {isFree ? '받기' : '보기'}
-        </span>
+        <h3 className="text-[15px] font-bold leading-snug text-[var(--text-primary)] transition-colors group-hover:text-[var(--primary)]">
+          {resource.title}
+        </h3>
+
+        <p className="mt-2 text-[11px] font-medium text-[var(--text-secondary)]">
+          {resource.type} · {resource.pages}페이지
+          {!isFree && ` · ${resource.price.toLocaleString()}원`}
+        </p>
+
+        <p className="mt-3 line-clamp-3 text-[12.5px] leading-relaxed text-[var(--text-secondary)]">
+          {resource.description}
+        </p>
+
+        {/* [화면] 카드 하단 CTA */}
+        <div className="mt-auto pt-4">
+          <span
+            className={`inline-flex w-full items-center justify-center rounded-xl px-4 py-2.5 text-[13px] font-semibold ${
+              isFree
+                ? 'bg-[var(--primary-light)] text-[var(--primary)]'
+                : 'bg-[var(--accent)] text-white'
+            }`}
+          >
+            {isFree ? '무료 다운로드' : '구매하기'}
+          </span>
+        </div>
       </div>
     </Link>
   )
