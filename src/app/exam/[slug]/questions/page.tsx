@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, FileText, Layers3 } from 'lucide-react'
+import QuestionRoundTabs from '@/components/exam/QuestionRoundTabs'
 import { getExam, getQuestionsByExam } from '@/lib/data'
 
 type PageProps = {
@@ -11,8 +12,16 @@ export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params
   const exam = await getExam(slug)
 
+  if (!exam) {
+    return {
+      title: '기출문제 목록',
+      description: '자격증 기출문제 목록 페이지입니다.',
+    }
+  }
+
   return {
-    title: exam ? `${exam.name} 기출문제` : '기출문제',
+    title: `${exam.name} 기출문제 목록`,
+    description: `${exam.name} 기출문제와 해설을 회차별로 정리한 페이지입니다.`,
   }
 }
 
@@ -24,52 +33,49 @@ export default async function QuestionListPage({ params }: PageProps) {
     notFound()
   }
 
-  const examQuestions = await getQuestionsByExam(exam.slug)
+  const questions = await getQuestionsByExam(exam.slug)
+  const roundCount = new Set(questions.map((question) => `${question.year}-${question.round}`)).size
 
   return (
-    <section className="max-w-4xl mx-auto px-4 py-12">
-      <div className="mb-8">
-        <p className="text-[13px] font-semibold text-[var(--primary)] mb-2">{exam.name}</p>
-        <h1 className="text-3xl font-bold text-[var(--text-primary)]">기출문제 풀이</h1>
-        <p className="text-[15px] text-[var(--text-secondary)] mt-3">
-          Supabase에 문제가 등록되어 있으면 실제 DB를 읽고, 아직 없으면 샘플 문제를 보여줍니다.
+    <section className="mx-auto max-w-5xl px-4 py-12">
+      <div className="mb-8 rounded-[var(--radius-lg)] border border-[var(--border)] bg-white p-6 md:p-7">
+        <p className="mb-2 text-[13px] font-semibold text-[var(--primary)]">{exam.name}</p>
+        <h1 className="text-[30px] font-bold tracking-tight text-[var(--text-primary)]">
+          기출문제 목록
+        </h1>
+        <p className="mt-3 max-w-3xl text-[15px] leading-7 text-[var(--text-secondary)]">
+          실제 시험 문제를 회차별로 정리했습니다. 아래에서 필기 기출과 실기 기출을 선택하고,
+          선택한 영역 안에서 필요한 데이터만 이어서 볼 수 있습니다.
         </p>
+
+        <div className="mt-5 flex flex-wrap gap-3 text-[13px] text-[var(--text-secondary)]">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--bg-subtle)] px-3 py-1.5">
+            <FileText size={14} />
+            총 {questions.length}문제
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--bg-subtle)] px-3 py-1.5">
+            <Layers3 size={14} />
+            총 {roundCount}개 회차
+          </span>
+        </div>
       </div>
 
-      <div className="space-y-4">
-        {examQuestions.map((question) => (
-          <article key={question.id} className="bg-white border border-[var(--border)] rounded-[var(--radius-lg)] p-5">
-            <div className="flex flex-wrap items-center gap-2 text-[12px] text-[var(--text-muted)] mb-3">
-              <span className="font-semibold text-[var(--primary)]">{question.subject}</span>
-              <span>{question.year}년 {question.round}회</span>
-              <span>난이도 {question.difficulty}/5</span>
-            </div>
-            <h2 className="text-[16px] font-bold text-[var(--text-primary)] leading-relaxed">
-              {question.number}. {question.content}
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
-              {question.choices.map((choice, index) => (
-                <div key={choice} className="flex items-center gap-2.5 p-3 rounded-lg border border-[var(--border)] text-[13px] text-[var(--text-secondary)]">
-                  <span className="w-6 h-6 rounded-full bg-[var(--bg-muted)] flex items-center justify-center text-[11px] font-bold">
-                    {index + 1}
-                  </span>
-                  {choice}
-                </div>
-              ))}
-            </div>
-            <Link
-              href={`/exam/${exam.slug}/questions/${question.id}`}
-              className="inline-flex items-center gap-1.5 mt-4 text-[13px] font-bold text-[var(--primary)] hover:underline"
-            >
-              정답과 해설 보기 <ArrowRight size={13} />
-            </Link>
-          </article>
-        ))}
-      </div>
+      <QuestionRoundTabs examSlug={exam.slug} questions={questions} />
 
-      <Link href="/quiz/daily" className="inline-flex items-center gap-1.5 mt-8 text-[14px] font-semibold text-[var(--primary)]">
-        오늘의 문제 풀러가기 <ArrowRight size={15} />
-      </Link>
+      <div className="mt-8 flex flex-wrap gap-3">
+        <Link
+          href={`/exam/${exam.slug}`}
+          className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-white px-4 py-2.5 text-[14px] font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
+        >
+          시험 허브로 돌아가기
+        </Link>
+        <Link
+          href="/quiz/daily"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-[var(--primary)] px-4 py-2.5 text-[14px] font-semibold text-white hover:bg-[var(--primary-hover)]"
+        >
+          오늘의 문제 풀러가기 <ArrowRight size={15} />
+        </Link>
+      </div>
     </section>
   )
 }

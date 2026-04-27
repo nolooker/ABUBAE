@@ -184,8 +184,33 @@ export async function getQuestionsByExam(slug: string): Promise<QuestionView[]> 
 }
 
 export async function getQuestion(slug: string, id: string): Promise<QuestionView | undefined> {
-  const questions = await getQuestionsByExam(slug)
-  return questions.find((question) => question.id === id)
+  try {
+    const supabase = await createClient()
+    const { data: exam } = await supabase
+      .from('exams')
+      .select('id, slug')
+      .eq('slug', slug)
+      .maybeSingle()
+
+    if (exam) {
+      const { data, error } = await supabase
+        .from('questions')
+        .select(
+          'id, exam_id, year, round, subject, number, content, explanation, difficulty, choices(number, content, is_correct)'
+        )
+        .eq('exam_id', exam.id)
+        .eq('id', id)
+        .maybeSingle()
+
+      if (!error && data) {
+        return toQuestionView(data as QuestionRow, exam.slug)
+      }
+    }
+  } catch {
+    // DB 조회 실패 시 아래 fallback으로 이동
+  }
+
+  return mockQuestions.find((question) => question.examSlug === slug && question.id === id)
 }
 
 export async function getDailyQuestion(): Promise<QuestionView> {

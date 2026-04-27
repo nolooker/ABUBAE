@@ -15,8 +15,11 @@ export async function generateMetadata({ params }: PageProps) {
   ])
 
   return {
-    title: question && exam ? `${exam.name} ${question.year}년 ${question.round}회 ${question.number}번 해설` : '기출문제 해설',
-    description: question?.content,
+    title:
+      question && exam
+        ? `${exam.name} ${question.year}년 ${question.round}회 ${question.number}번 해설`
+        : '기출문제 해설',
+    description: question?.content || '기출문제 정답과 해설 페이지입니다.',
   }
 }
 
@@ -33,7 +36,10 @@ export default async function QuestionDetailPage({ params }: PageProps) {
 
   return (
     <section className="max-w-3xl mx-auto px-4 py-12">
-      <Link href={`/exam/${exam.slug}/questions`} className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[var(--text-secondary)] hover:text-[var(--primary)] mb-7">
+      <Link
+        href={`/exam/${exam.slug}/questions`}
+        className="mb-7 inline-flex items-center gap-1.5 text-[13px] font-bold text-[var(--text-secondary)] hover:text-[var(--primary)]"
+      >
         <ArrowLeft size={14} /> 문제 목록으로
       </Link>
 
@@ -41,6 +47,7 @@ export default async function QuestionDetailPage({ params }: PageProps) {
         <div className="flex flex-wrap items-center gap-2 text-[12px] text-[var(--text-muted)] mb-4">
           <span className="font-bold text-[var(--primary)]">{exam.name}</span>
           <span>{question.year}년 {question.round}회</span>
+          <span>{question.number}번</span>
           <span>{question.subject}</span>
           <span>난이도 {question.difficulty}/5</span>
         </div>
