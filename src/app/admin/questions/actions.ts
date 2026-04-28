@@ -49,6 +49,8 @@ export async function createWrittenQuestion(formData: FormData) {
   const difficulty = getNumber(formData, 'difficulty', 2)
   const content = getText(formData, 'content')
   const explanation = getText(formData, 'explanation')
+  const imageUrl = getText(formData, 'imageUrl')
+  const imageCaption = getText(formData, 'imageCaption')
   const correctChoice = getNumber(formData, 'correctChoice', 1)
 
   const choices = [1, 2, 3, 4].map((choiceNumber) => ({
@@ -86,6 +88,8 @@ export async function createWrittenQuestion(formData: FormData) {
       content,
       explanation,
       difficulty,
+      image_url: imageUrl || null,
+      image_caption: imageCaption || null,
     })
     .select('id')
     .single()
@@ -109,7 +113,6 @@ export async function createWrittenQuestion(formData: FormData) {
   }
 
   revalidateExamPaths(exam.slug, insertedQuestion.id)
-
   redirect(`/admin/questions?type=written&success=1&exam=${exam.slug}`)
 }
 
@@ -127,6 +130,8 @@ export async function createPracticalQuestion(formData: FormData) {
   const content = getText(formData, 'content')
   const explanation = getText(formData, 'explanation')
   const answerText = getText(formData, 'answerText')
+  const imageUrl = getText(formData, 'imageUrl')
+  const imageCaption = getText(formData, 'imageCaption')
 
   if (!examSlug || !year || !round || !number || !content || !explanation || !answerText) {
     redirect('/admin/questions?type=practical&error=required')
@@ -151,6 +156,8 @@ export async function createPracticalQuestion(formData: FormData) {
       difficulty,
       exam_part: 'practical',
       answer_text: answerText,
+      image_url: imageUrl || null,
+      image_caption: imageCaption || null,
     })
     .select('id')
     .single()
@@ -160,6 +167,5 @@ export async function createPracticalQuestion(formData: FormData) {
   }
 
   revalidateExamPaths(exam.slug, insertedQuestion.id)
-
   redirect(`/admin/questions?type=practical&success=1&exam=${exam.slug}`)
 }

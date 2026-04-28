@@ -15,9 +15,10 @@ const announcement = {
 
 const navItems = [
   { label: '정처기', href: '/exam/jeongchogi' },
-  { label: 'SQLD', href: '/exam/sqld' },
-  { label: '자료실', href: '/resources' },
   { label: '기출문제', href: '/exam/jeongchogi/questions' },
+  { label: '오늘의 문제', href: '/quiz/daily' },
+  { label: '자료실', href: '/resources' },
+  { label: '자유게시판', href: '/board' },
 ]
 
 export default function Header() {

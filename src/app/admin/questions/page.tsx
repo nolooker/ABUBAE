@@ -71,7 +71,7 @@ export default async function AdminQuestionsPage({ searchParams }: PageProps) {
           <h1 className="text-3xl font-bold text-[var(--text-primary)]">기출문제 등록</h1>
           <p className="mt-3 max-w-3xl text-[15px] leading-7 text-[var(--text-secondary)]">
             관리자 입장에서는 필기와 실기를 따로 관리하는 편이 훨씬 덜 헷갈립니다. 그래서 등록 화면도
-            두 흐름으로 분리해두었고, 저장 구조도 각각 다르게 확장할 수 있게 열어뒀어요.
+            두 흐름으로 분리했고, 이제 그림 문제를 위한 이미지 URL 입력칸도 함께 열어뒀어요.
           </p>
         </div>
 
@@ -82,6 +82,7 @@ export default async function AdminQuestionsPage({ searchParams }: PageProps) {
           </div>
           <p>필기: `questions` + `choices`</p>
           <p className="mt-1">실기: `questions` + `answer_text`</p>
+          <p className="mt-1">그림 문제: `image_url`, `image_caption`</p>
         </div>
       </div>
 
@@ -205,6 +206,27 @@ export default async function AdminQuestionsPage({ searchParams }: PageProps) {
                 className="w-full rounded-2xl border border-[var(--border)] px-4 py-3 text-[14px] leading-7 outline-none focus:border-[var(--primary)]"
               />
             </label>
+
+            <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
+              <label className="block">
+                <span className="mb-1.5 block text-[13px] font-semibold text-[var(--text-primary)]">문제 이미지 URL</span>
+                <input
+                  type="text"
+                  name="imageUrl"
+                  placeholder="Supabase Storage 공개 URL 또는 이미지 경로"
+                  className="h-11 w-full rounded-xl border border-[var(--border)] px-3 text-[14px] outline-none focus:border-[var(--primary)]"
+                />
+              </label>
+              <label className="block">
+                <span className="mb-1.5 block text-[13px] font-semibold text-[var(--text-primary)]">이미지 설명</span>
+                <input
+                  type="text"
+                  name="imageCaption"
+                  placeholder="예: 2번 문제의 순서도"
+                  className="h-11 w-full rounded-xl border border-[var(--border)] px-3 text-[14px] outline-none focus:border-[var(--primary)]"
+                />
+              </label>
+            </div>
 
             <label className="mt-5 block">
               <span className="mb-1.5 block text-[13px] font-semibold text-[var(--text-primary)]">모범답안 / 정답 문자열</span>
@@ -335,6 +357,27 @@ export default async function AdminQuestionsPage({ searchParams }: PageProps) {
                 className="w-full rounded-2xl border border-[var(--border)] px-4 py-3 text-[14px] leading-7 outline-none focus:border-[var(--primary)]"
               />
             </label>
+
+            <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
+              <label className="block">
+                <span className="mb-1.5 block text-[13px] font-semibold text-[var(--text-primary)]">문제 이미지 URL</span>
+                <input
+                  type="text"
+                  name="imageUrl"
+                  placeholder="Supabase Storage 공개 URL 또는 이미지 경로"
+                  className="h-11 w-full rounded-xl border border-[var(--border)] px-3 text-[14px] outline-none focus:border-[var(--primary)]"
+                />
+              </label>
+              <label className="block">
+                <span className="mb-1.5 block text-[13px] font-semibold text-[var(--text-primary)]">이미지 설명</span>
+                <input
+                  type="text"
+                  name="imageCaption"
+                  placeholder="예: 32번 문제의 트리 구조"
+                  className="h-11 w-full rounded-xl border border-[var(--border)] px-3 text-[14px] outline-none focus:border-[var(--primary)]"
+                />
+              </label>
+            </div>
 
             <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
               {[1, 2, 3, 4].map((choiceNumber) => (
