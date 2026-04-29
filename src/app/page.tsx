@@ -1,4 +1,4 @@
-import Image from 'next/image'
+﻿import Image from 'next/image'
 import Link from 'next/link'
 
 const homeNavItems = [
@@ -6,6 +6,8 @@ const homeNavItems = [
   { label: '기출문제', href: '/exam/jeongchogi/questions' },
   { label: '오늘의 문제', href: '/quiz/daily' },
   { label: '자료실', href: '/resources' },
+  { label: '블로그', href: '/blog' },
+  { label: '합격후기', href: '/reviews' },
   { label: '자유게시판', href: '/board' },
 ]
 
@@ -177,12 +179,12 @@ export default function HomePage() {
             />
           </Link>
 
-          <div className="absolute left-1/2 flex -translate-x-1/2 items-center gap-8">
+          <div className="absolute left-1/2 flex -translate-x-1/2 items-center gap-5 whitespace-nowrap">
             {homeNavItems.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-[15px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                className="whitespace-nowrap text-[13px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
               >
                 {item.label}
               </Link>

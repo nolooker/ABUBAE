@@ -4,27 +4,21 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { ArrowRight, Menu, Search, Sparkles, X } from 'lucide-react'
-
-const announcement = {
-  enabled: false,
-  message: '정처기 무료 요약노트와 오늘의 문제를 먼저 공개했어요.',
-  cta: '바로 보기',
-  href: '/resources',
-}
+import { Menu, Search, X } from 'lucide-react'
 
 const navItems = [
   { label: '정처기', href: '/exam/jeongchogi' },
   { label: '기출문제', href: '/exam/jeongchogi/questions' },
   { label: '오늘의 문제', href: '/quiz/daily' },
   { label: '자료실', href: '/resources' },
+  { label: '블로그', href: '/blog' },
+  { label: '합격후기', href: '/reviews' },
   { label: '자유게시판', href: '/board' },
 ]
 
 export default function Header() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [bannerOpen, setBannerOpen] = useState(announcement.enabled)
 
   if (pathname === '/') {
     return null
@@ -32,35 +26,6 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-[var(--bg-subtle)]/95 backdrop-blur">
-      {bannerOpen && (
-        <div className="border-b border-blue-100 bg-blue-50/90">
-          <div className="mx-auto flex min-h-10 max-w-6xl items-center justify-between gap-3 px-4 py-2">
-            <Link
-              href={announcement.href}
-              className="flex min-w-0 items-center gap-2 text-[12.5px] font-semibold text-blue-800"
-            >
-              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white text-[var(--primary)]">
-                <Sparkles size={12} />
-              </span>
-              <span className="truncate">{announcement.message}</span>
-              <span className="hidden items-center gap-1 text-blue-700 sm:inline-flex">
-                {announcement.cta}
-                <ArrowRight size={12} />
-              </span>
-            </Link>
-
-            <button
-              type="button"
-              aria-label="상단 배너 닫기"
-              onClick={() => setBannerOpen(false)}
-              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-blue-700 transition-colors hover:bg-white"
-            >
-              <X size={14} />
-            </button>
-          </div>
-        </div>
-      )}
-
       <div className="mx-auto max-w-6xl px-4 py-3">
         <div className="flex min-h-[60px] items-center justify-between gap-4 rounded-[18px] border border-[var(--border)] bg-white px-4 shadow-sm md:px-5">
           <Link href="/" className="flex h-full shrink-0 items-center" aria-label="홈으로 이동">
