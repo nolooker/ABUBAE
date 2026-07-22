@@ -20,7 +20,11 @@ export default function WrittenRoundRunner({ title, questions }: Props) {
 
   const moveTo = (index: number) => {
     setCurrentIndex(index)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    try {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } catch {
+      // Embedded browsers can reject smooth scrolling; navigation must still work.
+    }
   }
 
   return (
@@ -104,4 +108,3 @@ export default function WrittenRoundRunner({ title, questions }: Props) {
     </div>
   )
 }
-

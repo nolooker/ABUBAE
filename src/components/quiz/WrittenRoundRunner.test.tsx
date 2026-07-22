@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import WrittenRoundRunner from './WrittenRoundRunner'
 
@@ -10,6 +10,8 @@ const questions = [
 ]
 
 describe('WrittenRoundRunner', () => {
+  afterEach(cleanup)
+
   it('keeps selected answers while navigating between questions', async () => {
     vi.stubGlobal('scrollTo', vi.fn())
     const user = userEvent.setup()
@@ -22,5 +24,15 @@ describe('WrittenRoundRunner', () => {
     await user.click(screen.getByRole('button', { name: '1번 문제로 이동' }))
     expect(screen.getByLabelText('1번 선택지 ② B')).toBeChecked()
     expect(screen.queryByText(/정답/)).not.toBeInTheDocument()
+  })
+
+  it('moves questions even when the browser cannot perform smooth scrolling', async () => {
+    vi.stubGlobal('scrollTo', vi.fn(() => { throw new Error('scroll unavailable') }))
+    const user = userEvent.setup()
+    render(<WrittenRoundRunner title="2021년 1회" questions={questions} />)
+
+    await user.click(screen.getByRole('button', { name: '다음 문제' }))
+
+    expect(screen.getByRole('heading', { name: '2. 둘째 문제' })).toBeInTheDocument()
   })
 })
