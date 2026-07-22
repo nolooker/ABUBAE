@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { ArrowRight, BookOpen, Menu, Search, Sparkles, X } from 'lucide-react'
+import { ArrowRight, Menu, Search, Sparkles, X } from 'lucide-react'
 
 // [화면 데이터] 상단 배너 문구입니다.
 // enabled를 false로 바꾸면 홈/내부 페이지 모두에서 숨길 수 있습니다.
