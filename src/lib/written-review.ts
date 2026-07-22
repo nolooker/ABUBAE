@@ -8,7 +8,7 @@ export type ReviewQuestion = {
   number: number
   content: string
   choices: string[]
-  answerIndex: number | null
+  acceptedAnswerIndexes: number[]
   reviewed: boolean
   published: boolean
 }
@@ -18,22 +18,21 @@ export type ReviewRound = {
   round: number
   title: string
   questions: ReviewQuestion[]
-  uncertainAnswerNumbers: number[]
+  multipleAnswerNumbers: number[]
 }
 
 const rounds = [round1, round2, round3] as ReviewRound[]
 
 export function getReviewRounds() {
-  return rounds.map(({ year, round, title, questions, uncertainAnswerNumbers }) => ({
+  return rounds.map(({ year, round, title, questions, multipleAnswerNumbers }) => ({
     year,
     round,
     title,
     questionCount: questions.length,
-    uncertainAnswerCount: uncertainAnswerNumbers.length,
+    multipleAnswerCount: multipleAnswerNumbers.length,
   }))
 }
 
 export function getReviewRound(year: number, round: number) {
   return rounds.find((candidate) => candidate.year === year && candidate.round === round)
 }
-

@@ -11,7 +11,7 @@ export type WrittenQuestionContent = {
   number: number
   content: string
   choices: [string, string, string, string]
-  answerIndex: 0 | 1 | 2 | 3
+  acceptedAnswerIndexes: Array<0 | 1 | 2 | 3>
   explanation: WrittenExplanation
   reviewed: boolean
   published: boolean
@@ -71,8 +71,14 @@ function validateQuestion(value: unknown): asserts value is WrittenQuestionConte
     throw new Error(`question ${number} must have exactly four choices`)
   }
 
-  if (!Number.isInteger(value.answerIndex) || Number(value.answerIndex) < 0 || Number(value.answerIndex) > 3) {
-    throw new Error(`question ${number} must have an answerIndex from 0 to 3`)
+  const acceptedAnswers = value.acceptedAnswerIndexes
+  if (
+    !Array.isArray(acceptedAnswers) ||
+    acceptedAnswers.length === 0 ||
+    new Set(acceptedAnswers).size !== acceptedAnswers.length ||
+    !acceptedAnswers.every((answer) => Number.isInteger(answer) && Number(answer) >= 0 && Number(answer) <= 3)
+  ) {
+    throw new Error(`question ${number} must have unique acceptedAnswerIndexes from 0 to 3`)
   }
 
   if (typeof value.reviewed !== 'boolean' || typeof value.published !== 'boolean') {

@@ -87,18 +87,21 @@ def extract_questions(page_text: str) -> list[ExtractedQuestion]:
     return questions
 
 
-def extract_answer_key(page_text: str) -> tuple[dict[int, int], list[int]]:
-    answers: dict[int, int] = {}
-    uncertain: list[int] = []
+def extract_answer_key(page_text: str) -> tuple[dict[int, list[int]], list[int]]:
+    answers: dict[int, list[int]] = {}
+    multiple: list[int] = []
     for match in ANSWER_ENTRY.finditer(page_text):
         number = int(match.group(1))
         value = match.group(2)
         markers = CHOICE_MARKER.findall(value)
-        if len(markers) == 1 and value == markers[0]:
-            answers[number] = ANSWER_INDEX[markers[0]]
-        elif 1 <= number <= 100:
-            uncertain.append(number)
-    return answers, uncertain
+        if markers:
+            answers[number] = [ANSWER_INDEX[marker] for marker in markers]
+            if len(markers) > 1:
+                multiple.append(number)
+        elif value == "전항정답":
+            answers[number] = [0, 1, 2, 3]
+            multiple.append(number)
+    return answers, multiple
 
 
 def subject_for(number: int) -> str:
@@ -114,8 +117,8 @@ def subject_for(number: int) -> str:
 
 def extract_pdf(path: Path, year: int, round_number: int) -> dict:
     candidates: dict[int, ExtractedQuestion] = {}
-    answers: dict[int, int] = {}
-    uncertain_answers: list[int] = []
+    answers: dict[int, list[int]] = {}
+    multiple_answers: list[int] = []
     with pdfplumber.open(path) as pdf:
         ordered_columns: list[str] = []
         for page in pdf.pages[:-1]:
@@ -131,7 +134,7 @@ def extract_pdf(path: Path, year: int, round_number: int) -> dict:
         for (manual_round, number), question in MANUAL_TABLE_QUESTIONS.items():
             if manual_round == round_number:
                 candidates[number] = question
-        answers, uncertain_answers = extract_answer_key(pdf.pages[-1].extract_text() or "")
+        answers, multiple_answers = extract_answer_key(pdf.pages[-1].extract_text() or "")
         page_count = len(pdf.pages)
 
     questions = []
@@ -141,7 +144,7 @@ def extract_pdf(path: Path, year: int, round_number: int) -> dict:
             "id": f"jeongchogi-written-{year}-{round_number}-{number:03d}",
             "subject": subject_for(number),
             **candidate,
-            "answerIndex": answers.get(number),
+            "acceptedAnswerIndexes": answers.get(number, []),
             "explanation": None,
             "reviewed": False,
             "published": False,
@@ -157,7 +160,7 @@ def extract_pdf(path: Path, year: int, round_number: int) -> dict:
         "pageCount": page_count,
         "extractedQuestionCount": len(questions),
         "missingNumbers": [number for number in range(1, 101) if number not in candidates],
-        "uncertainAnswerNumbers": uncertain_answers,
+        "multipleAnswerNumbers": multiple_answers,
         "questions": questions,
     }
 

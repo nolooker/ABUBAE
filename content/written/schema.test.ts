@@ -7,7 +7,7 @@ const validQuestion = {
   number: 1,
   content: '미들웨어에 대한 설명으로 옳은 것은?',
   choices: ['보기 A', '보기 B', '보기 C', '보기 D'],
-  answerIndex: 0,
+  acceptedAnswerIndexes: [0],
   explanation: {
     summary: '정답인 이유를 설명합니다.',
     choiceNotes: ['정답입니다.', '오답입니다.', '오답입니다.', '오답입니다.'],
@@ -54,5 +54,21 @@ describe('validateWrittenRound', () => {
         explanation: { ...validQuestion.explanation, keyPoint: '' },
       }],
     })).toThrow('question 1 must have a complete explanation')
+  })
+
+  it('accepts multiple allowed answers without requiring multiple selection', () => {
+    const round = {
+      ...validRound,
+      questions: [{ ...validQuestion, acceptedAnswerIndexes: [1, 2] }],
+    }
+
+    expect(validateWrittenRound(round).questions[0].acceptedAnswerIndexes).toEqual([1, 2])
+  })
+
+  it('rejects duplicate or out-of-range allowed answers', () => {
+    expect(() => validateWrittenRound({
+      ...validRound,
+      questions: [{ ...validQuestion, acceptedAnswerIndexes: [0, 0, 4] }],
+    })).toThrow('question 1 must have unique acceptedAnswerIndexes from 0 to 3')
   })
 })

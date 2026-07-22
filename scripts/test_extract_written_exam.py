@@ -36,10 +36,10 @@ class ExtractQuestionsTest(unittest.TestCase):
     def test_extracts_single_answers_and_flags_multiple_answers(self):
         answer_text = "1.① 2.④ 3.②,③ 4.전항정답"
 
-        answers, uncertain = extract_answer_key(answer_text)
+        answers, multiple = extract_answer_key(answer_text)
 
-        self.assertEqual(answers, {1: 0, 2: 3})
-        self.assertEqual(uncertain, [3, 4])
+        self.assertEqual(answers, {1: [0], 2: [3], 3: [1, 2], 4: [0, 1, 2, 3]})
+        self.assertEqual(multiple, [3, 4])
 
 
 if __name__ == "__main__":

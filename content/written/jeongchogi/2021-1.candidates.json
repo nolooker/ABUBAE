@@ -8,7 +8,7 @@
   "pageCount": 8,
   "extractedQuestionCount": 100,
   "missingNumbers": [],
-  "uncertainAnswerNumbers": [
+  "multipleAnswerNumbers": [
     4,
     91
   ],
@@ -24,7 +24,9 @@
         "오픈허브웨어",
         "그레이웨어"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -40,7 +42,9 @@
         "선택",
         "특화"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -56,7 +60,9 @@
         "동적 모델은 시스템의 내부 동작을 말하며, UML에서는 Sequence Diagram, State Diagram, Activity Diagram을 사 용한다.",
         "State Diagram은 객체들 사이의 메시지 교환을 나타내며, Sequence Diagram은 하나의 객체가 가진 상태와 그 상태의 변화에 의한 동작순서를 나타낸다."
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -72,7 +78,10 @@
         "pwd",
         "uname"
       ],
-      "answerIndex": null,
+      "acceptedAnswerIndexes": [
+        1,
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -88,7 +97,9 @@
         "Function",
         "Static"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -104,7 +115,9 @@
         "어댑터(Adapter)",
         "싱글턴(Singleton) - 1 기출문제 & 정답 및 해설 년 1회 정보처리기사 필기 인적인 용도로만 사용할 수 있습니다. 허락 없이 복제하거나 수 없습니다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -120,7 +133,9 @@
         "운영체제 분석",
         "인적 자원 분석"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -136,7 +151,9 @@
         "State Diagram",
         "Class Diagram"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -152,7 +169,9 @@
         "미시적 개발 프로세스와 거시적 개발 프로세스를 모두 사용하 는 방법이다.",
         "Use-Case를 강조하여 사용하는 방법이다."
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -168,7 +187,9 @@
         "다형성(Polymorphism)",
         "상속(Inheritance)"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -184,7 +205,9 @@
         "개발자들 사이의 의사소통을 원활하게 할 수 있다.",
         "소프트웨어의 품질과 생산성을 향상시킬 수 있다."
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -200,7 +223,9 @@
         "fan-in : 1, fan-out : 2",
         "fan-in : 2, fan-out : 1"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -216,7 +241,9 @@
         "기능적 분석",
         "실시간 분석 1 - 1회"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -232,7 +259,9 @@
         "시퀀스 다이어그램(Sequence Diagram)",
         "단계 다이어그램(Phase Diagram)"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -248,7 +277,9 @@
         "실제 작동하는 소프트웨어보다는 이해하기 좋은 문서에 더 가 치를 둔다.",
         "계획을 따르기보다는 변화에 대응하는 것에 더 가치를 둔다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -264,7 +295,9 @@
         "RPC(Remote Procedure Call)",
         "ORB(Object Request Broker)"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -280,7 +313,9 @@
         "적당한 모듈의 크기를 유지한다.",
         "가능한 모듈을 독립적으로 생성하고 결합도를 최대화한다."
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -296,7 +331,9 @@
         "스크럼 기술",
         "프로토타입 기술"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -312,7 +349,9 @@
         "상향식 설계",
         "하향식 설계"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -328,7 +367,9 @@
         "소프트웨어 사용자들에게 사용 방법을 신속히 숙지시키기 위 해 사용된다.",
         "소프트웨어 유지보수를 간편하게 수행할 수 있다. 제2과목 소프트웨어 개발"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -344,7 +385,9 @@
         "㉢-㉠-㉡-㉣",
         "㉣-㉡-㉠-㉢ - 2"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -360,7 +403,9 @@
         "프로그램 삭제",
         "소프트웨어 개발 기간"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -376,7 +421,9 @@
         "A B * C + D / E -",
         "A B C + * D / E -"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -392,7 +439,9 @@
         "Usability",
         "Integrity"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -408,7 +457,9 @@
         "라디오 버튼",
         "체크 박스"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -424,7 +475,9 @@
         "레코드의 많은 자료 이동을 없애고 하나의 파일을 부분적으로 나누어 가면서 정렬한다.",
         "임의의 레코드 키와 매개변수(h)값만큼 떨어진 곳의 레코드 키를 비교하여 서로 교환해 가면서 정렬한다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -440,7 +493,9 @@
         "암호화",
         "크랙방지"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -456,7 +511,9 @@
         "LIFO 구조이다.",
         "더 이상 삭제할 데이터가 없는 상태에서 데이터를 삭제하면 언더플로(Underflow)가 발생한다."
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -472,7 +529,9 @@
         "형상 검사",
         "복구 검사"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -488,7 +547,9 @@
         "형상관리를 위하여 구성된 팀을 “chief programmer team”이 라고 한다.",
         "형상관리의 기능 중 하나는 버전 제어 기술이다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -504,7 +565,9 @@
         "stack",
         "distributed 2 - 1회"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -520,7 +583,9 @@
         "피보나치 수열에 따라 다음에 비교할 대상을 선정하여 검색한 다.",
         "비교횟수를 거듭할 때마다 검색 대상이 되는 데이터의 수가 절반으로 줄어든다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -536,7 +601,9 @@
         "가시성(Visibility)",
         "재사용성(Reusability)"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -552,7 +619,9 @@
         "Procedure",
         "Function"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -568,7 +637,9 @@
         "개방주소법(open addressing)",
         "제산법(division)"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -584,7 +655,9 @@
         "기초 경로 검사",
         "루프 검사"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -600,7 +673,9 @@
         "G",
         "H"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -616,7 +691,9 @@
         "3, 8, 4, 9, 7",
         "3, 4, 7, 8, 9"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -632,7 +709,9 @@
         "스택은 Last In – First out 처리를 수행한다.",
         "스택은 서브루틴 호출, 인터럽트 처리, 수식 계산 및 수식 표기 법에 응용된다."
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -648,7 +727,9 @@
         "테스트 비용",
         "예상 결과 - 3 제3과목 데이터베이스 구축"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -664,7 +745,9 @@
         "카디널리티 : 6, 차수 : 4",
         "카디널리티 : 6, 차수 : 6"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -680,7 +763,9 @@
         "역정규화(Denormalization)",
         "트리거(Trigger)"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -696,7 +781,9 @@
         "개념적 설계",
         "물리적 설계"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -712,7 +799,9 @@
         "DBMS가 스스로 생성하고 유지하는 데이터베이스 내의 특별 한 테이블의 집합체이다.",
         "카탈로그에 저장된 정보를 메타 데이터라고도 한다."
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -728,7 +817,9 @@
         "갱신 이상이란 릴레이션에서 튜플에 있는 속성값을 갱신할 때 일부 튜플의 정보만 갱신되어 정보에 모순이 생기는 현상이다.",
         "종속 이상이란 하나의 릴레이션에 하나 이상의 함수적 종속성 이 존재하는 현상이다."
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -744,7 +835,9 @@
         "격리성(isolation)",
         "영속성(durability)"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -760,7 +853,9 @@
         "뷰에 대한 삽입, 갱신, 삭제 연산 시 제약사항이 따르지 않는다.",
         "독립적인 인덱스를 가질 수 없다. 3 - 1회"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -776,7 +871,9 @@
         "이름: 홍길동, 김철수, 강남길, 오말자, 장미화",
         "이름: 홍길동, 김철수"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -792,7 +889,9 @@
         "Join",
         "Division"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -808,7 +907,9 @@
         "도메인(domain)은 하나의 속성이 가질 수 있는 같은 타입의 모든 값의 집합으로 각 속성의 도메인은 원자값을 갖는다.",
         "속성(attribute)은 한 개의 릴레이션의 논리적인 구조를 정의한 것으로 릴레이션의 이름과 릴레이션에 포함된 속성들의 집합 을 의미한다. - 4 ③ 도메인(domain)은 하나의 속성이 가질 수 있는 같은 타입의 모든 값의 집합으로 각 속성의 도메인은 원자값을 갖는다. ④ 속성(attribute)은 한 개의 릴레이션의 논리적인 구조를 정의한 것으로 릴레이션의 이름과 릴레이션에 포함된 속성들의 집합 을 의미한다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -824,7 +925,9 @@
         "외부 스키마",
         "내용 스키마"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -840,7 +943,9 @@
         "다치 종속 제거",
         "결정자이면서 후보키가 아닌 것 제거"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -856,7 +961,9 @@
         "제3정규형(3NF)",
         "보이스/코드 정규형(BCNF)"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -872,7 +979,9 @@
         "ALTER",
         "ACCESS"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -888,7 +997,9 @@
         "DCL(Data Control Language)",
         "IDL(Interactive Data Language)"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -904,7 +1015,9 @@
         "널 제약성",
         "참조 무결성"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -920,7 +1033,9 @@
         "Abort",
         "Restart"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -936,7 +1051,9 @@
         "관계 집합 - 삼각형",
         "개체 타입과 속성을 연결 – 선"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -952,7 +1069,9 @@
         "한꺼번에 로킹할 수 있는 단위를 로킹단위라고 한다.",
         "로킹 단위가 작아지면 병행성 수준이 낮아진다. 4 - 1회"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -968,7 +1087,9 @@
         "SELECT * FROM 공급자 WHERE 공급자명 LIKE '%사';",
         "SELECT * FROM 공급자 WHERE 공급자명 IS NOT NULL; 제4과목 프로그래밍 언어 활용"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -984,7 +1105,9 @@
         "작업 제어 프로그램",
         "감시 프로그램"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1000,7 +1123,9 @@
         "Non-preemption",
         "Linear wait"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1016,7 +1141,9 @@
         "7K",
         "8K"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1032,7 +1159,9 @@
         "(ㄴ) → (ㄹ) → (ㅂ) → (ㅁ) → (ㄷ) → (ㄱ)",
         "(ㄱ) → (ㄴ) → (ㄹ) → (ㅁ) → (ㅂ) → (ㄷ)"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1048,7 +1177,9 @@
         "㉠ : Segmentation, ㉡ : Compaction",
         "㉠ : Paging, ㉡ : Linking"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1064,7 +1195,9 @@
         "itoa( )",
         "ceil( ) - 5"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1080,7 +1213,9 @@
         "Tomcat",
         "WebSphere"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1096,7 +1231,9 @@
         "/",
         "="
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1112,7 +1249,9 @@
         "응용 계층",
         "표현 계층"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1128,7 +1267,9 @@
         "Token Ring",
         "Slotted Ring"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1144,7 +1285,9 @@
         "애니캐스트(Anycast)는 하나의 호스트에서 그룹 내의 가장 가까운 곳에 있는 수신자에게 전달하는 방식이다.",
         "128비트 주소 체계를 사용한다."
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1160,7 +1303,9 @@
         "트랜스포트 계층",
         "세션 계층"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1176,7 +1321,9 @@
         "우연적 응집도",
         "논리적 응집도"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1192,7 +1339,9 @@
         "7 = 7",
         "5 + 2 = 34 7 + 7 5 + 2 = 7"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1208,7 +1357,9 @@
         "A, B, C, D 출력이 반복된다.",
         "A, B, C, D 까지만 출력된다."
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1224,7 +1375,9 @@
         "_sub",
         "short 5 - 1회"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1240,7 +1393,9 @@
         "외부 라이브러리는 프로그래밍 언어가 기본적으로 가지고 있 는 라이브러리를 의미하며, 표준 라이브러리는 별도의 파일 설치를 필요로 하는 라이브러리를 의미한다.",
         "라이브러리는 모듈과 패키지를 총칭하며, 모듈이 개별 파일이 라면 패키지는 파일들을 모아 놓은 폴더라고 볼 수 있다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1256,7 +1411,9 @@
         "순서제어, 오류제어, 흐름제어 기능을 한다.",
         "흐름제어나 순서제어가 없어 전송속도가 빠르다."
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1272,7 +1429,9 @@
         "Thrashing",
         "Working Set"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1288,7 +1447,9 @@
         "char 자료형은 나열된 여러 개의 문자를 저장하고자 할 때 사 용한다.",
         "boolean 자료형은 조건이 참인지 거짓인지 판단하고자 할 때 사용한다. 제5과목 : 정보시스템 구축 관리"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1304,7 +1465,9 @@
         "SDDC",
         "Wi-SUN"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1320,7 +1483,9 @@
         "모듈의 분할과 정복에 의한 하향식 설계방식이다.",
         "독립적인 컴포넌트 단위의 관리로 복잡성을 최소화할 수 있다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1336,7 +1501,9 @@
         "15개월",
         "20개월 - 6"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1352,7 +1519,9 @@
         "폭포수 모형",
         "RAD 모형"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1368,7 +1537,9 @@
         "소프트웨어 공학의 궁극적 목표는 최대의 비용으로 계획된 일 정보다 가능한 빠른 시일 내에 소프트웨어를 개발하는 것이다.",
         "소프트웨어 공학은 신뢰성 있는 소프트웨어를 경제적인 비용 으로 획득하기 위해 공학적 원리를 정립하고 이를 이용하는 것이다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1384,7 +1555,9 @@
         "SHA-1",
         "AES"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1400,7 +1573,9 @@
         "버스형",
         "링형"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1416,7 +1591,9 @@
         "복호화 – 평문을 암호문으로 바꾸는 작업",
         "키(Key) - 적절한 암호화를 위하여 사용하는 값"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1432,7 +1609,9 @@
         "강제적 접근 통제",
         "역할 기반 접근 통제"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1448,7 +1627,9 @@
         "가용성",
         "휘발성"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1464,7 +1645,10 @@
         "Logic Bomb",
         "Cyberbullying"
       ],
-      "answerIndex": null,
+      "acceptedAnswerIndexes": [
+        0,
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1480,7 +1664,9 @@
         "FP",
         "SLIM"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1496,7 +1682,9 @@
         "개발",
         "평가 6 - 1회"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1512,7 +1700,9 @@
         "정보공학 방법론",
         "CBD 방법론"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1528,7 +1718,9 @@
         "디지털 아카이빙",
         "미디어 빅뱅"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1544,7 +1736,9 @@
         "cron",
         "netcat"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1560,7 +1754,9 @@
         "RC4는 스트림 암호화 방식에 해당한다.",
         "대칭키 암호화 방식이다."
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1576,7 +1772,9 @@
         "송신자는 수신자의 공개키로 문서를 암호화한다.",
         "공개키 암호로 널리 알려진 알고리즘은 RSA가 있다."
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1592,7 +1790,9 @@
         "GPN",
         "MQTT"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1608,7 +1808,9 @@
         "ACK STORM 탐지",
         "패킷의 유실 및 재전송 증가 탐지 - 7 7 -"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false

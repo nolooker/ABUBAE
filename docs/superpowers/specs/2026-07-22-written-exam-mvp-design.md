@@ -116,7 +116,7 @@ type WrittenQuestion = {
   number: number
   content: string
   choices: [string, string, string, string]
-  answerIndex: 0 | 1 | 2 | 3
+  acceptedAnswerIndexes: Array<0 | 1 | 2 | 3>
   explanation: {
     summary: string
     choiceNotes: [string, string, string, string]
@@ -134,6 +134,7 @@ type WrittenQuestion = {
 ```
 
 `reviewed`와 `published`가 모두 `true`인 문제만 사용자에게 제공한다. ID는 `jeongchogi-written-2021-1-001` 형식으로 생성한다.
+복수·전항 정답 문항도 사용자는 선택지 하나만 고르며, 선택한 번호가 `acceptedAnswerIndexes` 중 하나이면 정답으로 채점한다.
 
 ## PDF 콘텐츠 처리
 
@@ -207,4 +208,3 @@ type WrittenQuestion = {
 - 결제와 프리미엄 콘텐츠
 - 관리자 콘텐츠 편집 화면
 - 2026년 기출문제
-

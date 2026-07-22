@@ -11,7 +11,7 @@ const questions = [
     number: 1,
     content: '첫 번째 문제',
     choices: ['선택지 A', '선택지 B', '선택지 C', '선택지 D'],
-    answerIndex: 1,
+    acceptedAnswerIndexes: [1],
     reviewed: false,
     published: false,
   },
@@ -21,7 +21,7 @@ const questions = [
     number: 2,
     content: '두 번째 문제',
     choices: ['선택지 E', '선택지 F', '선택지 G', '선택지 H'],
-    answerIndex: null,
+    acceptedAnswerIndexes: [0, 2],
     reviewed: false,
     published: false,
   },
@@ -44,6 +44,7 @@ describe('WrittenContentReviewer', () => {
 
     await user.click(screen.getByRole('button', { name: '다음 문제' }))
     expect(screen.getByRole('heading', { name: '2. 두 번째 문제' })).toBeInTheDocument()
-    expect(screen.getByText('정답 수동 검수 필요')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: '정답 표시' }))
+    expect(screen.getByText('추출 정답: ①, ③')).toBeInTheDocument()
   })
 })

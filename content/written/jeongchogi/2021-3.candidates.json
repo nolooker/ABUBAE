@@ -8,7 +8,7 @@
   "pageCount": 9,
   "extractedQuestionCount": 100,
   "missingNumbers": [],
-  "uncertainAnswerNumbers": [],
+  "multipleAnswerNumbers": [],
   "questions": [
     {
       "id": "jeongchogi-written-2021-3-001",
@@ -21,7 +21,9 @@
         "요구사항이 실제 요구를 반영하는지, 문서상의 요구사항은 서 로 상충되지 않는지 등을 점검한다.",
         "요구사항 검증 과정을 통해 모든 요구사항 문제를 발견할 수 있다."
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -37,7 +39,9 @@
         "Realization",
         "Generalization"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -53,7 +57,9 @@
         "고객과 직접 대면하며 요구사항을 이야기하기 위해 사용자 스 토리(User Story)를 활용할 수 있다.",
         "기존의 방법론에 비해 실용성(Pragmatism)을 강조한 것이라 고 볼 수 있다."
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -69,7 +75,9 @@
         "과정 추상화",
         "강도 추상화"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -85,7 +93,9 @@
         "설계에서 은닉되어야 할 기본 정보로는 IP 주소와 같은 물리적 코드, 상세 데이터 구조 등이 있다.",
         "모듈 내부의 자료 구조와 접근 동작들에만 수정을 국한하기 때문에 요구사항 등 변화에 따른 수정이 불가능하다. - 1 기출문제 & 정답 및 해설 년 3회 정보처리기사 필기 인적인 용도로만 사용할 수 있습니다. 허락 없이 복제하거나 수 없습니다."
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -101,7 +111,9 @@
         "개발될 시스템에 대하여 여러 분야의 엔지니어들이 공통된 개 념을 공유하는 데 도움을 준다.",
         "절차적인 프로그램을 위한 자료 흐름도는 프로세스 위주의 모 델링 방법이다."
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -117,7 +129,9 @@
         "도메인 분석(Domain Analysis)은 요구에 대한 정보를 수집하 고 배경을 분석하여 이를 토대로 모델링을 하게 된다.",
         "기능적(Functional) 요구에서 시스템 구축에 대한 성능, 보안, 품질, 안정 등에 대한 요구사항을 도출한다."
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -133,7 +147,9 @@
         "Item",
         "Hiding"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -149,7 +165,9 @@
         "슬레이브 프로세스는 데이터 수집 기능을 수행할 수 없다.",
         "마스터 프로세스는 슬레이브 프로세스들을 제어할 수 있다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -165,7 +183,9 @@
         "E-R Diagram",
         "AVL Diagram"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -181,7 +201,9 @@
         "클래스는 하나 이상의 유사한 객체들을 묶어 공통된 특성을 표현한 것이다.",
         "다형성은 상속받은 여러 개의 하위 객체들이 다른 형태의 특성 을 갖는 객체로 이용될 수 있는 성질이다. 1 - 3회"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -197,7 +219,9 @@
         "배우기가 용이하고 쉽게 사용할 수 있도록 만들어져야 한다.",
         "사용자 요구사항이 UI에 반영될 수 있도록 구성해야 한다."
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -213,7 +237,9 @@
         "행위 패턴은 클래스나 객체들이 상호작용하는 방법과 책임을 분산하는 방법을 정의한다.",
         "Singleton 패턴은 특정 클래스의 인스턴스가 오직 하나임을 보장하고, 이 인스턴스에 대한 접근 방법을 제공한다."
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -229,7 +255,9 @@
         "고객과의 의사소통을 중요하게 생각한다.",
         "진화하는 요구사항을 수용하는데 적합하다."
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -245,7 +273,9 @@
         "객체 모델링",
         "정적 모델링"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -261,7 +291,9 @@
         "동적 다이어그램보다는 정적 다이어그램에 가깝다.",
         "교류 다이어그램(Interaction Diagram)의 한 종류로 볼 수 있다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -277,7 +309,9 @@
         "데이터와 행위를 하나로 묶어 객체를 정의하고 추상화시키는 작업이라 할 수 있다.",
         "코드 재사용에 의한 프로그램 생산성 향상 및 요구에 따른 시스 템의 쉬운 변경이 가능하다."
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -293,7 +327,9 @@
         "CUI(Cell User Interface)",
         "MUI(Mobile User Interface)"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -309,7 +345,9 @@
         "분산 시스템의 여러 컴포넌트가 요구하는 재사용 가능한 서비 스의 구현을 제공한다.",
         "애플리케이션과 사용자 사이에서만 분산 서비스를 제공한다. - 2"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -325,7 +363,9 @@
         "데이터 중심 아키텍처는 공유 데이터 저장소를 통해 접근자 간의 통신이 이루어지므로 각 접근자의 수정과 확장이 용이하 다.",
         "이해 관계자들의 품질 요구사항을 반영하여 품질 속성을 결정 한다. 제2과목 소프트웨어 개발"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -341,7 +381,9 @@
         "사용자의 이벤트에 시스템이 응답하는 시간, 특정 시간 내에 처리하는 업무량, 사용자 요구에 시스템이 반응하는 속도 등을 테스트한다.",
         "부당하고 불법적인 침입을 시도하여 보안시스템이 불법적인 침투를 잘 막아내는지 테스트한다."
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -357,7 +399,9 @@
         "6, 7, 3, 5, 9",
         "3, 5, 9, 6, 7"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -373,7 +417,9 @@
         "ABCDEFG",
         "ABEFGCD"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -389,7 +435,9 @@
         "모듈",
         "데이터 2 - 3회"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -405,7 +453,9 @@
         "상향식 통합 테스트에서 사용된다.",
         "테스트 대상 모듈이 호출하는 하위 모듈의 역할을 한다."
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -421,7 +471,9 @@
         "큐, 그래프",
         "리스트, 그래프"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -437,7 +489,9 @@
         "Underflow",
         "Top = Top"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -453,7 +507,9 @@
         "(가)-㉠, (나)-㉢, (다)-㉡",
         "(가)-㉢, (나)-㉠, (다)-㉡"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -469,7 +525,9 @@
         "C, B, A, D",
         "D, B, C, A"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -485,7 +543,9 @@
         "검증은 작업 제품이 요구 명세의 기능, 비기능 요구사항을 얼마 - 3 나 잘 준수하는지 측정하는 작업이다.",
         "검증은 작업 제품이 사용자의 요구에 적합한지 측정하며, 확인 은 작업 제품이 개발자의 기대를 충족시키는지를 측정한다."
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -501,7 +561,9 @@
         "시스템 테스트(System Test)",
         "인수 테스트(Acceptance Test)"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -517,7 +579,9 @@
         "형상 통제 과정에서는 형상 목록의 변경 요구를 즉시 수용 및 반영해야 한다.",
         "형상 감사는 형상 관리 계획대로 형상 관리가 진행되고 있는지, 형상 항목의 변경이 요구 사항에 맞도록 제대로 이뤄졌는지 등을 살펴보는 활동이다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -533,7 +597,9 @@
         "하드웨어적인 방법으로만 코드 분석이 가능하다.",
         "자료 흐름이나 논리 흐름을 분석하여 비정상적인 패턴을 찾을 수 있다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -549,7 +615,9 @@
         "Mistake",
         "Inspection"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -565,7 +633,9 @@
         "빈 줄을 사용하여 선언부와 구현부를 구별한다.",
         "한 줄에 최대한 많은 문장을 코딩한다."
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -581,7 +651,9 @@
         "Usability",
         "Correctness"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -597,7 +669,9 @@
         "2-3 트리",
         "레드-블랙 트리"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -613,7 +687,9 @@
         "DBECFA",
         "DBAECF 3 - 3회"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -629,7 +705,9 @@
         "랜덤(Random) 테스트",
         "자료 흐름도"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -645,7 +723,9 @@
         "라이선스를 발급하고 관리한다.",
         "배포된 콘텐츠의 이용 권한을 통제한다. 제3과목 데이터베이스 구축"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -661,7 +741,9 @@
         "정식으로 허가 받은 사용자가 아닌 불법적인 사용자에 의한 갱신으로부터 데이터베이스를 보호하기 위한 규정이다.",
         "릴레이션 무결성 규정(Relation Integrity Rules)은 릴레이션 을 조작하는 과정에서의 의미적 관계(Semantic Relationship) 를 명세한 것이다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -677,7 +759,9 @@
         "튜플",
         "카디널리티"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -693,7 +777,9 @@
         "(3, 컴퓨터), (3, 국문), (3, 수학)",
         "(1, 컴퓨터), (1, 국문), (1, 수학), (2, 컴퓨터), (2, 국문), (2, 수학), (3, 컴퓨터), (3, 국문), (3, 수학)"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -709,7 +795,9 @@
         "저장 레코드의 형식, 순서, 접근 경로와 같은 정보를 사용하여 설계한다.",
         "트랜잭션의 인터페이스를 설계하며, 데이터 타입 및 데이터 타입들 간의 관계로 표현한다."
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -725,7 +813,9 @@
         "도메인 무결성 제약조건",
         "속성 무결성 제약조건"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -741,7 +831,9 @@
         "GROUP BY 절",
         "ORDER BY 절"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -757,7 +849,9 @@
         "조인(Join)",
         "포크(Fork)"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -773,7 +867,9 @@
         "SELECT 학생명 FROM 학적 WHERE 전화번호 IS NOT NULL;",
         "SELECT 학생명 FROM 학적 WHERE 전화번호 IS NULL;"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -789,7 +885,9 @@
         "슈퍼키",
         "외래키"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -805,7 +903,9 @@
         "BETWEEN 등 범위(Range) 검색에 활용될 수 있다.",
         "시스템이 자동으로 생성하여 사용자가 변경할 수 없다."
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -821,7 +921,9 @@
         "로킹 단위가 작으면 로크(lock)의 수가 적어진다.",
         "로킹은 파일 단위로 이루어지며, 레코드와 필드는 로킹 단위가 될 수 없다."
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -837,7 +939,9 @@
         "일반 집합 연산과 순수 관계 연산으로 구분된다.",
         "질의에 대한 해를 구하기 위해 수행해야 할 연산의 순서를 명시 한다. 4 - 3회"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -853,7 +957,9 @@
         "종속성(Dependency)",
         "변환(Translation)"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -869,7 +975,9 @@
         "ALTER",
         "DROP"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -885,7 +993,9 @@
         "중복을 배제하여 삽입, 삭제, 갱신 이상의 발생을 방지한다.",
         "데이터 삽입 시 릴레이션을 재구성할 필요성을 줄인다."
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -901,7 +1011,9 @@
         "Isolation",
         "Durability"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -917,7 +1029,9 @@
         "OR",
         "NOT"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -933,7 +1047,9 @@
         "검증 기법",
         "배타 로크 기법"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -949,7 +1065,9 @@
         "제5정규형",
         "제6정규형"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -965,7 +1083,9 @@
         "X → Y",
         "X ⊂ Y 제4과목 프로그래밍 언어 활용"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -981,7 +1101,9 @@
         "Coincidental Cohesion",
         "Sequential Cohesion"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -997,7 +1119,9 @@
         "Selective-Repeat ARQ",
         "Non-Acknowledge ARQ - 5"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1013,7 +1137,9 @@
         "66",
         "78"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1029,7 +1155,9 @@
         "alter",
         "alternation"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1045,7 +1173,9 @@
         "Memory Collector",
         "Variable Collector"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1061,7 +1191,9 @@
         "2",
         "3"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1077,7 +1209,9 @@
         "&",
         "="
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1093,7 +1227,9 @@
         "53-37-14-65-67-98-122-124-183",
         "53-67-65-124-14-122-37-183-98 5 - 3회"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1109,7 +1245,9 @@
         "192.168.1.196",
         "192.168.1.198"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1125,7 +1263,9 @@
         "225.2.4.1",
         "172.16.98.3"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1141,7 +1281,9 @@
         "8",
         "12"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1157,7 +1299,9 @@
         "C#",
         "Python"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1173,7 +1317,9 @@
         "34",
         "55"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1189,7 +1335,9 @@
         "이전 프로세스의 상태 레지스터 내용을 보관하고 다른 프로세 스의 레지스터를 적재하는 과정을 문맥 교환(Context Switching)이라고 한다.",
         "프로세스는 스레드(Thread) 내에서 실행되는 흐름의 단위이 며, 스레드와 달리 주소 공간에 실행 스택(Stack)이 없다."
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1205,7 +1353,9 @@
         "모듈들이 변수를 공유하여 사용하게 하거나 제어 정보를 교류 하게 함으로써 결합도를 낮추어야 한다.",
         "다른 모듈과 데이터 교류가 필요한 경우 전역변수(Global Variable)보다는 매개변수(Parameter)를 사용하는 것이 결합 도를 낮추는 데 도움이 된다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1221,7 +1371,9 @@
         "체크섬(Checksum)은 데이터를 포함한 세그먼트의 오류를 검 사한다.",
         "윈도우 크기는 송수신 측의 버퍼 크기로 최대 크기는 32767bit이다."
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1237,7 +1389,9 @@
         "모듈화는 시스템을 지능적으로 관리할 수 있도록 해주며, 복잡 도 문제를 해결하는 데 도움을 준다.",
         "모듈화는 시스템의 유지보수와 수정을 용이하게 한다."
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1253,7 +1407,9 @@
         "Optimal",
         "LRU(Least Recently Used)"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1269,7 +1425,9 @@
         "int pc;",
         "int True;"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1285,7 +1443,9 @@
         "사용자가 파일 디스크립터를 직접 참조할 수 있다.",
         "파일 제어 블록(File Control Block)이라고도 한다. 제5과목 : 정보시스템 구축 관리"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1301,7 +1461,9 @@
         "NIDS(Network-Based Intrusion Detection System)로는 대 표적으로 Snort가 있다.",
         "외부 인터넷에 서비스를 제공하는 서버가 위치하는 네트워크 인 DMZ(Demilitarized Zone)에는 IDS가 설치될 수 있다. 6 - 3회"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1317,7 +1479,9 @@
         "Discretionary Access Control",
         "Data-Label Access Control"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1333,7 +1497,9 @@
         "포스퀘어(Foursquare)",
         "텐서플로(TensorFlow)"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1349,7 +1515,9 @@
         "KAWS",
         "Metaverse"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1365,7 +1533,9 @@
         "DBMS에 보안 정책을 적용하는 도구인 XDMCP를 통해 데이 터베이스에 대한 접근제어를 수행할 수 있다.",
         "네트워크 장비에서 수행하는 IP에 대한 접근 제어로는 관리 인터페이스의 접근제어와 ACL(Access Control List) 등이 있 다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1381,7 +1551,9 @@
         "라이브러리와 달리 사용자 코드가 직접 호출하여 사용하기 때 문에 소프트웨어 개발 프레임워크가 직접 코드의 흐름을 제어 할 수 없다.",
         "생산성 향상과 유지보수성 향상 등의 장점이 있다."
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1397,7 +1569,9 @@
         "L2AN",
         "ARP"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1413,7 +1587,9 @@
         "DBMS의 종류와 관계없이 SQL Injection 공격 기법은 모두 동일하다.",
         "로그인과 같이 웹에서 사용자의 입력 값을 받아 데이터베이스 SQL문으로 데이터를 요청하는 경우 SQL Injection을 수행할 수 있다. - 7"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1429,7 +1605,9 @@
         "SMT",
         "RSA"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1445,7 +1623,9 @@
         "Network Architected Storage",
         "Systematic Network Storage"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1461,7 +1641,9 @@
         "Semi-detached",
         "Semi-embeded"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1477,7 +1659,9 @@
         "Buffer overflow",
         "Adware"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1493,7 +1677,9 @@
         "Cocomo Model",
         "Spiral Model"
       ],
-      "answerIndex": 0,
+      "acceptedAnswerIndexes": [
+        0
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1509,7 +1695,9 @@
         "소프트웨어를 개발하면서 발생할 수 있는 위험을 관리하고 최 소화하는 것을 목적으로 한다.",
         "계획, 설계, 개발, 평가의 개발 주기가 한 번만 수행된다."
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1525,7 +1713,9 @@
         "Brute-Force",
         "Trojan Horses 7 - 3회"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1541,7 +1731,9 @@
         "Zigbee",
         "MTSP"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1557,7 +1749,9 @@
         "SSO",
         "SOA"
       ],
-      "answerIndex": 2,
+      "acceptedAnswerIndexes": [
+        2
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1573,7 +1767,9 @@
         "Opcode",
         "Salt"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1589,7 +1785,9 @@
         "델파이기법",
         "LOC기법"
       ],
-      "answerIndex": 3,
+      "acceptedAnswerIndexes": [
+        3
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false
@@ -1605,7 +1803,9 @@
         "WBSEC",
         "ITU - 8 8 -"
       ],
-      "answerIndex": 1,
+      "acceptedAnswerIndexes": [
+        1
+      ],
       "explanation": null,
       "reviewed": false,
       "published": false

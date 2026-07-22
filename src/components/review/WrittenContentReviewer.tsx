@@ -45,7 +45,7 @@ export default function WrittenContentReviewer({ title, questions }: Props) {
 
         <ol className="mt-7 space-y-3">
           {current.choices.map((choice, index) => {
-            const isAnswer = showAnswer && current.answerIndex === index
+            const isAnswer = showAnswer && current.acceptedAnswerIndexes.includes(index)
             return (
               <li
                 key={`${current.id}-${index}`}
@@ -64,10 +64,10 @@ export default function WrittenContentReviewer({ title, questions }: Props) {
         </ol>
 
         <div className="mt-7 rounded-xl bg-[var(--bg-subtle)] p-4">
-          {current.answerIndex === null ? (
-            <p className="font-semibold text-amber-700">정답 수동 검수 필요</p>
-          ) : showAnswer ? (
-            <p className="font-semibold text-green-700">추출 정답: {answerLabels[current.answerIndex]}</p>
+          {showAnswer ? (
+            <p className="font-semibold text-green-700">
+              추출 정답: {current.acceptedAnswerIndexes.map((answer) => answerLabels[answer]).join(', ')}
+            </p>
           ) : (
             <p className="text-sm text-[var(--text-secondary)]">정답은 버튼을 눌러 별도로 확인하세요.</p>
           )}
@@ -82,16 +82,14 @@ export default function WrittenContentReviewer({ title, questions }: Props) {
           >
             <ChevronLeft size={17} /> 이전 문제
           </button>
-          {current.answerIndex !== null && (
-            <button
-              type="button"
-              className="ab-btn ab-btn-ghost ab-btn-md gap-2"
-              onClick={() => setShowAnswer((visible) => !visible)}
-            >
-              {showAnswer ? <EyeOff size={17} /> : <Eye size={17} />}
-              {showAnswer ? '정답 숨기기' : '정답 표시'}
-            </button>
-          )}
+          <button
+            type="button"
+            className="ab-btn ab-btn-ghost ab-btn-md gap-2"
+            onClick={() => setShowAnswer((visible) => !visible)}
+          >
+            {showAnswer ? <EyeOff size={17} /> : <Eye size={17} />}
+            {showAnswer ? '정답 숨기기' : '정답 표시'}
+          </button>
           <button
             type="button"
             className="ab-btn ab-btn-primary ab-btn-md disabled:cursor-not-allowed disabled:opacity-40"
@@ -105,7 +103,7 @@ export default function WrittenContentReviewer({ title, questions }: Props) {
 
       <aside className="ab-card h-fit p-5 lg:sticky lg:top-24">
         <h2 className="font-bold">문항 바로가기</h2>
-        <p className="mt-1 text-xs text-[var(--text-secondary)]">주황색은 정답 수동 검수 대상입니다.</p>
+        <p className="mt-1 text-xs text-[var(--text-secondary)]">주황색은 복수 정답 문항입니다.</p>
         <div className="mt-4 grid grid-cols-5 gap-2">
           {questions.map((question, index) => (
             <button
@@ -116,7 +114,7 @@ export default function WrittenContentReviewer({ title, questions }: Props) {
               className={`h-10 rounded-lg border text-sm font-semibold transition-colors ${
                 index === currentIndex
                   ? 'border-[var(--primary)] bg-[var(--primary)] text-white'
-                  : question.answerIndex === null
+                  : question.acceptedAnswerIndexes.length > 1
                     ? 'border-orange-300 bg-orange-50 text-orange-700'
                     : 'border-[var(--border)] bg-white hover:border-[var(--primary)]'
               }`}
@@ -129,4 +127,3 @@ export default function WrittenContentReviewer({ title, questions }: Props) {
     </div>
   )
 }
-

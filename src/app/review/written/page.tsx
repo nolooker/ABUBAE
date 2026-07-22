@@ -30,7 +30,7 @@ export default function WrittenReviewIndexPage() {
             <h2 className="text-lg font-bold">{item.year}년 {item.round}회</h2>
             <p className="mt-3 text-sm text-[var(--text-secondary)]">{item.questionCount}문항</p>
             <p className="mt-1 text-sm font-semibold text-amber-700">
-              정답 검수 필요 {item.uncertainAnswerCount}문항
+              복수 정답 {item.multipleAnswerCount}문항
             </p>
           </Link>
         ))}
@@ -38,4 +38,3 @@ export default function WrittenReviewIndexPage() {
     </section>
   )
 }
-
