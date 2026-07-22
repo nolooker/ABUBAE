@@ -1,75 +1,41 @@
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowRight } from 'lucide-react'
-import { getExam, getQuestionsByExam } from '@/lib/data'
 
-type PageProps = {
+import ExamTypeSelector from '@/components/exam/ExamTypeSelector'
+import { getExam } from '@/lib/data'
+
+type Props = {
   params: Promise<{ slug: string }>
 }
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({ params }: Props) {
   const { slug } = await params
   const exam = await getExam(slug)
-
   return {
     title: exam ? `${exam.name} 기출문제` : '기출문제',
+    description: exam ? `${exam.name} 필기와 실기 기출문제 유형을 선택하세요.` : '기출문제 유형을 선택하세요.',
   }
 }
 
-export default async function QuestionListPage({ params }: PageProps) {
+export default async function QuestionTypePage({ params }: Props) {
   const { slug } = await params
   const exam = await getExam(slug)
-
-  if (!exam) {
-    notFound()
-  }
-
-  const examQuestions = await getQuestionsByExam(exam.slug)
+  if (!exam) notFound()
 
   return (
-    <section className="max-w-4xl mx-auto px-4 py-12">
-      <div className="mb-8">
-        <p className="text-[13px] font-semibold text-[var(--primary)] mb-2">{exam.name}</p>
-        <h1 className="text-3xl font-bold text-[var(--text-primary)]">기출문제 풀이</h1>
-        <p className="text-[15px] text-[var(--text-secondary)] mt-3">
-          Supabase에 문제가 등록되어 있으면 실제 DB를 읽고, 아직 없으면 샘플 문제를 보여줍니다.
+    <section className="mx-auto max-w-6xl px-4 py-10 sm:py-14">
+      <div className="mb-8 max-w-2xl">
+        <p className="text-sm font-semibold text-[var(--primary)]">{exam.name} 기출문제</p>
+        <h1 className="mt-2 text-3xl font-bold sm:text-4xl">어떤 시험을 준비하나요?</h1>
+        <p className="mt-4 text-[15px] leading-7 text-[var(--text-secondary)]">
+          필기와 실기는 문제 형식과 풀이 방식이 다릅니다. 먼저 준비할 시험 유형을 선택해 주세요.
         </p>
       </div>
 
-      <div className="space-y-4">
-        {examQuestions.map((question) => (
-          <article key={question.id} className="bg-white border border-[var(--border)] rounded-[var(--radius-lg)] p-5">
-            <div className="flex flex-wrap items-center gap-2 text-[12px] text-[var(--text-muted)] mb-3">
-              <span className="font-semibold text-[var(--primary)]">{question.subject}</span>
-              <span>{question.year}년 {question.round}회</span>
-              <span>난이도 {question.difficulty}/5</span>
-            </div>
-            <h2 className="text-[16px] font-bold text-[var(--text-primary)] leading-relaxed">
-              {question.number}. {question.content}
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
-              {question.choices.map((choice, index) => (
-                <div key={choice} className="flex items-center gap-2.5 p-3 rounded-lg border border-[var(--border)] text-[13px] text-[var(--text-secondary)]">
-                  <span className="w-6 h-6 rounded-full bg-[var(--bg-muted)] flex items-center justify-center text-[11px] font-bold">
-                    {index + 1}
-                  </span>
-                  {choice}
-                </div>
-              ))}
-            </div>
-            <Link
-              href={`/exam/${exam.slug}/questions/${question.id}`}
-              className="inline-flex items-center gap-1.5 mt-4 text-[13px] font-bold text-[var(--primary)] hover:underline"
-            >
-              정답과 해설 보기 <ArrowRight size={13} />
-            </Link>
-          </article>
-        ))}
-      </div>
+      <ExamTypeSelector examSlug={exam.slug} />
 
-      <Link href="/quiz/daily" className="inline-flex items-center gap-1.5 mt-8 text-[14px] font-semibold text-[var(--primary)]">
-        오늘의 문제 풀러가기 <ArrowRight size={15} />
-      </Link>
+      <div className="mt-8 rounded-xl border border-blue-100 bg-[var(--primary-light)] px-5 py-4 text-sm leading-6 text-blue-800">
+        현재 무료 MVP는 정보처리기사 필기 기출문제를 먼저 제공합니다. 실기는 필기 기능이 안정화된 뒤 추가됩니다.
+      </div>
     </section>
   )
 }
