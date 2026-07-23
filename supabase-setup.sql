@@ -149,7 +149,7 @@ INSERT INTO exams (slug, name, description, order_index) VALUES
 -- RLS (Row Level Security) 설정
 -- =============================================
 
--- users: 본인 데이터만 수정 가능
+-- users: users can read only their own profile.
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "users_select_own" ON users FOR SELECT USING (auth.uid() = id);
 
