@@ -1,3 +1,5 @@
+BEGIN;
+
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA extensions;
 
 ALTER TABLE public.users
@@ -30,6 +32,27 @@ $$;
 
 DROP POLICY IF EXISTS users_select_own ON public.users;
 DROP POLICY IF EXISTS users_update_own ON public.users;
+DO $$
+DECLARE
+  policy_definition record;
+BEGIN
+  FOR policy_definition IN
+    SELECT schemaname, tablename, policyname
+    FROM pg_catalog.pg_policies
+    WHERE schemaname = 'public'
+      AND tablename = 'users'
+      AND cmd <> 'SELECT'
+  LOOP
+    EXECUTE pg_catalog.format(
+      'DROP POLICY IF EXISTS %I ON %I.%I',
+      policy_definition.policyname,
+      policy_definition.schemaname,
+      policy_definition.tablename
+    );
+  END LOOP;
+END;
+$$;
+REVOKE UPDATE ON TABLE public.users FROM PUBLIC, anon, authenticated;
 CREATE POLICY users_select_own ON public.users FOR SELECT USING (auth.uid() = id);
 
 DROP POLICY IF EXISTS questions_public_read ON public.questions;
@@ -38,6 +61,27 @@ DROP POLICY IF EXISTS questions_master_select ON public.questions;
 DROP POLICY IF EXISTS choices_master_select ON public.choices;
 DROP POLICY IF EXISTS questions_master_update ON public.questions;
 DROP POLICY IF EXISTS choices_master_update ON public.choices;
+DO $$
+DECLARE
+  policy_definition record;
+BEGIN
+  FOR policy_definition IN
+    SELECT schemaname, tablename, policyname
+    FROM pg_catalog.pg_policies
+    WHERE schemaname = 'public'
+      AND tablename IN ('questions', 'choices')
+  LOOP
+    EXECUTE pg_catalog.format(
+      'DROP POLICY IF EXISTS %I ON %I.%I',
+      policy_definition.policyname,
+      policy_definition.schemaname,
+      policy_definition.tablename
+    );
+  END LOOP;
+END;
+$$;
+REVOKE SELECT ON TABLE public.questions FROM PUBLIC, anon, authenticated;
+REVOKE SELECT ON TABLE public.choices FROM PUBLIC, anon, authenticated;
 
 CREATE OR REPLACE FUNCTION public.get_written_question_for_edit(
   p_question_id pg_catalog.uuid
@@ -153,9 +197,11 @@ BEGIN
 END;
 $$;
 
-REVOKE ALL ON FUNCTION public.is_master() FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.is_master() FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.is_master() TO authenticated;
-REVOKE ALL ON FUNCTION public.get_written_question_for_edit(pg_catalog.uuid) FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.get_written_question_for_edit(pg_catalog.uuid) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.get_written_question_for_edit(pg_catalog.uuid) TO authenticated;
-REVOKE ALL ON FUNCTION public.update_written_question(pg_catalog.uuid, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text, pg_catalog.timestamptz) FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.update_written_question(pg_catalog.uuid, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text, pg_catalog.timestamptz) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.update_written_question(pg_catalog.uuid, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text, pg_catalog.timestamptz) TO authenticated;
+
+COMMIT;

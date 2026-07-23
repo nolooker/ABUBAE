@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 
 const migrationSql = readFileSync('supabase/migrations/202607230001_master_question_editing.sql', 'utf8')
 const setupSql = readFileSync('supabase-setup.sql', 'utf8')
+const docs = readFileSync('abubae.md', 'utf8')
 const schemaSql = [migrationSql, setupSql]
 const executableSql = (sql: string) => sql
   .replace(/\/\*[\s\S]*?\*\//g, ' ')
@@ -15,6 +16,7 @@ const directReadPolicy = (table: 'questions' | 'choices') => new RegExp(
   `CREATE\\s+POLICY\\s+(?:"[^"]+"|\\S+)\\s+ON\\s+public\\.${table}\\b`,
   'i',
 )
+const unsafeUsersPolicy = /CREATE\s+POLICY\s+(?:"[^"]+"|\S+)\s+ON\s+public\.users\b(?:\s+AS\s+(?:PERMISSIVE|RESTRICTIVE))?(?:\s+FOR\s+(?:UPDATE|ALL)\b|\s+(?:USING|WITH\s+CHECK)\b|\s*;)/i
 const baseTables = [
   'exams',
   'users',
@@ -70,13 +72,15 @@ describe('master question editing migration', () => {
       expect(sql).not.toMatch(/CREATE POLICY\s+choices_master_(select|update)/i)
       expect(sql).toContain("SET search_path = ''")
       expect(sql).not.toContain('SET search_path = public')
-      expect(sql).toContain('REVOKE ALL ON FUNCTION public.get_written_question_for_edit(pg_catalog.uuid) FROM PUBLIC;')
+      expect(sql).toContain('REVOKE ALL ON FUNCTION public.is_master() FROM PUBLIC, anon, authenticated;')
+      expect(sql).toContain('GRANT EXECUTE ON FUNCTION public.is_master() TO authenticated;')
+      expect(sql).toContain('REVOKE ALL ON FUNCTION public.get_written_question_for_edit(pg_catalog.uuid) FROM PUBLIC, anon, authenticated;')
       expect(sql).toContain('GRANT EXECUTE ON FUNCTION public.get_written_question_for_edit(pg_catalog.uuid) TO authenticated;')
-      expect(sql).toContain('REVOKE ALL ON FUNCTION public.update_written_question(pg_catalog.uuid, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text, pg_catalog.timestamptz) FROM PUBLIC;')
+      expect(sql).toContain('REVOKE ALL ON FUNCTION public.update_written_question(pg_catalog.uuid, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text, pg_catalog.timestamptz) FROM PUBLIC, anon, authenticated;')
       expect(sql).toContain('GRANT EXECUTE ON FUNCTION public.update_written_question(pg_catalog.uuid, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text, pg_catalog.timestamptz) TO authenticated;')
     }
 
-    expect(migrationSql).not.toContain('pg_policies')
+    expect(migrationSql).toContain('FROM pg_catalog.pg_policies')
     expect(migrationSql).toContain('DROP POLICY IF EXISTS questions_public_read ON public.questions;')
     expect(migrationSql).toContain('DROP POLICY IF EXISTS choices_public_read ON public.choices;')
   })
@@ -95,6 +99,28 @@ describe('master question editing migration', () => {
     expect(executableSql('DROP\nTABLE public.questions;')).toMatch(destructiveDropTable)
     expect(executableSql('DROP/**/TABLE public.questions;')).toMatch(destructiveDropTable)
     expect(executableSql('CREATE/**/POLICY read_questions ON "public"."questions" FOR SELECT USING (true);')).toMatch(directReadPolicy('questions'))
+  })
+
+  it('keeps profiles server-managed and removes every direct question and choice policy', () => {
+    for (const schema of schemaSql) {
+      const sql = executableSql(schema)
+
+      expect(sql).toContain('DROP POLICY IF EXISTS users_update_own ON public.users;')
+      expect(sql).toContain('REVOKE UPDATE ON TABLE public.users FROM PUBLIC, anon, authenticated;')
+      expect(sql).toContain('REVOKE SELECT ON TABLE public.questions FROM PUBLIC, anon, authenticated;')
+      expect(sql).toContain('REVOKE SELECT ON TABLE public.choices FROM PUBLIC, anon, authenticated;')
+      expect(sql).toMatch(/DO \$\$[\s\S]*?FROM pg_catalog\.pg_policies[\s\S]*?tablename = 'users'[\s\S]*?cmd <> 'SELECT'[\s\S]*?EXECUTE pg_catalog\.format\(\s*'DROP POLICY IF EXISTS %I ON %I\.%I'/)
+      expect(sql).toMatch(/DO \$\$[\s\S]*?FROM pg_catalog\.pg_policies[\s\S]*?tablename IN \('questions', 'choices'\)[\s\S]*?EXECUTE pg_catalog\.format\(\s*'DROP POLICY IF EXISTS %I ON %I\.%I'/)
+      expect(sql).not.toMatch(unsafeUsersPolicy)
+    }
+  })
+
+  it('documents the integrated setup as the sole operator path', () => {
+    expect(docs).toContain('sole canonical operator path')
+    expect(docs).toContain('superseded for operator use')
+    expect(docs).toContain('supabase-setup.sql')
+    expect(docs).not.toContain("UPDATE public.users SET role = 'master' WHERE email = '<운영자 이메일>';")
+    expect(docs).not.toContain('1. `supabase/migrations/202607230001_master_question_editing.sql`')
   })
 
   it('makes the integrated setup safe to execute against fresh and existing projects', () => {

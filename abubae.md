@@ -53,35 +53,31 @@
 
 ### Master 문항 편집 — 구현된 코드와 운영 전제
 
-다음 항목은 이 브랜치에 구현되어 있지만, Supabase 마이그레이션·시드·역할 부여와 배포는 **아직 적용하거나 완료했다고 주장하지 않는다**. 운영자는 아래의 적용 순서와 전제 조건을 충족한 뒤에만 기능을 사용한다.
+다음 항목은 이 브랜치에 구현되어 있지만, Supabase 설정과 배포는 **아직 적용하거나 완료했다고 주장하지 않는다**. 운영자는 아래의 단일 설정 경로와 전제 조건을 충족한 뒤에만 기능을 사용한다.
 
 - 일반 사용자와 Master는 별도 관리자 로그인이나 쿠키가 아니라 같은 Supabase Auth 로그인과 `public.users.role`을 사용한다. 역할 값은 `user` 또는 `master`이며 기본값은 `user`다.
 - Master는 문제풀이 화면에서 현재 문항의 질문, 네 선택지, 하나 이상의 정답, 해설을 즉시 편집할 수 있다. 저장은 단일 RPC 트랜잭션으로 처리하고 `updated_at` 충돌을 확인하며, 성공한 편집은 해당 문항의 `reviewed`를 `true`로 표시한다. 저장된 내용은 해당 화면의 상태와 다음 새로고침에 반영된다.
 - 공개 문제 조회와 채점은 서버 전용 `SUPABASE_SERVICE_ROLE_KEY`로 수행한다. 브라우저는 `questions`와 `choices`를 직접 조회하지 않으며, 서비스 역할 키를 브라우저 번들·`NEXT_PUBLIC_` 환경 변수·로그에 넣지 않는다.
 - Master 권한 확인은 서버에서 Auth 사용자와 `public.users.role`을 함께 조회한다. 이전의 독립된 Admin 인증 방식은 사용하지 않는다.
 
-#### Supabase 적용 순서 (운영자 실행)
+#### Supabase 운영자 설정 경로
 
-아래 순서는 의도적으로 고정되어 있다. 아직 실행하지 않은 환경에서는 순서만 기록하며, 적용·배포 완료 상태로 표시하지 않는다.
+`supabase-setup.sql`은 fresh 및 기존 ABUBAE 프로젝트를 위한 **sole canonical operator path**다. Supabase SQL Editor에서 이 파일 하나만 실행한다. 이 스크립트는 기본 스키마, Master 편집 보안, 반복 가능한 샘플 시험, 지정된 기존 Master 프로필 승격을 하나의 트랜잭션으로 처리한다.
 
-1. `supabase/migrations/202607230001_master_question_editing.sql`
-2. `supabase/seeds/2021-written.sql`
-3. `UPDATE public.users SET role = 'master' WHERE email = '<운영자 이메일>';`
+`supabase/migrations/202607230001_master_question_editing.sql`은 리포지토리 이력과 개발 참조를 위한 파일이며, **superseded for operator use**다. 운영자는 이를 단독 실행하거나 별도의 시드·임의 역할 변경 SQL과 조합하지 않는다.
 
-`2021-written.sql`은 최초 데이터 적재용이며 재실행해도 기존 문항과 선택지를 덮어쓰지 않는다. Master가 수정한 질문·선택지·정답·해설과 검수 상태, 수정 시각 및 수정자 정보는 유지된다. 원본 데이터로 되돌려야 할 때는 일반 시드 재실행 대신 별도의 검토된 복구 SQL을 사용한다.
+통합 설정은 기존 문항·선택지·프로필을 덮어쓰거나 삭제하지 않는다. 별도 콘텐츠 적재와 복구는 검토된 전용 절차로 관리하며, 이 운영자 설정 경로의 일부가 아니다.
 
 적용 뒤에는 다음을 확인한다.
 
 ```sql
-SELECT role FROM public.users WHERE email = '<운영자 이메일>';
-SELECT count(*) FROM public.questions WHERE exam_type = 'written' AND year = 2021;
-SELECT count(*)
-FROM public.choices c
-JOIN public.questions q ON q.id = c.question_id
-WHERE q.exam_type = 'written' AND q.year = 2021;
+SELECT role
+FROM public.users
+WHERE pg_catalog.lower(email) = 'seoteang@gmail.com';
+SELECT count(*) FROM public.exams WHERE slug IN ('jeongchogi', 'sqld', 'comhwal');
 ```
 
-기대값은 각각 `master`, `300`, `1200`이다. 이 확인은 실제 운영자가 SQL을 적용한 뒤에만 수행할 수 있다.
+대상 프로필이 하나 존재하면 첫 결과는 `master`이고, 두 번째 결과는 `3`이다. 대상 프로필이 없으면 새 프로필을 만들지 않으며, 대소문자를 무시한 중복 프로필이 있으면 통합 트랜잭션이 안전하게 중단된다.
 
 #### 환경 변수와 E2E 전제 조건
 
@@ -118,7 +114,7 @@ E2E_BASE_URL          # 선택 사항; 없으면 로컬 http://127.0.0.1:3000을
 ### 다음 구현 순서
 
 1. 300문항 사실 검수와 아부배식 신규 해설 작성
-2. 운영용 Supabase 프로젝트에 위의 마이그레이션·시드·Master 역할을 순서대로 적용
+2. 운영용 Supabase 프로젝트에 `supabase-setup.sql` 단일 설정 경로 적용
 3. 별도 테스트 프로젝트에서 Master 즉시 편집과 E2E 복원 흐름 검증
 4. 로그인 회원의 풀이 기록·오답 이력 저장
 5. 2022~2025년 허가된 원본 확보 후 같은 검수 절차로 추가
