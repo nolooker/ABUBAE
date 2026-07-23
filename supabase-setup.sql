@@ -3,6 +3,8 @@
 -- Supabase SQL Editor에서 전체 복붙 후 Run
 -- =============================================
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA extensions;
+
 -- 1. 시험/자격증 카테고리
 CREATE TABLE exams (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -21,6 +23,7 @@ CREATE TABLE users (
   email TEXT UNIQUE NOT NULL,
   nickname TEXT,
   avatar_url TEXT,
+  role TEXT NOT NULL DEFAULT 'user' CHECK (role IN ('user', 'master')),
   membership_type TEXT DEFAULT 'free' CHECK (membership_type IN ('free', 'standard', 'premium')),
   membership_expires_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW()
@@ -32,13 +35,19 @@ CREATE TABLE questions (
   exam_id UUID REFERENCES exams(id) ON DELETE CASCADE,
   year INT NOT NULL,
   round INT NOT NULL,
+  exam_type TEXT NOT NULL DEFAULT 'written',
   subject TEXT NOT NULL,
   number INT NOT NULL,
   content TEXT NOT NULL,
   explanation TEXT,
   difficulty INT DEFAULT 2 CHECK (difficulty BETWEEN 1 AND 5),
   is_premium BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMPTZ DEFAULT NOW()
+  reviewed BOOLEAN NOT NULL DEFAULT FALSE,
+  published BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_by UUID REFERENCES users(id),
+  CONSTRAINT questions_round_number_unique UNIQUE(exam_id, exam_type, year, round, number)
 );
 
 -- 4. 선택지
@@ -49,6 +58,9 @@ CREATE TABLE choices (
   content TEXT NOT NULL,
   is_correct BOOLEAN DEFAULT FALSE
 );
+
+CREATE UNIQUE INDEX choices_question_number_unique
+  ON choices(question_id, number);
 
 -- 5. 콘텐츠 포스트 (블로그 + 공지 + 후기 + 요약노트 통합)
 CREATE TABLE posts (
@@ -136,7 +148,6 @@ INSERT INTO exams (slug, name, description, order_index) VALUES
 -- users: 본인 데이터만 수정 가능
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "users_select_own" ON users FOR SELECT USING (auth.uid() = id);
-CREATE POLICY "users_update_own" ON users FOR UPDATE USING (auth.uid() = id);
 
 -- bookmarks: 본인 데이터만
 ALTER TABLE bookmarks ENABLE ROW LEVEL SECURITY;
@@ -146,15 +157,106 @@ CREATE POLICY "bookmarks_all_own" ON bookmarks USING (auth.uid() = user_id);
 ALTER TABLE download_grants ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "grants_select_own" ON download_grants FOR SELECT USING (auth.uid() = user_id);
 
--- exams, questions, choices, posts, resources: 전체 공개 읽기
+-- exams, posts, resources: 전체 공개 읽기
 ALTER TABLE exams ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "exams_public_read" ON exams FOR SELECT USING (true);
 
 ALTER TABLE questions ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "questions_public_read" ON questions FOR SELECT USING (true);
-
 ALTER TABLE choices ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "choices_public_read" ON choices FOR SELECT USING (true);
+
+CREATE OR REPLACE FUNCTION public.is_master()
+RETURNS BOOLEAN LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.users
+    WHERE id = auth.uid() AND role = 'master'
+  );
+$$;
+
+CREATE POLICY questions_master_select ON questions FOR SELECT
+  USING (public.is_master());
+CREATE POLICY choices_master_select ON choices FOR SELECT
+  USING (public.is_master());
+CREATE POLICY questions_master_update ON questions FOR UPDATE
+  USING (public.is_master()) WITH CHECK (public.is_master());
+CREATE POLICY choices_master_update ON choices FOR UPDATE
+  USING (public.is_master()) WITH CHECK (public.is_master());
+
+CREATE OR REPLACE FUNCTION public.update_written_question(
+  p_question_id UUID,
+  p_content TEXT,
+  p_choices TEXT[],
+  p_correct_numbers INT[],
+  p_explanation TEXT,
+  p_expected_updated_at TIMESTAMPTZ
+)
+RETURNS public.questions
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  choice_count INT;
+  updated_question public.questions%ROWTYPE;
+BEGIN
+  IF NOT public.is_master() THEN
+    RAISE EXCEPTION 'master role required';
+  END IF;
+
+  IF COALESCE(cardinality(p_choices), 0) <> 4 THEN
+    RAISE EXCEPTION 'exactly four choices are required';
+  END IF;
+
+  IF COALESCE(cardinality(p_correct_numbers), 0) < 1
+    OR EXISTS (
+      SELECT 1
+      FROM unnest(p_correct_numbers) AS correct_number
+      WHERE correct_number NOT BETWEEN 1 AND 4
+    ) THEN
+    RAISE EXCEPTION 'at least one valid correct choice is required';
+  END IF;
+
+  SELECT count(*)
+  INTO choice_count
+  FROM public.choices
+  WHERE question_id = p_question_id;
+
+  IF choice_count <> 4 THEN
+    RAISE EXCEPTION 'question must have exactly four choices';
+  END IF;
+
+  UPDATE public.questions
+  SET content = p_content,
+      explanation = p_explanation,
+      updated_at = NOW(),
+      updated_by = auth.uid()
+  WHERE id = p_question_id
+    AND exam_type = 'written'
+    AND updated_at = p_expected_updated_at
+  RETURNING * INTO updated_question;
+
+  IF NOT FOUND THEN
+    IF EXISTS (
+      SELECT 1
+      FROM public.questions
+      WHERE id = p_question_id AND exam_type = 'written'
+    ) THEN
+      RAISE EXCEPTION 'stale question';
+    END IF;
+
+    RAISE EXCEPTION 'written question not found';
+  END IF;
+
+  UPDATE public.choices
+  SET content = p_choices[number],
+      is_correct = (number = ANY (p_correct_numbers))
+  WHERE question_id = p_question_id;
+
+  RETURN updated_question;
+END;
+$$;
+
+REVOKE ALL ON FUNCTION public.update_written_question(UUID, TEXT, TEXT[], INT[], TEXT, TIMESTAMPTZ) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.update_written_question(UUID, TEXT, TEXT[], INT[], TEXT, TIMESTAMPTZ) TO authenticated;
 
 ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "posts_public_read" ON posts FOR SELECT USING (is_published = true);
