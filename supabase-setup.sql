@@ -113,20 +113,24 @@ CREATE TABLE download_grants (
 
 -- 회원가입 시 Supabase Auth 사용자를 public.users 프로필로 자동 동기화
 CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER AS $$
+RETURNS pg_catalog.trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = ''
+AS $$
 BEGIN
   INSERT INTO public.users (id, email, nickname, avatar_url)
   VALUES (
     NEW.id,
     NEW.email,
-    COALESCE(NEW.raw_user_meta_data->>'nickname', split_part(NEW.email, '@', 1)),
+    pg_catalog.coalesce(NEW.raw_user_meta_data->>'nickname', pg_catalog.split_part(NEW.email, '@', 1)),
     NEW.raw_user_meta_data->>'avatar_url'
   )
   ON CONFLICT (id) DO NOTHING;
 
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$;
 
 CREATE TRIGGER on_auth_user_created
 AFTER INSERT ON auth.users
@@ -165,57 +169,87 @@ ALTER TABLE questions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE choices ENABLE ROW LEVEL SECURITY;
 
 CREATE OR REPLACE FUNCTION public.is_master()
-RETURNS BOOLEAN LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public AS $$
+RETURNS pg_catalog.boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path = '' AS $$
   SELECT EXISTS (
     SELECT 1 FROM public.users
     WHERE id = auth.uid() AND role = 'master'
   );
 $$;
 
-CREATE POLICY questions_master_select ON questions FOR SELECT
-  USING (public.is_master());
-CREATE POLICY choices_master_select ON choices FOR SELECT
-  USING (public.is_master());
-CREATE POLICY questions_master_update ON questions FOR UPDATE
-  USING (public.is_master()) WITH CHECK (public.is_master());
-CREATE POLICY choices_master_update ON choices FOR UPDATE
-  USING (public.is_master()) WITH CHECK (public.is_master());
+CREATE OR REPLACE FUNCTION public.get_written_question_for_edit(
+  p_question_id pg_catalog.uuid
+)
+RETURNS pg_catalog.jsonb
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = ''
+AS $$
+DECLARE
+  question_for_edit pg_catalog.jsonb;
+BEGIN
+  IF NOT public.is_master() THEN
+    RAISE EXCEPTION 'master role required';
+  END IF;
+
+  SELECT pg_catalog.jsonb_build_object(
+    'question', pg_catalog.to_jsonb(question_row),
+    'choices', (
+      SELECT pg_catalog.coalesce(
+        pg_catalog.jsonb_agg(pg_catalog.to_jsonb(choice_row) ORDER BY choice_row.number),
+        '[]'::pg_catalog.jsonb
+      )
+      FROM public.choices AS choice_row
+      WHERE choice_row.question_id = question_row.id
+    )
+  )
+  INTO question_for_edit
+  FROM public.questions AS question_row
+  WHERE question_row.id = p_question_id
+    AND question_row.exam_type = 'written';
+
+  IF question_for_edit IS NULL THEN
+    RAISE EXCEPTION 'written question not found';
+  END IF;
+
+  RETURN question_for_edit;
+END;
+$$;
 
 CREATE OR REPLACE FUNCTION public.update_written_question(
-  p_question_id UUID,
-  p_content TEXT,
-  p_choices TEXT[],
-  p_correct_numbers INT[],
-  p_explanation TEXT,
-  p_expected_updated_at TIMESTAMPTZ
+  p_question_id pg_catalog.uuid,
+  p_content pg_catalog.text,
+  p_choices pg_catalog.text[],
+  p_correct_numbers pg_catalog.int4[],
+  p_explanation pg_catalog.text,
+  p_expected_updated_at pg_catalog.timestamptz
 )
 RETURNS public.questions
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = public
+SET search_path = ''
 AS $$
 DECLARE
-  choice_count INT;
+  choice_count pg_catalog.int4;
   updated_question public.questions%ROWTYPE;
 BEGIN
   IF NOT public.is_master() THEN
     RAISE EXCEPTION 'master role required';
   END IF;
 
-  IF COALESCE(cardinality(p_choices), 0) <> 4 THEN
+  IF pg_catalog.coalesce(pg_catalog.cardinality(p_choices), 0) <> 4 THEN
     RAISE EXCEPTION 'exactly four choices are required';
   END IF;
 
-  IF COALESCE(cardinality(p_correct_numbers), 0) < 1
+  IF pg_catalog.coalesce(pg_catalog.cardinality(p_correct_numbers), 0) < 1
     OR EXISTS (
       SELECT 1
-      FROM unnest(p_correct_numbers) AS correct_number
+      FROM pg_catalog.unnest(p_correct_numbers) AS correct_number
       WHERE correct_number NOT BETWEEN 1 AND 4
     ) THEN
     RAISE EXCEPTION 'at least one valid correct choice is required';
   END IF;
 
-  SELECT count(*)
+  SELECT pg_catalog.count(*)
   INTO choice_count
   FROM public.choices
   WHERE question_id = p_question_id;
@@ -227,7 +261,7 @@ BEGIN
   UPDATE public.questions
   SET content = p_content,
       explanation = p_explanation,
-      updated_at = NOW(),
+      updated_at = pg_catalog.now(),
       updated_by = auth.uid()
   WHERE id = p_question_id
     AND exam_type = 'written'
@@ -255,8 +289,12 @@ BEGIN
 END;
 $$;
 
-REVOKE ALL ON FUNCTION public.update_written_question(UUID, TEXT, TEXT[], INT[], TEXT, TIMESTAMPTZ) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION public.update_written_question(UUID, TEXT, TEXT[], INT[], TEXT, TIMESTAMPTZ) TO authenticated;
+REVOKE ALL ON FUNCTION public.is_master() FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.is_master() TO authenticated;
+REVOKE ALL ON FUNCTION public.get_written_question_for_edit(pg_catalog.uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.get_written_question_for_edit(pg_catalog.uuid) TO authenticated;
+REVOKE ALL ON FUNCTION public.update_written_question(pg_catalog.uuid, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text, pg_catalog.timestamptz) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.update_written_question(pg_catalog.uuid, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text, pg_catalog.timestamptz) TO authenticated;
 
 ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "posts_public_read" ON posts FOR SELECT USING (is_published = true);
