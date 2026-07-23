@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 
 export type EditableWrittenQuestion = {
   id: string
@@ -31,6 +31,27 @@ export default function WrittenQuestionEditDialog({ question, onClose, onSaved }
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false)
+  const editDialogRef = useRef<HTMLElement | null>(null)
+  const discardDialogRef = useRef<HTMLElement | null>(null)
+  const questionFieldRef = useRef<HTMLTextAreaElement | null>(null)
+  const editRestoreFocusRef = useRef<HTMLElement | null>(null)
+
+  useEffect(() => {
+    editRestoreFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    questionFieldRef.current?.focus()
+
+    return () => editRestoreFocusRef.current?.focus()
+  }, [])
+
+  useEffect(() => {
+    if (!showDiscardConfirmation) return
+
+    const returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    const firstFocusable = focusableElements(discardDialogRef.current)[0]
+    firstFocusable?.focus()
+
+    return () => returnFocus?.focus()
+  }, [showDiscardConfirmation])
 
   const isDirty = useMemo(() => (
     content !== question.content
@@ -82,7 +103,7 @@ export default function WrittenQuestionEditDialog({ question, onClose, onSaved }
       if (!response.ok) throw new Error('save failed')
 
       const updated: unknown = await response.json()
-      if (!isEditedQuestion(updated)) throw new Error('invalid response')
+      if (!isEditedQuestion(updated, question.id)) throw new Error('invalid response')
       onSaved({
         ...updated,
         acceptedAnswerIndexes: [...acceptedAnswerIndexes],
@@ -95,9 +116,25 @@ export default function WrittenQuestionEditDialog({ question, onClose, onSaved }
     }
   }
 
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      if (showDiscardConfirmation) {
+        setShowDiscardConfirmation(false)
+      } else {
+        requestClose()
+      }
+      return
+    }
+
+    if (event.key === 'Tab') {
+      trapFocus(event, showDiscardConfirmation ? discardDialogRef.current : editDialogRef.current)
+    }
+  }
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4" role="presentation">
-      <section role="dialog" aria-modal="true" aria-labelledby="edit-question-title" className="max-h-full w-full max-w-3xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4" role="presentation" onKeyDown={handleKeyDown}>
+      <section ref={editDialogRef} role="dialog" aria-modal="true" aria-labelledby="edit-question-title" className="max-h-full w-full max-w-3xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-sm font-semibold text-[var(--primary)]">{question.subject}</p>
@@ -108,7 +145,7 @@ export default function WrittenQuestionEditDialog({ question, onClose, onSaved }
 
         <div className="mt-6 space-y-5">
           <label className="block text-sm font-semibold">Question
-            <textarea aria-label="Question" value={content} onChange={(event) => setContent(event.target.value)} disabled={isSaving} rows={4} className="mt-2 w-full rounded-lg border border-[var(--border)] p-3 font-normal" />
+            <textarea ref={questionFieldRef} aria-label="Question" value={content} onChange={(event) => setContent(event.target.value)} disabled={isSaving} rows={4} className="mt-2 w-full rounded-lg border border-[var(--border)] p-3 font-normal" />
           </label>
 
           <fieldset>
@@ -138,7 +175,7 @@ export default function WrittenQuestionEditDialog({ question, onClose, onSaved }
 
       {showDiscardConfirmation && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/50 p-4">
-          <section role="alertdialog" aria-modal="true" aria-labelledby="discard-title" className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+          <section ref={discardDialogRef} role="alertdialog" aria-modal="true" aria-labelledby="discard-title" className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
             <h3 id="discard-title" className="text-lg font-bold">Discard changes?</h3>
             <p className="mt-2 text-sm text-[var(--text-secondary)]">Your unsaved edits will be lost.</p>
             <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
@@ -152,14 +189,39 @@ export default function WrittenQuestionEditDialog({ question, onClose, onSaved }
   )
 }
 
-function isEditedQuestion(value: unknown): value is Omit<EditedWrittenQuestion, 'acceptedAnswerIndexes' | 'explanation'> {
+function isEditedQuestion(value: unknown, expectedId: string): value is Omit<EditedWrittenQuestion, 'acceptedAnswerIndexes' | 'explanation'> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) return false
   const question = value as Record<string, unknown>
-  return typeof question.id === 'string'
+  return question.id === expectedId
     && typeof question.number === 'number'
+    && Number.isSafeInteger(question.number)
+    && question.number > 0
     && typeof question.subject === 'string'
     && typeof question.content === 'string'
     && Array.isArray(question.choices)
-    && question.choices.every((choice) => typeof choice === 'string')
+    && question.choices.length === 4
+    && question.choices.every((choice) => typeof choice === 'string' && choice.trim().length > 0)
     && typeof question.updatedAt === 'string'
+}
+
+function focusableElements(container: HTMLElement | null): HTMLElement[] {
+  if (!container) return []
+
+  return Array.from(container.querySelectorAll<HTMLElement>('button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'))
+}
+
+function trapFocus(event: KeyboardEvent<HTMLDivElement>, container: HTMLElement | null) {
+  const focusable = focusableElements(container)
+  if (focusable.length === 0) return
+
+  const first = focusable[0]
+  const last = focusable[focusable.length - 1]
+  const activeElement = document.activeElement
+  if (event.shiftKey && (activeElement === first || !container?.contains(activeElement))) {
+    event.preventDefault()
+    last.focus()
+  } else if (!event.shiftKey && (activeElement === last || !container?.contains(activeElement))) {
+    event.preventDefault()
+    first.focus()
+  }
 }

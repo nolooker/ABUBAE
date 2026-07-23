@@ -7,7 +7,7 @@ import WrittenRoundRunner from './WrittenRoundRunner'
 const questions = [
   { id: 'q1', number: 1, subject: '소프트웨어 설계', content: '첫 문제', choices: ['A', 'B', 'C', 'D'] },
   { id: 'q2', number: 2, subject: '소프트웨어 설계', content: '둘째 문제', choices: ['E', 'F', 'G', 'H'] },
-]
+].map((question) => ({ ...question, updatedAt: '2026-07-23T00:00:00.000Z' }))
 
 describe('WrittenRoundRunner', () => {
   afterEach(() => {
@@ -63,6 +63,37 @@ describe('WrittenRoundRunner', () => {
     render(<WrittenRoundRunner canEdit={false} year={2021} round={1} title="2021 round 1" questions={questions} />)
 
     expect(screen.queryByRole('button', { name: 'Edit question' })).not.toBeInTheDocument()
+  })
+
+  it('lazily loads editable details only after a master opens the current question editor', async () => {
+    const loadEditableQuestion = vi.fn().mockResolvedValue({
+      id: 'q1',
+      number: 1,
+      subject: 'Software design',
+      content: 'Original question',
+      choices: ['A', 'B', 'C', 'D'],
+      updatedAt: '2026-07-23T00:00:00.000Z',
+      acceptedAnswerIndexes: [1],
+      explanation: 'Explanation',
+    })
+    const user = userEvent.setup()
+    render(
+      <WrittenRoundRunner
+        canEdit
+        loadEditableQuestion={loadEditableQuestion}
+        year={2021}
+        round={1}
+        title="2021 round 1"
+        questions={[{ id: 'q1', number: 1, subject: 'Software design', content: 'Original question', choices: ['A', 'B', 'C', 'D'], updatedAt: '2026-07-23T00:00:00.000Z' }]}
+      />,
+    )
+
+    expect(loadEditableQuestion).not.toHaveBeenCalled()
+    await user.click(screen.getByRole('button', { name: 'Edit question' }))
+
+    expect(await screen.findByLabelText('Explanation')).toHaveValue('Explanation')
+    expect(loadEditableQuestion).toHaveBeenCalledOnce()
+    expect(loadEditableQuestion).toHaveBeenCalledWith('q1')
   })
 
   it('keeps selected answers while navigating between questions', async () => {

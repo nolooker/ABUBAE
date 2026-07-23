@@ -13,7 +13,7 @@ type WrittenRoundQuestion = {
   subject: string
   content: string
   choices: string[]
-  updatedAt?: string
+  updatedAt: string
 }
 
 type Props = {
