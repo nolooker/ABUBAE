@@ -124,6 +124,9 @@ BEGIN
       AND index_relation.relname = 'questions_round_number_unique'
       AND index_definition.indrelid = 'public.questions'::pg_catalog.regclass
       AND index_definition.indisunique
+      AND index_definition.indisvalid
+      AND index_definition.indisready
+      AND index_definition.indislive
       AND index_definition.indpred IS NULL
       AND index_definition.indnatts = index_definition.indnkeyatts
       AND index_definition.indnkeyatts = 5
@@ -147,6 +150,9 @@ BEGIN
       AND index_relation.relname = 'choices_question_number_unique'
       AND index_definition.indrelid = 'public.choices'::pg_catalog.regclass
       AND index_definition.indisunique
+      AND index_definition.indisvalid
+      AND index_definition.indisready
+      AND index_definition.indislive
       AND index_definition.indpred IS NULL
       AND index_definition.indnatts = index_definition.indnkeyatts
       AND index_definition.indnkeyatts = 2
@@ -237,8 +243,27 @@ DROP POLICY IF EXISTS questions_master_select ON public.questions;
 DROP POLICY IF EXISTS choices_master_select ON public.choices;
 DROP POLICY IF EXISTS questions_master_update ON public.questions;
 DROP POLICY IF EXISTS choices_master_update ON public.choices;
-REVOKE SELECT ON TABLE public.questions FROM anon, authenticated;
-REVOKE SELECT ON TABLE public.choices FROM anon, authenticated;
+DO $$
+DECLARE
+  policy_definition record;
+BEGIN
+  FOR policy_definition IN
+    SELECT schemaname, tablename, policyname
+    FROM pg_catalog.pg_policies
+    WHERE schemaname = 'public'
+      AND tablename IN ('questions', 'choices')
+  LOOP
+    EXECUTE pg_catalog.format(
+      'DROP POLICY IF EXISTS %I ON %I.%I',
+      policy_definition.policyname,
+      policy_definition.schemaname,
+      policy_definition.tablename
+    );
+  END LOOP;
+END;
+$$;
+REVOKE SELECT ON TABLE public.questions FROM PUBLIC, anon, authenticated;
+REVOKE SELECT ON TABLE public.choices FROM PUBLIC, anon, authenticated;
 
 ALTER TABLE public.posts ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS posts_public_read ON public.posts;

@@ -1180,7 +1180,8 @@ its schema-qualified `public` table, which determines the index schema. Because
 PostgreSQL catalog and rolls back unless each index is unique, non-partial, and
 has the exact required ordered columns.
 
-For the Master editing boundary, the setup removes known legacy question/choice
-policies and revokes direct `SELECT` on those tables from `anon` and
-`authenticated`. Browser clients must use the granted security-definer RPCs;
-server-side service-role access remains separate.
+For the Master editing boundary, the setup dynamically removes every existing
+question/choice policy, regardless of its name, and revokes direct `SELECT` on
+those tables from `PUBLIC`, `anon`, and `authenticated`. Browser clients must use
+the granted security-definer RPCs; server-side service-role access remains
+separate.

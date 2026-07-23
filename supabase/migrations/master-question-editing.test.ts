@@ -4,9 +4,13 @@ import { describe, expect, it } from 'vitest'
 const migrationSql = readFileSync('supabase/migrations/202607230001_master_question_editing.sql', 'utf8')
 const setupSql = readFileSync('supabase-setup.sql', 'utf8')
 const schemaSql = [migrationSql, setupSql]
-const executableSql = (sql: string) => sql.replace(/\/\*[\s\S]*?\*\//g, '').replace(/--.*$/gm, '')
+const executableSql = (sql: string) => sql
+  .replace(/\/\*[\s\S]*?\*\//g, ' ')
+  .replace(/--.*$/gm, ' ')
+  .replace(/"([^"]+)"/g, '$1')
 const usersRlsStatement = /^\s*ALTER TABLE public\.users ENABLE ROW LEVEL SECURITY;\s*$/m
 const destructiveDelete = /\bDELETE(?:(?:\s+)|(?:\/\*[\s\S]*?\*\/))+FROM\b/i
+const destructiveDropTable = /\bDROP\s+TABLE\b/i
 const directReadPolicy = (table: 'questions' | 'choices') => new RegExp(
   `CREATE\\s+POLICY\\s+(?:"[^"]+"|\\S+)\\s+ON\\s+public\\.${table}\\b`,
   'i',
@@ -86,6 +90,13 @@ describe('master question editing migration', () => {
     expect('CREATE POLICY future_choice_policy ON public.choices WITH CHECK (true);').toMatch(directReadPolicy('choices'))
   })
 
+  it('normalizes comments and quoted identifiers before checking destructive SQL and policies', () => {
+    expect(executableSql('DELETE/**/FROM public.questions;')).toMatch(destructiveDelete)
+    expect(executableSql('DROP\nTABLE public.questions;')).toMatch(destructiveDropTable)
+    expect(executableSql('DROP/**/TABLE public.questions;')).toMatch(destructiveDropTable)
+    expect(executableSql('CREATE/**/POLICY read_questions ON "public"."questions" FOR SELECT USING (true);')).toMatch(directReadPolicy('questions'))
+  })
+
   it('makes the integrated setup safe to execute against fresh and existing projects', () => {
     for (const table of baseTables) {
       expect(setupSql).toMatch(new RegExp(`CREATE TABLE IF NOT EXISTS public\\.${table}\\s*\\(`))
@@ -121,7 +132,7 @@ describe('master question editing migration', () => {
         `CREATE UNIQUE INDEX IF NOT EXISTS ${name}\\s+ON public\\.${table}\\(${columns.join('\\s*,\\s*')}\\);`,
       ))
       expect(setupSql).toMatch(new RegExp(
-        `index_relation\\.relname = '${name}'[\\s\\S]*?index_definition\\.indrelid = 'public\\.${table}'::pg_catalog\\.regclass[\\s\\S]*?index_definition\\.indisunique[\\s\\S]*?index_definition\\.indpred IS NULL[\\s\\S]*?index_definition\\.indnatts = index_definition\\.indnkeyatts[\\s\\S]*?ARRAY\\[${columns.map((column) => `'${column}'`).join(', ')}\\]::pg_catalog\\.name\\[\\]`,
+        `index_relation\\.relname = '${name}'[\\s\\S]*?index_definition\\.indrelid = 'public\\.${table}'::pg_catalog\\.regclass[\\s\\S]*?index_definition\\.indisunique[\\s\\S]*?index_definition\\.indisvalid[\\s\\S]*?index_definition\\.indisready[\\s\\S]*?index_definition\\.indislive[\\s\\S]*?index_definition\\.indpred IS NULL[\\s\\S]*?index_definition\\.indnatts = index_definition\\.indnkeyatts[\\s\\S]*?ARRAY\\[${columns.map((column) => `'${column}'`).join(', ')}\\]::pg_catalog\\.name\\[\\]`,
       ))
     }
 
@@ -131,7 +142,7 @@ describe('master question editing migration', () => {
   it('never deletes data or grants direct question and choice reads', () => {
     const sql = executableSql(setupSql)
 
-    expect(sql).not.toMatch(/\bDROP TABLE\b/i)
+    expect(sql).not.toMatch(destructiveDropTable)
     expect(sql).not.toMatch(/\bTRUNCATE\b/i)
     expect(sql).not.toMatch(destructiveDelete)
     expect('DELETE /* preserve rows */\n FROM public.questions;').toMatch(destructiveDelete)
@@ -142,8 +153,9 @@ describe('master question editing migration', () => {
     expect(sql).toContain('DROP POLICY IF EXISTS choices_master_select ON public.choices;')
     expect(sql).toContain('DROP POLICY IF EXISTS questions_master_update ON public.questions;')
     expect(sql).toContain('DROP POLICY IF EXISTS choices_master_update ON public.choices;')
-    expect(sql).toContain('REVOKE SELECT ON TABLE public.questions FROM anon, authenticated;')
-    expect(sql).toContain('REVOKE SELECT ON TABLE public.choices FROM anon, authenticated;')
+    expect(sql).toContain('REVOKE SELECT ON TABLE public.questions FROM PUBLIC, anon, authenticated;')
+    expect(sql).toContain('REVOKE SELECT ON TABLE public.choices FROM PUBLIC, anon, authenticated;')
+    expect(sql).toMatch(/DO \$\$[\s\S]*?FROM pg_catalog\.pg_policies[\s\S]*?tablename IN \('questions', 'choices'\)[\s\S]*?EXECUTE pg_catalog\.format\(\s*'DROP POLICY IF EXISTS %I ON %I\.%I'/)
     for (const schema of schemaSql) {
       expect(executableSql(schema)).not.toMatch(directReadPolicy('questions'))
       expect(executableSql(schema)).not.toMatch(directReadPolicy('choices'))
