@@ -101,12 +101,12 @@ describe('WrittenRoundRunner', () => {
     const user = userEvent.setup()
     render(<WrittenRoundRunner year={2021} round={1} title="2021년 1회" questions={questions} />)
 
-    await user.click(screen.getByLabelText('1번 선택지 ② B'))
+    await user.click(screen.getByRole('radio', { name: 'Answer choice 2' }))
     await user.click(screen.getByRole('button', { name: '다음 문제' }))
     expect(screen.getByText('응답 1')).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: '1번 문제로 이동' }))
-    expect(screen.getByLabelText('1번 선택지 ② B')).toBeChecked()
+    expect(screen.getByRole('radio', { name: 'Answer choice 2' })).toBeChecked()
     expect(screen.queryByText(/정답/)).not.toBeInTheDocument()
   })
 
@@ -141,14 +141,14 @@ describe('WrittenRoundRunner', () => {
     const user = userEvent.setup()
     render(<WrittenRoundRunner year={2021} round={1} title="2021년 1회" questions={questions} />)
 
-    await user.click(screen.getByLabelText('1번 선택지 ② B'))
-    await user.click(screen.getByRole('button', { name: '최종 제출' }))
+    await user.click(screen.getByRole('radio', { name: 'Answer choice 2' }))
+    await user.click(screen.getByRole('button', { name: 'Submit round' }))
 
     expect(screen.getByRole('dialog')).toHaveTextContent('미응답 1문제')
     expect(screen.getByRole('dialog')).toHaveTextContent('2번')
     expect(fetchMock).not.toHaveBeenCalled()
 
-    await user.click(screen.getByRole('button', { name: '미응답을 오답 처리하고 제출' }))
+    await user.click(screen.getByRole('button', { name: 'Confirm submission' }))
 
     await waitFor(() => expect(screen.getByRole('heading', { name: '50점' })).toBeInTheDocument())
     expect(screen.getByText('이 결과는 저장되지 않습니다.')).toBeInTheDocument()
@@ -156,5 +156,15 @@ describe('WrittenRoundRunner', () => {
       '/api/exam/jeongchogi/questions/written/2021/1/grade',
       expect.objectContaining({ method: 'POST' }),
     )
+  })
+
+  it('exposes stable labels for answer selection and submission', async () => {
+    const user = userEvent.setup()
+    render(<WrittenRoundRunner year={2021} round={1} title="2021년 1회" questions={questions} />)
+
+    await user.click(screen.getByRole('radio', { name: 'Answer choice 2' }))
+    await user.click(screen.getByRole('button', { name: 'Submit round' }))
+
+    expect(screen.getByRole('button', { name: 'Confirm submission' })).toBeInTheDocument()
   })
 })

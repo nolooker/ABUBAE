@@ -99,7 +99,7 @@ MASTER_TEST_PASSWORD
 E2E_BASE_URL          # 선택 사항; 없으면 로컬 http://127.0.0.1:3000을 사용
 ```
 
-`MASTER_TEST_EMAIL` 또는 `MASTER_TEST_PASSWORD`가 없으면 `npm run test:e2e -- tests/e2e/master-question-edit.spec.ts`는 명시적으로 skip한다. 테스트는 원본 질문·선택지·정답·해설을 읽고, 성공·실패 여부와 관계없이 `finally`에서 원래 데이터로 복원한다. 자격 증명은 기본값으로 대체하거나 출력하지 않는다.
+`MASTER_TEST_EMAIL` 또는 `MASTER_TEST_PASSWORD`가 없으면 `npm run test:e2e -- tests/e2e/master-question-edit.spec.ts`는 명시적으로 skip하며 로컬 Playwright `webServer`도 시작하지 않는다. 테스트는 원본 질문·선택지·정답·해설을 읽고, 성공·실패 여부와 관계없이 `finally`에서 원래 데이터로 복원한다. 자격 증명은 기본값으로 대체하거나 출력하지 않는다.
 
 ### 복수 정답 정책
 

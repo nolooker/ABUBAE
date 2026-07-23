@@ -25,9 +25,11 @@ test.describe('master inline question editing', () => {
 
     const replacementContent = `[E2E] Master edit ${Date.now()}`
     const replacementAnswerIndex = original.correctChoices.findIndex((isCorrect) => !isCorrect)
+    const originalAnswerIndex = original.correctChoices.findIndex(Boolean)
     if (replacementAnswerIndex < 0) {
       throw new Error('The E2E question must have at least one incorrect choice to verify grading.')
     }
+    if (originalAnswerIndex < 0) throw new Error('The E2E question must have an original correct choice.')
 
     try {
       await editDialog.getByLabel('Question', { exact: true }).fill(replacementContent)
@@ -38,14 +40,16 @@ test.describe('master inline question editing', () => {
       await page.reload()
       await expect(page.getByRole('heading', { level: 1 })).toContainText(replacementContent)
 
-      await page.getByRole('radio').nth(replacementAnswerIndex).check()
-      await page.locator('button.ab-btn-orange').first().click()
-      await page.getByRole('dialog').locator('button.ab-btn-orange').click()
+      await gradeWithAnswer(page, replacementAnswerIndex)
+      await expect(gradedQuestion(page, replacementContent).getByRole('listitem', {
+        name: `Graded choice ${replacementAnswerIndex + 1}: correct answer`,
+      })).toBeVisible()
 
-      const gradedQuestion = page.locator('article').filter({
-        has: page.locator('h3', { hasText: replacementContent }),
-      })
-      await expect(gradedQuestion.locator('.border-emerald-300')).toBeVisible()
+      await page.goto(questionPath)
+      await gradeWithAnswer(page, originalAnswerIndex)
+      await expect(gradedQuestion(page, replacementContent).getByRole('listitem', {
+        name: `Graded choice ${originalAnswerIndex + 1}: your incorrect answer`,
+      })).toBeVisible()
     } finally {
       await restoreOriginalQuestion(page, original)
     }
@@ -62,6 +66,16 @@ async function loginAsMaster(page: Page) {
 
 function questionEditDialog(page: Page) {
   return page.getByRole('dialog').filter({ has: page.getByLabel('Question', { exact: true }) })
+}
+
+function gradedQuestion(page: Page, content: string) {
+  return page.locator('article').filter({ hasText: content })
+}
+
+async function gradeWithAnswer(page: Page, answerIndex: number) {
+  await page.getByRole('radio', { name: `Answer choice ${answerIndex + 1}`, exact: true }).check()
+  await page.getByRole('button', { name: 'Submit round', exact: true }).click()
+  await page.getByRole('dialog').getByRole('button', { name: 'Confirm submission', exact: true }).click()
 }
 
 async function readOriginalQuestion(dialog: Locator): Promise<OriginalQuestion> {
