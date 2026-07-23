@@ -116,6 +116,17 @@ export default function WrittenRoundRunner({ year, round, title, questions, canE
     setEditingQuestion(null)
   }
 
+  const refreshEditingQuestion = async () => {
+    if (!canEdit || !loadEditableQuestion || !editingQuestion) {
+      throw new Error('Unable to refresh editing details for this question.')
+    }
+
+    const editableQuestion = await loadEditableQuestion(editingQuestion.id)
+    setEditableQuestionCache((previous) => ({ ...previous, [editableQuestion.id]: editableQuestion }))
+    setEditingQuestion(editableQuestion)
+    return editableQuestion
+  }
+
   const replaceCurrentQuestion = (updated: EditedWrittenQuestion) => {
     const publicQuestion: WrittenRoundQuestion = {
       id: updated.id,
@@ -211,7 +222,7 @@ export default function WrittenRoundRunner({ year, round, title, questions, canE
               {!isLoadingEdit && <div className="mt-6 flex justify-end"><button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={closeEditDialog}>Close</button></div>}
             </section>
           </div>
-        ) : <WrittenQuestionEditDialog question={editingQuestion} onClose={closeEditDialog} onSaved={replaceCurrentQuestion} />
+        ) : <WrittenQuestionEditDialog question={editingQuestion} onClose={closeEditDialog} onSaved={replaceCurrentQuestion} onRefreshLatest={refreshEditingQuestion} />
       )}
     </>
   )

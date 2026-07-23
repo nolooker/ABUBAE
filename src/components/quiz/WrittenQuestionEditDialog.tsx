@@ -19,17 +19,22 @@ type Props = {
   question: EditableWrittenQuestion
   onClose: () => void
   onSaved: (question: EditedWrittenQuestion) => void
+  onRefreshLatest: () => Promise<EditableWrittenQuestion>
 }
 
 const choiceLabels = ['A', 'B', 'C', 'D']
 
-export default function WrittenQuestionEditDialog({ question, onClose, onSaved }: Props) {
+export default function WrittenQuestionEditDialog({ question, onClose, onSaved, onRefreshLatest }: Props) {
+  const [baselineQuestion, setBaselineQuestion] = useState(question)
   const [content, setContent] = useState(question.content)
   const [choices, setChoices] = useState(question.choices)
   const [acceptedAnswerIndexes, setAcceptedAnswerIndexes] = useState(question.acceptedAnswerIndexes)
   const [explanation, setExplanation] = useState(question.explanation)
   const [isSaving, setIsSaving] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [hasConflict, setHasConflict] = useState(false)
+  const [announcement, setAnnouncement] = useState<string | null>(null)
   const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false)
   const editDialogRef = useRef<HTMLElement | null>(null)
   const discardDialogRef = useRef<HTMLElement | null>(null)
@@ -54,15 +59,15 @@ export default function WrittenQuestionEditDialog({ question, onClose, onSaved }
   }, [showDiscardConfirmation])
 
   const isDirty = useMemo(() => (
-    content !== question.content
-    || explanation !== question.explanation
-    || choices.some((choice, index) => choice !== question.choices[index])
-    || acceptedAnswerIndexes.length !== question.acceptedAnswerIndexes.length
-    || acceptedAnswerIndexes.some((index) => !question.acceptedAnswerIndexes.includes(index))
-  ), [acceptedAnswerIndexes, choices, content, explanation, question])
+    content !== baselineQuestion.content
+    || explanation !== baselineQuestion.explanation
+    || choices.some((choice, index) => choice !== baselineQuestion.choices[index])
+    || acceptedAnswerIndexes.length !== baselineQuestion.acceptedAnswerIndexes.length
+    || acceptedAnswerIndexes.some((index) => !baselineQuestion.acceptedAnswerIndexes.includes(index))
+  ), [acceptedAnswerIndexes, baselineQuestion, choices, content, explanation])
 
   const requestClose = () => {
-    if (isSaving) return
+    if (isSaving || isRefreshing) return
     if (isDirty) {
       setShowDiscardConfirmation(true)
       return
@@ -82,12 +87,14 @@ export default function WrittenQuestionEditDialog({ question, onClose, onSaved }
 
   const save = async () => {
     if (!content.trim() || choices.some((choice) => !choice.trim()) || acceptedAnswerIndexes.length === 0) {
-      setError('Enter a question, four choices, and at least one correct choice.')
+      setError('문제, 보기 4개, 정답을 모두 입력해 주세요.')
       return
     }
 
     setIsSaving(true)
     setError(null)
+    setHasConflict(false)
+    setAnnouncement(null)
     try {
       const response = await fetch(`/api/admin/written-questions/${question.id}`, {
         method: 'PATCH',
@@ -97,22 +104,52 @@ export default function WrittenQuestionEditDialog({ question, onClose, onSaved }
           choices,
           acceptedAnswerIndexes,
           explanation,
-          expectedUpdatedAt: question.updatedAt,
+          expectedUpdatedAt: baselineQuestion.updatedAt,
         }),
       })
-      if (!response.ok) throw new Error('save failed')
+      if (!response.ok) {
+        const apiError = await readRedactedError(response)
+        if (response.status === 409 && apiError === 'question was updated by another request') {
+          setHasConflict(true)
+          setError('다른 수정 사항이 먼저 저장되었습니다. 작성 중인 내용은 유지됩니다. 최신 내용을 불러와 저장 기준을 갱신해 주세요.')
+        } else if (response.status === 400 && apiError) {
+          setError('입력 내용을 확인해 주세요.')
+        } else {
+          setError('문제를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.')
+        }
+        return
+      }
 
       const updated: unknown = await response.json()
       if (!isEditedQuestion(updated, question.id)) throw new Error('invalid response')
+      setHasConflict(false)
+      setAnnouncement('문제가 저장되었습니다.')
       onSaved({
         ...updated,
         acceptedAnswerIndexes: [...acceptedAnswerIndexes],
         explanation,
       })
     } catch {
-      setError('Unable to save this question. Please try again.')
+      setError('문제를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.')
     } finally {
       setIsSaving(false)
+    }
+  }
+
+  const refreshLatest = async () => {
+    setIsRefreshing(true)
+    setError(null)
+    setAnnouncement(null)
+    try {
+      const latestQuestion = await onRefreshLatest()
+      if (!isEditableQuestion(latestQuestion, question.id)) throw new Error('invalid refresh response')
+      setBaselineQuestion(latestQuestion)
+      setHasConflict(false)
+      setAnnouncement('최신 저장 기준을 불러왔습니다. 작성 중인 내용은 유지했습니다. 내용을 검토한 뒤 다시 저장해 주세요.')
+    } catch {
+      setError('최신 내용을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.')
+    } finally {
+      setIsRefreshing(false)
     }
   }
 
@@ -167,9 +204,17 @@ export default function WrittenQuestionEditDialog({ question, onClose, onSaved }
         </div>
 
         {error && <p role="alert" className="mt-4 text-sm font-semibold text-red-600">{error}</p>}
+        <p role="status" aria-live="polite" className={announcement ? 'mt-4 text-sm font-semibold text-blue-700' : 'sr-only'}>{announcement ?? ''}</p>
+        {hasConflict && (
+          <div className="mt-4 rounded-xl bg-orange-50 p-4">
+            <button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={refreshLatest} disabled={isSaving || isRefreshing}>
+              {isRefreshing ? '불러오는 중...' : '최신 내용 불러오기'}
+            </button>
+          </div>
+        )}
         <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          <button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={requestClose} disabled={isSaving}>Cancel</button>
-          <button type="button" className="ab-btn ab-btn-primary ab-btn-md" onClick={save} disabled={isSaving}>{isSaving ? 'Saving…' : 'Save'}</button>
+          <button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={requestClose} disabled={isSaving || isRefreshing}>Cancel</button>
+          <button type="button" className="ab-btn ab-btn-primary ab-btn-md" onClick={save} disabled={isSaving || isRefreshing}>{isSaving ? 'Saving…' : 'Save'}</button>
         </div>
       </section>
 
@@ -202,6 +247,26 @@ function isEditedQuestion(value: unknown, expectedId: string): value is Omit<Edi
     && question.choices.length === 4
     && question.choices.every((choice) => typeof choice === 'string' && choice.trim().length > 0)
     && typeof question.updatedAt === 'string'
+}
+
+function isEditableQuestion(value: unknown, expectedId: string): value is EditableWrittenQuestion {
+  if (!isEditedQuestion(value, expectedId)) return false
+  const question = value as EditableWrittenQuestion
+  return Array.isArray(question.acceptedAnswerIndexes)
+    && question.acceptedAnswerIndexes.length > 0
+    && question.acceptedAnswerIndexes.every((index) => Number.isSafeInteger(index) && index >= 0 && index < 4)
+    && typeof question.explanation === 'string'
+}
+
+async function readRedactedError(response: Response): Promise<string | undefined> {
+  try {
+    const value: unknown = await response.json()
+    if (typeof value !== 'object' || value === null || Array.isArray(value)) return undefined
+    const error = (value as Record<string, unknown>).error
+    return typeof error === 'string' ? error : undefined
+  } catch {
+    return undefined
+  }
 }
 
 function focusableElements(container: HTMLElement | null): HTMLElement[] {

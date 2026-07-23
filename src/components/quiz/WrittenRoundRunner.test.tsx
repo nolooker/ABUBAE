@@ -96,6 +96,59 @@ describe('WrittenRoundRunner', () => {
     expect(loadEditableQuestion).toHaveBeenCalledWith('q1')
   })
 
+  it('refreshes a conflicted edit without losing the draft and reopens from the refreshed cache', async () => {
+    const original = {
+      id: 'q1',
+      number: 1,
+      subject: 'Software design',
+      content: 'Original question',
+      choices: ['A', 'B', 'C', 'D'],
+      updatedAt: '2026-07-23T00:00:00.000Z',
+      acceptedAnswerIndexes: [1],
+      explanation: 'Original explanation',
+    }
+    const latest = {
+      ...original,
+      content: 'Latest server question',
+      updatedAt: '2026-07-23T00:02:00.000Z',
+    }
+    const loadEditableQuestion = vi.fn()
+      .mockResolvedValueOnce(original)
+      .mockResolvedValueOnce(latest)
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: false,
+      status: 409,
+      json: async () => ({ error: 'question was updated by another request' }),
+    }))
+    const user = userEvent.setup()
+    render(
+      <WrittenRoundRunner
+        canEdit
+        loadEditableQuestion={loadEditableQuestion}
+        year={2021}
+        round={1}
+        title="2021 round 1"
+        questions={[{ id: 'q1', number: 1, subject: 'Software design', content: 'Original question', choices: ['A', 'B', 'C', 'D'], updatedAt: original.updatedAt }]}
+      />,
+    )
+
+    await user.click(screen.getByRole('button', { name: 'Edit question' }))
+    await user.clear(await screen.findByLabelText('Question'))
+    await user.type(screen.getByLabelText('Question'), 'My preserved draft')
+    await user.click(screen.getByRole('button', { name: 'Save' }))
+    await user.click(await screen.findByRole('button', { name: '최신 내용 불러오기' }))
+
+    expect(screen.getByLabelText('Question')).toHaveValue('My preserved draft')
+    expect(loadEditableQuestion).toHaveBeenCalledTimes(2)
+
+    await user.click(screen.getByRole('button', { name: 'Cancel' }))
+    await user.click(screen.getByRole('button', { name: 'Discard changes' }))
+    await user.click(screen.getByRole('button', { name: 'Edit question' }))
+
+    expect(screen.getByLabelText('Question')).toHaveValue('Latest server question')
+    expect(loadEditableQuestion).toHaveBeenCalledTimes(2)
+  })
+
   it('keeps selected answers while navigating between questions', async () => {
     vi.stubGlobal('scrollTo', vi.fn())
     const user = userEvent.setup()

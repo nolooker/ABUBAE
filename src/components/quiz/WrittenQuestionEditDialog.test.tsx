@@ -22,7 +22,7 @@ function DialogHarness() {
   return (
     <>
       <button type="button" onClick={() => setOpen(true)}>Open edit</button>
-      {open && <WrittenQuestionEditDialog question={question} onClose={() => setOpen(false)} onSaved={vi.fn()} />}
+      {open && <WrittenQuestionEditDialog question={question} onClose={() => setOpen(false)} onSaved={vi.fn()} onRefreshLatest={vi.fn()} />}
     </>
   )
 }
@@ -36,7 +36,7 @@ describe('WrittenQuestionEditDialog', () => {
   it('asks before discarding a changed edit', async () => {
     const user = userEvent.setup()
     const onClose = vi.fn()
-    render(<WrittenQuestionEditDialog question={question} onClose={onClose} onSaved={vi.fn()} />)
+    render(<WrittenQuestionEditDialog question={question} onClose={onClose} onSaved={vi.fn()} onRefreshLatest={vi.fn()} />)
 
     await user.clear(screen.getByLabelText('Question'))
     await user.type(screen.getByLabelText('Question'), 'Changed question')
@@ -89,7 +89,7 @@ describe('WrittenQuestionEditDialog', () => {
     vi.stubGlobal('fetch', fetchMock)
     const onSaved = vi.fn()
     const user = userEvent.setup()
-    render(<WrittenQuestionEditDialog question={question} onClose={vi.fn()} onSaved={onSaved} />)
+    render(<WrittenQuestionEditDialog question={question} onClose={vi.fn()} onSaved={onSaved} onRefreshLatest={vi.fn()} />)
 
     await user.clear(screen.getByLabelText('Question'))
     await user.type(screen.getByLabelText('Question'), 'Updated question')
@@ -108,6 +108,87 @@ describe('WrittenQuestionEditDialog', () => {
       acceptedAnswerIndexes: [0, 1],
       updatedAt: '2026-07-23T00:01:00.000Z',
     }))
+    expect(screen.getByRole('status')).toHaveTextContent('문제가 저장되었습니다.')
+  })
+
+  it('preserves the draft after a conflict, refreshes the baseline, and retries with the latest timestamp', async () => {
+    const latestQuestion = {
+      ...question,
+      content: 'Another master update',
+      updatedAt: '2026-07-23T00:02:00.000Z',
+    }
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce({
+        ok: false,
+        status: 409,
+        json: async () => ({ error: 'question was updated by another request' }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => ({
+          ...latestQuestion,
+          content: 'My draft',
+          updatedAt: '2026-07-23T00:03:00.000Z',
+        }),
+      })
+    vi.stubGlobal('fetch', fetchMock)
+    const onRefreshLatest = vi.fn().mockResolvedValue(latestQuestion)
+    const user = userEvent.setup()
+    render(<WrittenQuestionEditDialog question={question} onClose={vi.fn()} onSaved={vi.fn()} onRefreshLatest={onRefreshLatest} />)
+
+    await user.clear(screen.getByLabelText('Question'))
+    await user.type(screen.getByLabelText('Question'), 'My draft')
+    await user.click(screen.getByRole('button', { name: 'Save' }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('다른 수정 사항이 먼저 저장되었습니다.')
+    expect(screen.getByLabelText('Question')).toHaveValue('My draft')
+
+    await user.click(screen.getByRole('button', { name: '최신 내용 불러오기' }))
+
+    expect(onRefreshLatest).toHaveBeenCalledOnce()
+    expect(screen.getByLabelText('Question')).toHaveValue('My draft')
+    expect(screen.getByRole('status')).toHaveTextContent('최신 저장 기준을 불러왔습니다. 작성 중인 내용은 유지했습니다.')
+
+    await user.click(screen.getByRole('button', { name: 'Save' }))
+    const retryBody = JSON.parse(fetchMock.mock.calls[1][1].body as string)
+    expect(retryBody.expectedUpdatedAt).toBe(latestQuestion.updatedAt)
+    expect(retryBody.content).toBe('My draft')
+  })
+
+  it.each([
+    [400, { error: 'choices must contain exactly four items' }, '입력 내용을 확인해 주세요.'],
+    [409, { unexpected: true }, '문제를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.'],
+    [500, { error: 'unable to update question' }, '문제를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.'],
+    [500, 'not-json', '문제를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.'],
+  ])('shows a safe error for status %s', async (status, responseBody, expectedMessage) => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: false,
+      status,
+      json: async () => {
+        if (responseBody === 'not-json') throw new Error('malformed')
+        return responseBody
+      },
+    }))
+    const user = userEvent.setup()
+    render(<WrittenQuestionEditDialog question={question} onClose={vi.fn()} onSaved={vi.fn()} onRefreshLatest={vi.fn()} />)
+
+    await user.click(screen.getByRole('button', { name: 'Save' }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(expectedMessage)
+  })
+
+  it('shows a Korean validation message before sending an incomplete draft', async () => {
+    const fetchMock = vi.fn()
+    vi.stubGlobal('fetch', fetchMock)
+    const user = userEvent.setup()
+    render(<WrittenQuestionEditDialog question={question} onClose={vi.fn()} onSaved={vi.fn()} onRefreshLatest={vi.fn()} />)
+
+    await user.clear(screen.getByLabelText('Question'))
+    await user.click(screen.getByRole('button', { name: 'Save' }))
+
+    expect(screen.getByRole('alert')).toHaveTextContent('문제, 보기 4개, 정답을 모두 입력해 주세요.')
+    expect(fetchMock).not.toHaveBeenCalled()
   })
 
   it.each([
@@ -119,11 +200,11 @@ describe('WrittenQuestionEditDialog', () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => responseBody }))
     const onSaved = vi.fn()
     const user = userEvent.setup()
-    render(<WrittenQuestionEditDialog question={question} onClose={vi.fn()} onSaved={onSaved} />)
+    render(<WrittenQuestionEditDialog question={question} onClose={vi.fn()} onSaved={onSaved} onRefreshLatest={vi.fn()} />)
 
     await user.click(screen.getByRole('button', { name: 'Save' }))
 
-    expect(await screen.findByRole('alert')).toHaveTextContent('Unable to save this question. Please try again.')
+    expect(await screen.findByRole('alert')).toHaveTextContent('문제를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.')
     expect(onSaved).not.toHaveBeenCalled()
   })
 
@@ -131,14 +212,14 @@ describe('WrittenQuestionEditDialog', () => {
     let resolveResponse: ((response: { ok: boolean }) => void) | undefined
     vi.stubGlobal('fetch', vi.fn().mockReturnValue(new Promise((resolve) => { resolveResponse = resolve })))
     const user = userEvent.setup()
-    render(<WrittenQuestionEditDialog question={question} onClose={vi.fn()} onSaved={vi.fn()} />)
+    render(<WrittenQuestionEditDialog question={question} onClose={vi.fn()} onSaved={vi.fn()} onRefreshLatest={vi.fn()} />)
 
     await user.click(screen.getByRole('button', { name: 'Save' }))
     expect(screen.getByRole('button', { name: 'Saving…' })).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeDisabled()
 
     resolveResponse?.({ ok: false })
-    expect(await screen.findByRole('alert')).toHaveTextContent('Unable to save this question. Please try again.')
+    expect(await screen.findByRole('alert')).toHaveTextContent('문제를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.')
     expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled()
   })
 })
