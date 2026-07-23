@@ -2,6 +2,14 @@
 
 BEGIN;
 
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM public.exams WHERE slug = 'jeongchogi') THEN
+    RAISE EXCEPTION 'required exam "jeongchogi" does not exist';
+  END IF;
+END;
+$$;
+
 -- 2021년 1회 정보처리기사 필기
 
 -- 100 questions; 400 choices
@@ -25,19 +33,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-001:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-001'), 1, '미들웨어', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-001:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-001'), 2, '하드웨어', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-001:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-001'), 3, '오픈허브웨어', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-001:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-001'), 4, '그레이웨어', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -58,19 +78,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-002:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-002'), 1, '연관', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-002:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-002'), 2, '확장', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-002:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-002'), 3, '선택', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-002:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-002'), 4, '특화', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -91,19 +123,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-003:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-003'), 1, '기능적 모델은 사용자 측면에서 본 시스템 기능이며, UML에서 는 Use case Diagram을 사용한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-003:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-003'), 2, '정적 모델은 객체, 속성, 연관관계, 오퍼레이션의 시스템의 구 조를 나타내며, UML에서는 Class Diagram을 사용한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-003:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-003'), 3, '동적 모델은 시스템의 내부 동작을 말하며, UML에서는 Sequence Diagram, State Diagram, Activity Diagram을 사 용한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-003:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-003'), 4, 'State Diagram은 객체들 사이의 메시지 교환을 나타내며, Sequence Diagram은 하나의 객체가 가진 상태와 그 상태의 변화에 의한 동작순서를 나타낸다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -124,19 +168,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-004:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-004'), 1, 'ls', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-004:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-004'), 2, 'cat', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-004:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-004'), 3, 'pwd', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-004:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-004'), 4, 'uname', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -157,19 +213,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-005:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-005'), 1, 'Object', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-005:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-005'), 2, 'Dynamic', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-005:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-005'), 3, 'Function', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-005:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-005'), 4, 'Static', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -190,19 +258,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-006:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-006'), 1, '추상 팩토리(Abstract Factory)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-006:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-006'), 2, '빌더(Builder)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-006:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-006'), 3, '어댑터(Adapter)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-006:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-006'), 4, '싱글턴(Singleton) - 1 기출문제 & 정답 및 해설 년 1회 정보처리기사 필기 인적인 용도로만 사용할 수 있습니다. 허락 없이 복제하거나 수 없습니다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -223,19 +303,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-007:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-007'), 1, 'DBMS 분석', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-007:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-007'), 2, '네트워크 분석', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-007:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-007'), 3, '운영체제 분석', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-007:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-007'), 4, '인적 자원 분석', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -256,19 +348,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-008:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-008'), 1, 'Activity Diagram', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-008:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-008'), 2, 'Model Diagram', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-008:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-008'), 3, 'State Diagram', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-008:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-008'), 4, 'Class Diagram', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -289,19 +393,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-009:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-009'), 1, 'E-R 다이어그램을 사용하여 객체의 행위를 데이터 모델링하 는데 초점을 둔 방법이다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-009:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-009'), 2, '객체, 동적, 기능 모델로 나누어 수행하는 방법이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-009:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-009'), 3, '미시적 개발 프로세스와 거시적 개발 프로세스를 모두 사용하 는 방법이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-009:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-009'), 4, 'Use-Case를 강조하여 사용하는 방법이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -322,19 +438,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-010:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-010'), 1, '메시지(Message)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-010:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-010'), 2, '캡슐화(Encapsulation)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-010:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-010'), 3, '다형성(Polymorphism)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-010:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-010'), 4, '상속(Inheritance)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -355,19 +483,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-011:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-011'), 1, '소프트웨어 코드의 품질을 향상시킬 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-011:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-011'), 2, '개발 프로세스를 무시할 수 있다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-011:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-011'), 3, '개발자들 사이의 의사소통을 원활하게 할 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-011:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-011'), 4, '소프트웨어의 품질과 생산성을 향상시킬 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -388,19 +528,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-012:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-012'), 1, 'fan-in : 2, fan-out : 3', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-012:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-012'), 2, 'fan-in : 3, fan-out : 2', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-012:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-012'), 3, 'fan-in : 1, fan-out : 2', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-012:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-012'), 4, 'fan-in : 2, fan-out : 1', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -421,19 +573,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-013:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-013'), 1, '객체지향 분석', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-013:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-013'), 2, '구조적 분석', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-013:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-013'), 3, '기능적 분석', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-013:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-013'), 4, '실시간 분석 1 - 1회', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -454,19 +618,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-014:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-014'), 1, '애자일(Agile) 방법', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-014:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-014'), 2, '유스케이스 다이어그램(Use Case Diagram)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-014:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-014'), 3, '시퀀스 다이어그램(Sequence Diagram)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-014:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-014'), 4, '단계 다이어그램(Phase Diagram)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -487,19 +663,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-015:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-015'), 1, '프로세스의 도구보다는 개인과 상호작용에 더 가치를 둔다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-015:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-015'), 2, '계약 협상보다는 고객과의 협업에 더 가치를 둔다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-015:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-015'), 3, '실제 작동하는 소프트웨어보다는 이해하기 좋은 문서에 더 가 치를 둔다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-015:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-015'), 4, '계획을 따르기보다는 변화에 대응하는 것에 더 가치를 둔다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -520,19 +708,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-016:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-016'), 1, 'WAS(Web Application Server)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-016:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-016'), 2, 'MOM(Message Oriented Middleware)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-016:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-016'), 3, 'RPC(Remote Procedure Call)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-016:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-016'), 4, 'ORB(Object Request Broker)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -553,19 +753,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-017:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-017'), 1, '모듈의 기능을 예측할 수 있도록 정의한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-017:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-017'), 2, '이식성을 고려한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-017:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-017'), 3, '적당한 모듈의 크기를 유지한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-017:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-017'), 4, '가능한 모듈을 독립적으로 생성하고 결합도를 최대화한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -586,19 +798,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-018:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-018'), 1, 'DB링크 기술', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-018:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-018'), 2, '소켓 기술', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-018:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-018'), 3, '스크럼 기술', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-018:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-018'), 4, '프로토타입 기술', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -619,19 +843,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-019:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-019'), 1, '객체 지향 설계', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-019:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-019'), 2, '데이터 흐름 설계', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-019:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-019'), 3, '상향식 설계', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-019:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-019'), 4, '하향식 설계', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -652,19 +888,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-020:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-020'), 1, '소프트웨어 모듈의 재사용성이 향상된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-020:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-020'), 2, '자동화된 기법을 통해 소프트웨어 품질이 향상된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-020:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-020'), 3, '소프트웨어 사용자들에게 사용 방법을 신속히 숙지시키기 위 해 사용된다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-020:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-020'), 4, '소프트웨어 유지보수를 간편하게 수행할 수 있다. 제2과목 소프트웨어 개발', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -685,19 +933,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-021:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-021'), 1, '㉠-㉡-㉢-㉣', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-021:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-021'), 2, '㉡-㉠-㉣-㉢', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-021:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-021'), 3, '㉢-㉠-㉡-㉣', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-021:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-021'), 4, '㉣-㉡-㉠-㉢ - 2', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -718,19 +978,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-022:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-022'), 1, '제품 소프트웨어 개요', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-022:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-022'), 2, '설치 관련 파일', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-022:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-022'), 3, '프로그램 삭제', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-022:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-022'), 4, '소프트웨어 개발 기간', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -751,19 +1023,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-023:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-023'), 1, 'A B C + D / * E -', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-023:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-023'), 2, 'A B * C D / + E -', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-023:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-023'), 3, 'A B * C + D / E -', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-023:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-023'), 4, 'A B C + * D / E -', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -784,19 +1068,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-024:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-024'), 1, 'Correctness', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-024:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-024'), 2, 'Reliability', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-024:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-024'), 3, 'Usability', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-024:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-024'), 4, 'Integrity', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -817,19 +1113,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-025:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-025'), 1, '토글 버튼', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-025:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-025'), 2, '텍스트 박스', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-025:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-025'), 3, '라디오 버튼', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-025:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-025'), 4, '체크 박스', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -850,19 +1158,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-026:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-026'), 1, '레코드의 키 값을 분석하여 같은 값끼리 그 순서에 맞는 버킷에 분배하였다가 버킷의 순서대로 레코드를 꺼내어 정렬한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-026:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-026'), 2, '주어진 파일에서 인접한 두 개의 레코드 키 값을 비교하여 그 크기에 따라 레코드 위치를 서로 교환한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-026:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-026'), 3, '레코드의 많은 자료 이동을 없애고 하나의 파일을 부분적으로 나누어 가면서 정렬한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-026:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-026'), 4, '임의의 레코드 키와 매개변수(h)값만큼 떨어진 곳의 레코드 키를 비교하여 서로 교환해 가면서 정렬한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -883,19 +1203,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-027:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-027'), 1, '키관리', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-027:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-027'), 2, '방화벽', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-027:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-027'), 3, '암호화', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-027:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-027'), 4, '크랙방지', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -916,19 +1248,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-028:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-028'), 1, '입출력이 한쪽 끝으로만 제한된 리스트이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-028:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-028'), 2, 'Head(front)와 Tail(rear)의 2개 포인터를 갖고 있다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-028:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-028'), 3, 'LIFO 구조이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-028:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-028'), 4, '더 이상 삭제할 데이터가 없는 상태에서 데이터를 삭제하면 언더플로(Underflow)가 발생한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -949,19 +1293,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-029:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-029'), 1, '베타 검사', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-029:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-029'), 2, '알파 검사', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-029:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-029'), 3, '형상 검사', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-029:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-029'), 4, '복구 검사', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -982,19 +1338,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-030:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-030'), 1, '소프트웨어에서 일어나는 수정이나 변경을 알아내고 제어하는 것을 의미한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-030:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-030'), 2, '소프트웨어 개발의 전체 비용을 줄이고, 개발 과정의 여러 방해 요인이 최소화되도록 보증하는 것을 목적으로 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-030:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-030'), 3, '형상관리를 위하여 구성된 팀을 “chief programmer team”이 라고 한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-030:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-030'), 4, '형상관리의 기능 중 하나는 버전 제어 기술이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1015,19 +1383,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-031:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-031'), 1, 'tree', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-031:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-031'), 2, 'network', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-031:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-031'), 3, 'stack', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-031:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-031'), 4, 'distributed 2 - 1회', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1048,19 +1428,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-032:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-032'), 1, '탐색 효율이 좋고 탐색 시간이 적게 소요된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-032:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-032'), 2, '검색할 데이터가 정렬되어 있어야 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-032:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-032'), 3, '피보나치 수열에 따라 다음에 비교할 대상을 선정하여 검색한 다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-032:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-032'), 4, '비교횟수를 거듭할 때마다 검색 대상이 되는 데이터의 수가 절반으로 줄어든다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1081,19 +1473,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-033:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-033'), 1, '신뢰성(Reliability)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-033:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-033'), 2, '유지보수성(Maintainability)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-033:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-033'), 3, '가시성(Visibility)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-033:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-033'), 4, '재사용성(Reusability)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1114,19 +1518,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-034:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-034'), 1, 'Stub', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-034:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-034'), 2, 'Driver', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-034:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-034'), 3, 'Procedure', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-034:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-034'), 4, 'Function', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1147,19 +1563,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-035:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-035'), 1, '제곱법(mid-square)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-035:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-035'), 2, '숫자분석법(digit analysis)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-035:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-035'), 3, '개방주소법(open addressing)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-035:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-035'), 4, '제산법(division)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1180,19 +1608,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-036:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-036'), 1, '경계값 분석', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-036:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-036'), 2, '조건 검사', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-036:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-036'), 3, '기초 경로 검사', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-036:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-036'), 4, '루프 검사', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1213,19 +1653,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-037:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-037'), 1, 'C', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-037:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-037'), 2, 'E', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-037:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-037'), 3, 'G', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-037:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-037'), 4, 'H', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1246,19 +1698,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-038:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-038'), 1, '3, 4, 7, 9, 8', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-038:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-038'), 2, '3, 4, 8, 9, 7', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-038:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-038'), 3, '3, 8, 4, 9, 7', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-038:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-038'), 4, '3, 4, 7, 8, 9', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1279,19 +1743,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-039:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-039'), 1, '큐는 비선형구조에 해당한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-039:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-039'), 2, '큐는 First In – First Out 처리를 수행한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-039:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-039'), 3, '스택은 Last In – First out 처리를 수행한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-039:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-039'), 4, '스택은 서브루틴 호출, 인터럽트 처리, 수식 계산 및 수식 표기 법에 응용된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1312,19 +1788,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-040:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-040'), 1, '테스트 조건', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-040:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-040'), 2, '테스트 데이터', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-040:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-040'), 3, '테스트 비용', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-040:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-040'), 4, '예상 결과 - 3 제3과목 데이터베이스 구축', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1345,19 +1833,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-041:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-041'), 1, '카디널리티 : 4, 차수 : 4', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-041:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-041'), 2, '카디널리티 : 4, 차수 : 6', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-041:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-041'), 3, '카디널리티 : 6, 차수 : 4', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-041:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-041'), 4, '카디널리티 : 6, 차수 : 6', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1378,19 +1878,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-042:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-042'), 1, '인덱스(Index)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-042:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-042'), 2, '트랙잭션(Transaction)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-042:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-042'), 3, '역정규화(Denormalization)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-042:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-042'), 4, '트리거(Trigger)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1411,19 +1923,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-043:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-043'), 1, '논리적 설계', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-043:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-043'), 2, '요구 조건 분석', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-043:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-043'), 3, '개념적 설계', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-043:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-043'), 4, '물리적 설계', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1444,19 +1968,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-044:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-044'), 1, '시스템 카탈로그의 갱신은 무결성 유지를 위하여 SQL을 이용 하여 사용자가 직접 갱신하여야 한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-044:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-044'), 2, '데이터베이스에 포함되는 데이터 객체에 대한 정의나 명세에 대한 정보를 유지관리한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-044:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-044'), 3, 'DBMS가 스스로 생성하고 유지하는 데이터베이스 내의 특별 한 테이블의 집합체이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-044:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-044'), 4, '카탈로그에 저장된 정보를 메타 데이터라고도 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1477,19 +2013,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-045:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-045'), 1, '삭제 이상이란 릴레이션에서 한 튜플을 삭제할 때 의도와는 상관없는 값들로 함께 삭제되는 연쇄 삭제 현상이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-045:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-045'), 2, '삽입 이상이란 릴레이션에서 데이터를 삽입할 때 의도와는 상 관없이 원하지 않는 값들로 함께 삽입되는 현상이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-045:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-045'), 3, '갱신 이상이란 릴레이션에서 튜플에 있는 속성값을 갱신할 때 일부 튜플의 정보만 갱신되어 정보에 모순이 생기는 현상이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-045:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-045'), 4, '종속 이상이란 하나의 릴레이션에 하나 이상의 함수적 종속성 이 존재하는 현상이다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1510,19 +2058,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-046:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-046'), 1, '원자성(atomicity)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-046:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-046'), 2, '일관성(consistency)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-046:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-046'), 3, '격리성(isolation)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-046:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-046'), 4, '영속성(durability)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1543,19 +2103,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-047:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-047'), 1, 'DBA는 보안 측면에서 뷰를 활용할 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-047:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-047'), 2, '뷰 위에 또 다른 뷰를 정의할 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-047:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-047'), 3, '뷰에 대한 삽입, 갱신, 삭제 연산 시 제약사항이 따르지 않는다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-047:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-047'), 4, '독립적인 인덱스를 가질 수 없다. 3 - 1회', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1576,19 +2148,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-048:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-048'), 1, '이름: 홍길동, 강남길, 장미화', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-048:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-048'), 2, '이름: 홍길동, 강남길, 오말자', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-048:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-048'), 3, '이름: 홍길동, 김철수, 강남길, 오말자, 장미화', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-048:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-048'), 4, '이름: 홍길동, 김철수', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1609,19 +2193,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-049:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-049'), 1, 'Select', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-049:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-049'), 2, 'Project', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-049:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-049'), 3, 'Join', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-049:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-049'), 4, 'Division', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1642,19 +2238,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-050:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-050'), 1, '릴레이션의 각 행을 스키마(schema)라 하며, 예로 도서 릴레 이션을 구성하는 스키마에는 도서번호, 도서명, 저자, 가격 등 이 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-050:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-050'), 2, '릴레이션의 각 열을 튜플(tuple)이라 하며, 하나의 튜플은 각 속성에서 정의된 값을 이용하여 구성된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-050:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-050'), 3, '도메인(domain)은 하나의 속성이 가질 수 있는 같은 타입의 모든 값의 집합으로 각 속성의 도메인은 원자값을 갖는다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-050:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-050'), 4, '속성(attribute)은 한 개의 릴레이션의 논리적인 구조를 정의한 것으로 릴레이션의 이름과 릴레이션에 포함된 속성들의 집합 을 의미한다. - 4 ③ 도메인(domain)은 하나의 속성이 가질 수 있는 같은 타입의 모든 값의 집합으로 각 속성의 도메인은 원자값을 갖는다. ④ 속성(attribute)은 한 개의 릴레이션의 논리적인 구조를 정의한 것으로 릴레이션의 이름과 릴레이션에 포함된 속성들의 집합 을 의미한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1675,19 +2283,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-051:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-051'), 1, '개념 스키마', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-051:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-051'), 2, '내부 스키마', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-051:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-051'), 3, '외부 스키마', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-051:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-051'), 4, '내용 스키마', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1708,19 +2328,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-052:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-052'), 1, '이행적 함수 종속 제거', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-052:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-052'), 2, '부분적 함수 종속 제거', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-052:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-052'), 3, '다치 종속 제거', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-052:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-052'), 4, '결정자이면서 후보키가 아닌 것 제거', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1741,19 +2373,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-053:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-053'), 1, '제1정규형(1NF)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-053:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-053'), 2, '제2정규형(2NF)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-053:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-053'), 3, '제3정규형(3NF)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-053:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-053'), 4, '보이스/코드 정규형(BCNF)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1774,19 +2418,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-054:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-054'), 1, 'DELETE', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-054:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-054'), 2, 'RESTORE', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-054:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-054'), 3, 'ALTER', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-054:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-054'), 4, 'ACCESS', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1807,19 +2463,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-055:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-055'), 1, 'DML(Data Manipulation Language)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-055:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-055'), 2, 'DDL(Data Definition Language)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-055:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-055'), 3, 'DCL(Data Control Language)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-055:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-055'), 4, 'IDL(Interactive Data Language)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1840,19 +2508,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-056:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-056'), 1, '정보 무결성', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-056:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-056'), 2, '고유 무결성', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-056:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-056'), 3, '널 제약성', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-056:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-056'), 4, '참조 무결성', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1873,19 +2553,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-057:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-057'), 1, 'Recovery', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-057:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-057'), 2, 'Commit', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-057:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-057'), 3, 'Abort', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-057:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-057'), 4, 'Restart', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1906,19 +2598,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-058:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-058'), 1, '개체 타입 - 사각형', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-058:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-058'), 2, '속성 - 타원', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-058:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-058'), 3, '관계 집합 - 삼각형', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-058:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-058'), 4, '개체 타입과 속성을 연결 – 선', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1939,19 +2643,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-059:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-059'), 1, '데이터베이스, 파일, 레코드 등은 로킹 단위가 될 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-059:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-059'), 2, '로킹 단위가 작아지면 로킹 오버헤드가 증가한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-059:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-059'), 3, '한꺼번에 로킹할 수 있는 단위를 로킹단위라고 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-059:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-059'), 4, '로킹 단위가 작아지면 병행성 수준이 낮아진다. 4 - 1회', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -1972,19 +2688,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-060:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-060'), 1, 'SELECT * FROM 공급자 WHERE 공급자명 LIKE ''%신%'';', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-060:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-060'), 2, 'SELECT * FROM 공급자 WHERE 공급자명 LIKE ''대%'';', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-060:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-060'), 3, 'SELECT * FROM 공급자 WHERE 공급자명 LIKE ''%사'';', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-060:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-060'), 4, 'SELECT * FROM 공급자 WHERE 공급자명 IS NOT NULL; 제4과목 프로그래밍 언어 활용', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2005,19 +2733,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-061:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-061'), 1, '데이터 관리 프로그램', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-061:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-061'), 2, '서비스 프로그램', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-061:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-061'), 3, '작업 제어 프로그램', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-061:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-061'), 4, '감시 프로그램', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2038,19 +2778,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-062:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-062'), 1, 'Mutual exclusion', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-062:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-062'), 2, 'Hold and wait', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-062:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-062'), 3, 'Non-preemption', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-062:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-062'), 4, 'Linear wait', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2071,19 +2823,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-063:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-063'), 1, '5K', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-063:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-063'), 2, '6K', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-063:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-063'), 3, '7K', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-063:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-063'), 4, '8K', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2104,19 +2868,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-064:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-064'), 1, '(ㄱ) → (ㄴ) → (ㄹ) → (ㅂ) → (ㅁ) → (ㄷ)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-064:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-064'), 2, '(ㄴ) → (ㄹ) → (ㅁ) → (ㅂ) → (ㄷ) → (ㄱ)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-064:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-064'), 3, '(ㄴ) → (ㄹ) → (ㅂ) → (ㅁ) → (ㄷ) → (ㄱ)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-064:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-064'), 4, '(ㄱ) → (ㄴ) → (ㄹ) → (ㅁ) → (ㅂ) → (ㄷ)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2137,19 +2913,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-065:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-065'), 1, '㉠ : Paging, ㉡ : Segmentation', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-065:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-065'), 2, '㉠ : Segmentation, ㉡ : Allocatin', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-065:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-065'), 3, '㉠ : Segmentation, ㉡ : Compaction', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-065:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-065'), 4, '㉠ : Paging, ㉡ : Linking', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2170,19 +2958,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-066:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-066'), 1, 'atoi( )', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-066:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-066'), 2, 'atof( )', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-066:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-066'), 3, 'itoa( )', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-066:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-066'), 4, 'ceil( ) - 5', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2203,19 +3003,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-067:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-067'), 1, 'JEUS', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-067:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-067'), 2, 'JVM', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-067:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-067'), 3, 'Tomcat', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-067:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-067'), 4, 'WebSphere', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2236,19 +3048,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-068:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-068'), 1, '%', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-068:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-068'), 2, '*', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-068:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-068'), 3, '/', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-068:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-068'), 4, '=', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2269,19 +3093,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-069:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-069'), 1, '데이터 링크 계층', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-069:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-069'), 2, '물리 계층', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-069:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-069'), 3, '응용 계층', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-069:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-069'), 4, '표현 계층', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2302,19 +3138,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-070:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-070'), 1, 'CSMA/CD', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-070:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-070'), 2, 'Token Bus', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-070:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-070'), 3, 'Token Ring', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-070:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-070'), 4, 'Slotted Ring', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2335,19 +3183,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-071:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-071'), 1, '멀티캐스팅(Multicast) 대신 브로드캐스트(Broadcast)를 사 용한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-071:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-071'), 2, '보안과 인증 확장 헤더를 사용함으로써 인터넷 계층의 보안기 능을 강화하였다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-071:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-071'), 3, '애니캐스트(Anycast)는 하나의 호스트에서 그룹 내의 가장 가까운 곳에 있는 수신자에게 전달하는 방식이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-071:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-071'), 4, '128비트 주소 체계를 사용한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2368,19 +3228,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-072:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-072'), 1, '데이터 링크 계층', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-072:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-072'), 2, '네트워크 계층', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-072:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-072'), 3, '트랜스포트 계층', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-072:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-072'), 4, '세션 계층', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2401,19 +3273,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-073:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-073'), 1, '절차적 응집도', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-073:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-073'), 2, '순차적 응집도', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-073:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-073'), 3, '우연적 응집도', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-073:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-073'), 4, '논리적 응집도', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2434,19 +3318,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-074:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-074'), 1, '5 + 2 = 34', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-074:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-074'), 2, '5 + 2 + 3 + 4 5 + 2 = 34 5 + 2 = 7', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-074:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-074'), 3, '7 = 7', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-074:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-074'), 4, '5 + 2 = 34 7 + 7 5 + 2 = 7', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2467,19 +3363,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-075:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-075'), 1, 'A, B, C 출력이 반복된다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-075:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-075'), 2, 'A, B, C', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-075:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-075'), 3, 'A, B, C, D 출력이 반복된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-075:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-075'), 4, 'A, B, C, D 까지만 출력된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2500,19 +3408,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-076:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-076'), 1, 'data02', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-076:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-076'), 2, 'int01', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-076:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-076'), 3, '_sub', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-076:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-076'), 4, 'short 5 - 1회', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2533,19 +3453,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-077:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-077'), 1, '라이브러리란 필요할 때 찾아서 쓸 수 있도록 모듈화되어 제공 되는 프로그램을 말한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-077:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-077'), 2, '프로그래밍 언어에 따라 일반적으로 도움말, 설치 파일, 샘플 코드 등을 제공한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-077:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-077'), 3, '외부 라이브러리는 프로그래밍 언어가 기본적으로 가지고 있 는 라이브러리를 의미하며, 표준 라이브러리는 별도의 파일 설치를 필요로 하는 라이브러리를 의미한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-077:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-077'), 4, '라이브러리는 모듈과 패키지를 총칭하며, 모듈이 개별 파일이 라면 패키지는 파일들을 모아 놓은 폴더라고 볼 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2566,19 +3498,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-078:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-078'), 1, '양방향 연결형 서비스를 제공한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-078:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-078'), 2, '송신중에 링크를 유지관리하므로 신뢰성이 높다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-078:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-078'), 3, '순서제어, 오류제어, 흐름제어 기능을 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-078:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-078'), 4, '흐름제어나 순서제어가 없어 전송속도가 빠르다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2599,19 +3543,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-079:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-079'), 1, 'Locality', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-079:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-079'), 2, 'Deadlock', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-079:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-079'), 3, 'Thrashing', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-079:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-079'), 4, 'Working Set', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2632,19 +3588,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-080:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-080'), 1, '변수는 어떤 값을 주기억장치에 기억하기 위해서 사용하는 공 간이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-080:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-080'), 2, '변수의 자료형에 따라 저장할 수 있는 값의 종류와 범위가 달라 진다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-080:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-080'), 3, 'char 자료형은 나열된 여러 개의 문자를 저장하고자 할 때 사 용한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-080:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-080'), 4, 'boolean 자료형은 조건이 참인지 거짓인지 판단하고자 할 때 사용한다. 제5과목 : 정보시스템 구축 관리', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2665,19 +3633,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-081:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-081'), 1, 'OTT', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-081:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-081'), 2, 'Baas', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-081:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-081'), 3, 'SDDC', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-081:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-081'), 4, 'Wi-SUN', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2698,19 +3678,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-082:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-082'), 1, '생산성과 품질을 높이고, 유지보수 비용을 최소화할 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-082:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-082'), 2, '컴포넌트 제작 기법을 통해 재사용성을 향상시킨다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-082:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-082'), 3, '모듈의 분할과 정복에 의한 하향식 설계방식이다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-082:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-082'), 4, '독립적인 컴포넌트 단위의 관리로 복잡성을 최소화할 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2731,19 +3723,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-083:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-083'), 1, '5개월', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-083:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-083'), 2, '10개월', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-083:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-083'), 3, '15개월', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-083:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-083'), 4, '20개월 - 6', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2764,19 +3768,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-084:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-084'), 1, '프로토타입 모형', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-084:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-084'), 2, '나선형 모형', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-084:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-084'), 3, '폭포수 모형', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-084:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-084'), 4, 'RAD 모형', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2797,19 +3813,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-085:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-085'), 1, '소프트웨어 공학이란 소프트웨어의 개발, 운용, 유지보수 및 파기에 대한 체계적인 접근 방법이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-085:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-085'), 2, '소프트웨어 공학은 소프트웨어 제품의 품질을 향상시키고 소 프트웨어 생산성과 작업 만족도를 증대시키는 것이 목적이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-085:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-085'), 3, '소프트웨어 공학의 궁극적 목표는 최대의 비용으로 계획된 일 정보다 가능한 빠른 시일 내에 소프트웨어를 개발하는 것이다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-085:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-085'), 4, '소프트웨어 공학은 신뢰성 있는 소프트웨어를 경제적인 비용 으로 획득하기 위해 공학적 원리를 정립하고 이를 이용하는 것이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2830,19 +3858,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-086:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-086'), 1, 'MD4', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-086:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-086'), 2, 'MD5', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-086:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-086'), 3, 'SHA-1', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-086:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-086'), 4, 'AES', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2863,19 +3903,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-087:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-087'), 1, '그물형', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-087:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-087'), 2, '십자형', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-087:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-087'), 3, '버스형', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-087:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-087'), 4, '링형', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2896,19 +3948,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-088:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-088'), 1, '평문 – 암호화되기 전의 원본 메시지', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-088:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-088'), 2, '암호문 – 암호화가 적용된 메시지', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-088:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-088'), 3, '복호화 – 평문을 암호문으로 바꾸는 작업', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-088:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-088'), 4, '키(Key) - 적절한 암호화를 위하여 사용하는 값', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2929,19 +3993,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-089:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-089'), 1, '임의적 접근 통제', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-089:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-089'), 2, '데이터 전환 접근 통제', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-089:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-089'), 3, '강제적 접근 통제', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-089:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-089'), 4, '역할 기반 접근 통제', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2962,19 +4038,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-090:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-090'), 1, '기밀성', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-090:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-090'), 2, '무결성', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-090:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-090'), 3, '가용성', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-090:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-090'), 4, '휘발성', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -2995,19 +4083,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-091:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-091'), 1, 'Evil Twin Attack', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-091:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-091'), 2, 'Phishing', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-091:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-091'), 3, 'Logic Bomb', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-091:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-091'), 4, 'Cyberbullying', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3028,19 +4128,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-092:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-092'), 1, 'PUTNAM', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-092:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-092'), 2, 'COCOMO', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-092:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-092'), 3, 'FP', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-092:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-092'), 4, 'SLIM', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3061,19 +4173,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-093:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-093'), 1, '버전 관리', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-093:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-093'), 2, '위험 분석', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-093:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-093'), 3, '개발', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-093:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-093'), 4, '평가 6 - 1회', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3094,19 +4218,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-094:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-094'), 1, '구조적 개발 방법론', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-094:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-094'), 2, '객체지향 개발 방법론', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-094:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-094'), 3, '정보공학 방법론', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-094:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-094'), 4, 'CBD 방법론', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3127,19 +4263,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-095:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-095'), 1, '사물 인터넷', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-095:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-095'), 2, '스마트 그리드', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-095:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-095'), 3, '디지털 아카이빙', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-095:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-095'), 4, '미디어 빅뱅', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3160,19 +4308,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-096:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-096'), 1, 'tripwire', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-096:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-096'), 2, 'tcpdump', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-096:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-096'), 3, 'cron', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-096:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-096'), 4, 'netcat', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3193,19 +4353,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-097:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-097'), 1, '비트/바이트/단어들을 순차적으로 암호화한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-097:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-097'), 2, '해쉬 함수를 이용한 해쉬 암호화 방식을 사용한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-097:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-097'), 3, 'RC4는 스트림 암호화 방식에 해당한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-097:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-097'), 4, '대칭키 암호화 방식이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3226,19 +4398,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-098:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-098'), 1, '10명이 공개키 암호를 사용할 경우 5개의 키가 필요하다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-098:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-098'), 2, '복호화키는 비공개 되어 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-098:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-098'), 3, '송신자는 수신자의 공개키로 문서를 암호화한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-098:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-098'), 4, '공개키 암호로 널리 알려진 알고리즘은 RSA가 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3259,19 +4443,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-099:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-099'), 1, 'GRID', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-099:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-099'), 2, 'TELNET', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-099:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-099'), 3, 'GPN', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-099:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-099'), 4, 'MQTT', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3292,19 +4488,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-100:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-100'), 1, 'FTP SYN SEGMENT 탐지', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-100:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-100'), 2, '비동기화 상태 탐지', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-100:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-100'), 3, 'ACK STORM 탐지', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-100:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-1-100'), 4, '패킷의 유실 및 재전송 증가 탐지 - 7 7 -', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 -- 2021년 2회 정보처리기사 필기
 
@@ -3329,19 +4537,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-001:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-001'), 1, '요구사항 변경으로 인한 비용 편익 분석', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-001:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-001'), 2, '기존 시스템과 신규 시스템의 성능 비교', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-001:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-001'), 3, '요구사항 변경의 추적', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-001:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-001'), 4, '요구사항 변경에 따른 영향 평가', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3362,19 +4582,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-002:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-002'), 1, 'Factory Method Pattern은 상위클래스에서 객체를 생성하는 인터페이스를 정의하고, 하위클래스에서 인스턴스를 생성하 도록 하는 방식이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-002:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-002'), 2, 'Prototype Pattern은 Prototype을 먼저 생성하고 인스턴스를 복제하여 사용하는 구조이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-002:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-002'), 3, 'Bridge Pattern은 기존에 구현되어 있는 클래스에 기능 발생 시 기존 클래스를 재사용할 수 있도록 중간에서 맞춰주는 역할 을 한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-002:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-002'), 4, 'Mediator Pattern은 객체간의 통제와 지시의 역할을 하는 중 재자를 두어 객체지향의 목표를 달성하게 해준다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3395,19 +4627,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-003:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-003'), 1, '스크럼(Scrum)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-003:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-003'), 2, '익스트림 프로그래밍(XP, eXtreme Programming)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-003:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-003'), 3, '기능 주도 개발(FDD, Feature Driven Development)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-003:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-003'), 4, '하둡(Hadoop)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3428,19 +4672,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-004:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-004'), 1, '유스케이스 다이어그램은 개발자의 요구를 추출하고 분석하기 위해 주로 사용한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-004:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-004'), 2, '액터는 대상 시스템과 상호 작용하는 사람이나 다른 시스템에 의한 역할이다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-004:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-004'), 3, '사용자 액터는 본 시스템과 데이터를 주고받는 연동 시스템을 의미한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-004:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-004'), 4, '연동의 개념은 일방적으로 데이터를 파일이나 정해진 형식으 로 넘겨주는 것을 의미한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3461,19 +4717,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-005:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-005'), 1, '구조적 기법', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-005:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-005'), 2, '프로토타이핑 기술', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-005:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-005'), 3, '정보 저장소 기술', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-005:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-005'), 4, '일괄처리 기술 - 1 기출문제 & 정답 및 해설 년 2회 정보처리기사 필기 인적인 용도로만 사용할 수 있습니다. 허락 없이 복제하거나 수 없습니다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3494,19 +4762,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-006:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-006'), 1, '객체 모델링, 동적 모델링, 정적 모델링', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-006:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-006'), 2, '객체 모델링, 동적 모델링, 기능 모델링', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-006:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-006'), 3, '동적 모델링, 기능 모델링, 정적 모델링', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-006:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-006'), 4, '정적 모델링, 객체 모델링, 기능 모델링', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3527,19 +4807,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-007:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-007'), 1, 'Dependency', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-007:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-007'), 2, 'Realization', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-007:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-007'), 3, 'Generalization', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-007:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-007'), 4, 'Association', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3560,19 +4852,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-008:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-008'), 1, 'Process', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-008:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-008'), 2, 'Feedback', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-008:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-008'), 3, 'Maintenance', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-008:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-008'), 4, 'Control', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3593,19 +4897,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-009:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-009'), 1, '구현하고자 하는 결과의 오류를 최소화한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-009:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-009'), 2, '사용자의 편의성을 높임으로써 작업시간을 증가시킨다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-009:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-009'), 3, '막연한 작업 기능에 대해 구체적인 방법을 제시하여 준다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-009:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-009'), 4, '사용자 중심의 상호 작용이 되도록 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3626,19 +4942,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-010:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-010'), 1, '㉠ → ㉡ → ㉢ → ㉣', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-010:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-010'), 2, '㉠ → ㉢ → ㉡ → ㉣', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-010:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-010'), 3, '㉠ → ㉣ → ㉡ → ㉢', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-010:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-010'), 4, '㉠ → ㉡ → ㉣ → ㉢', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3659,19 +4987,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-011:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-011'), 1, '개발자와 사용자 간의 지식이나 표현의 차이가 커서 상호 이해 가 쉽지 않다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-011:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-011'), 2, '사용자의 요구는 예외가 거의 없어 열거와 구조화가 어렵지 않다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-011:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-011'), 3, '사용자의 요구사항이 모호하고 불명확하다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-011:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-011'), 4, '소프트웨어 개발 과정 중에 요구사항이 계속 변할 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3692,19 +5032,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-012:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-012'), 1, '가용성(Availability)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-012:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-012'), 2, '독립성(Isolation)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-012:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-012'), 3, '변경 용이성(Modifiability)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-012:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-012'), 4, '사용성(Usability)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3725,19 +5077,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-013:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-013'), 1, '클라이언트 서버 구조', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-013:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-013'), 2, '계층 구조', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-013:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-013'), 3, 'MVC 구조', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-013:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-013'), 4, '파이프 필터 구조 1 - 2회', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3758,19 +5122,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-014:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-014'), 1, 'Instance', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-014:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-014'), 2, 'Message', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-014:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-014'), 3, 'Method', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-014:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-014'), 4, 'Module', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3791,19 +5167,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-015:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-015'), 1, 'Singleton Pattern', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-015:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-015'), 2, 'Adapter Pattern', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-015:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-015'), 3, 'Decorator Pattern', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-015:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-015'), 4, 'State Pattern', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3824,19 +5212,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-016:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-016'), 1, '모델들 사이의 모순검사 기능', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-016:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-016'), 2, '전체 소스 코드 생성 기능', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-016:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-016'), 3, '모델의 오류검증 기능', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-016:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-016'), 4, '자료 흐름도 작성 기능', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3857,19 +5257,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-017:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-017'), 1, '연계 서버', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-017:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-017'), 2, '중계 서버', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-017:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-017'), 3, '송신 시스템', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-017:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-017'), 4, '수신 시스템', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3890,19 +5302,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-018:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-018'), 1, '액티비티 다이어그램(Activity Diagram)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-018:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-018'), 2, '절차 다이어그램(Procedural Diagram)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-018:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-018'), 3, '클래스 다이어그램(Class Diagram)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-018:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-018'), 4, '시퀀스 다이어그램(Sequence Diagram)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3923,19 +5347,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-019:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-019'), 1, 'Class', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-019:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-019'), 2, 'Package', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-019:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-019'), 3, 'Object', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-019:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-019'), 4, 'Message', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3956,19 +5392,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-020:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-020'), 1, '조직화(Organizing)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-020:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-020'), 2, '캡슐화(Encapsulation)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-020:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-020'), 3, '정보 은닉(Infomation Hiding)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-020:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-020'), 4, '구조화(Structuralization) 제2과목 소프트웨어 개발', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -3989,19 +5437,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-021:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-021'), 1, '코드의 중복을 최소화 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-021:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-021'), 2, '코드가 다른 모듈에 미치는 영향을 최대화하도록 작성한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-021:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-021'), 3, '누구든지 코드를 쉽게 읽을 수 있도록 작성한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-021:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-021'), 4, '간단하게 코드를 작성한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4022,19 +5482,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-022:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-022'), 1, '소프트웨어에 가해지는 변경을 제어하고 관리한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-022:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-022'), 2, '프로젝트 계획, 분석서, 설계서, 프로그램, 테스트 케이스 모두 관리 대상이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-022:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-022'), 3, '대표적인 형상관리 도구로 Ant, Maven, Gradle 등이 있다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-022:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-022'), 4, '유지 보수 단계뿐만 아니라 개발 단계에도 적용할 수 있다. - 2', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4055,19 +5527,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-023:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-023'), 1, 'Message Bus', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-023:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-023'), 2, 'Point-to-point', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-023:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-023'), 3, 'Hub & Spoke', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-023:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-023'), 4, 'Hybrid', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4088,19 +5572,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-024:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-024'), 1, '패키징은 개발자 중심으로 진행한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-024:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-024'), 2, '신규 및 변경 개발소스를 식별하고, 이를 모듈화하여 상용제품 으로 패키징 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-024:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-024'), 3, '고객의 편의성을 위해 매뉴얼 및 버전관리를 지속적으로 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-024:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-024'), 4, '범용 환경에서 사용이 가능하도록 일반적인 배포 형태로 패키 징이 진행된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4121,19 +5617,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-025:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-025'), 1, '명세 기반 테스트 설계 도구', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-025:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-025'), 2, '코드 기반 테스트 설계 도구', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-025:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-025'), 3, '기능 테스트 수행 도구', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-025:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-025'), 4, '성능 테스트 도구', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4154,19 +5662,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-026:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-026'), 1, 'Dataware House', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-026:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-026'), 2, 'DRM Controller', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-026:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-026'), 3, 'Packager', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-026:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-026'), 4, 'Contents Distributor', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4187,19 +5707,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-027:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-027'), 1, '살충제 패러독스', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-027:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-027'), 2, '결함 집중', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-027:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-027'), 3, '오류 부재의 궤변', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-027:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-027'), 4, '완벽한 테스팅은 불가능', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4220,19 +5752,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-028:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-028'), 1, '3, 5, 6, 7, 9', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-028:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-028'), 2, '6, 7, 3, 5, 9', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-028:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-028'), 3, '3, 5, 9, 6, 7', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-028:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-028'), 4, '6, 3, 5, 7, 9', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4253,19 +5797,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-029:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-029'), 1, '단일 저장소 방식', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-029:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-029'), 2, '분산 저장소 방식', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-029:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-029'), 3, '공유 폴더 방식', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-029:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-029'), 4, '클라이언트·서버 방식', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4286,19 +5842,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-030:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-030'), 1, 'Foxbase', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-030:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-030'), 2, 'STAF', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-030:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-030'), 3, 'watir', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-030:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-030'), 4, 'xUnit', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4319,19 +5887,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-031:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-031'), 1, '합병 정렬', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-031:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-031'), 2, '버블 정렬', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-031:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-031'), 3, '선택 정렬', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-031:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-031'), 4, '삽입 정렬 2 - 2회', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4352,19 +5932,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-032:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-032'), 1, '비정상적인 자료를 입력해도 오류 처리를 수행하지 않는 경우', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-032:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-032'), 2, '정상적인 자료를 입력해도 요구된 기능이 제대로 수행되지 않 는 경우', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-032:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-032'), 3, '반복 조건을 만족하는데도 루프 내의 문장이 수행되지 않는 경우', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-032:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-032'), 4, '경계값을 입력할 경우 요구된 출력 결과가 나오지 않는 경우', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4385,19 +5977,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-033:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-033'), 1, '화이트박스 테스트는 모듈의 논리적인 구조를 체계적으로 점 검할 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-033:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-033'), 2, '블랙박스 테스트는 프로그램의 구조를 고려하지 않는다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-033:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-033'), 3, '테스트 케이스에는 일반적으로 시험 조건, 테스트 데이터, 예상 결과가 포함되어야 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-033:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-033'), 4, '화이트박스 테스트에서 기본 경로(Basis Path)란 흐름 그래프 의 시작 노드에서 종료 노드까지의 서로 독립된 경로로 싸이클 을 허용하지 않는 경로를 말한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4418,19 +6022,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-034:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-034'), 1, '소프트웨어는 유지보수가 용이해야 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-034:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-034'), 2, '소프트웨어는 신뢰성이 높아야 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-034:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-034'), 3, '소프트웨어는 사용자 수준에 무관하게 일관된 인터페이스를 제공해야 한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-034:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-034'), 4, '소프트웨어는 충분한 테스팅을 거쳐야 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4451,19 +6067,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-035:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-035'), 1, '알고리즘 오류에 따른 원치 않는 결과', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-035:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-035'), 2, '탈출구가 없는 반복문의 사용', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-035:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-035'), 3, '모듈 간의 비정상적 상호 작용으로 인한 원치 않는 결과', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-035:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-035'), 4, '틀린 계산 수식에 의한 잘못된 결과', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4484,19 +6112,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-036:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-036'), 1, '정렬할 입력 레코드들로 힙을 구성하고 가장 큰 키 값을 갖는 루트 노드를 제거하는 과정을 반복하여 정렬하는 기법이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-036:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-036'), 2, '평균 수행 시간은 O(nlogn)이다. 2', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-036:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-036'), 3, '완전 이진트리(Complete Binary Tree)로 입력자료의 레코드 를 구성한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-036:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-036'), 4, '최악의 수행 시간은 O(2n4)이다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4517,19 +6157,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-037:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-037'), 1, '형상 감사(Configuration Audit)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-037:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-037'), 2, '롤백 (Rollback)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-037:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-037'), 3, '단위 테스트(Unit Test)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-037:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-037'), 4, '체크인(Check-In)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4550,19 +6202,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-038:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-038'), 1, '테스트는 오류를 찾는 작업이고 디버깅은 오류를 수정하는 작 업이다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-038:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-038'), 2, '테스트는 오류를 수정하는 작업이고 디버깅은 오류를 찾는 작 업이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-038:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-038'), 3, '둘 다 소프트웨어의 오류를 찾는 작업으로 오류 수정은 하지 않는다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-038:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-038'), 4, '둘 다 소프트웨어 오류의 발견, 수정과 무관하다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4583,19 +6247,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-039:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-039'), 1, '35', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-039:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-039'), 2, '42', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-039:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-039'), 3, '81', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-039:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-039'), 4, '360 - 3', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4616,19 +6292,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-040:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-040'), 1, '선택 정렬', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-040:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-040'), 2, '재귀 호출', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-040:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-040'), 3, '후위 표현(Post-Fix Expression)의 연산', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-040:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-040'), 4, '깊이 우선 탐색 제3과목 데이터베이스 구축', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4649,19 +6337,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-041:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-041'), 1, '24, 35', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-041:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-041'), 2, '24, 12', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-041:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-041'), 3, '10, 35', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-041:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-041'), 4, '10, 12', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4682,19 +6382,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-042:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-042'), 1, '사용자가 직접 시스템 카탈로그의 내용을 갱신하여 데이터베 이스 무결성을 유지한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-042:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-042'), 2, '시스템 자신이 필요로 하는 스키마 및 여러 가지 객체에 관한 정보를 포함하고 있는 시스템 데이터베이스이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-042:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-042'), 3, '시스템 카탈로그에 저장되는 내용을 메타 데이터라고도 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-042:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-042'), 4, '시스템 카탈로그는 DBMS가 스스로 생성하고 유지한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4715,19 +6427,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-043:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-043'), 1, '차집합(Difference)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-043:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-043'), 2, '프로젝트(Project)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-043:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-043'), 3, '조인(Join)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-043:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-043'), 4, '디비전(Division)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4748,19 +6472,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-044:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-044'), 1, '레코드 집중의 분석 및 설계', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-044:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-044'), 2, '접근 경로 설계', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-044:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-044'), 3, '저장 레코드의 양식 설계', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-044:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-044'), 4, '목표 DBMS에 맞는 스키마 설계', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4781,19 +6517,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-045:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-045'), 1, 'SELECT 과목번호, 과목이름 FROM R1, R2 WHERE R1.학 번 = R2.학번 AND R1.학과 = ‘전자공학’ AND R1.이름 = ‘강남길’;', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-045:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-045'), 2, 'SELECT 과목번호, 과목이름 FROM R1, R2 WHERE R1.학번 = R2.학번 OR R1.학과 = ‘전자공학’ OR R1.이름 = ‘홍길동’;', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-045:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-045'), 3, 'SELECT 과목번호, 과목이름 FROM R1, R2 WHERE R1.학번 = R2.학번 AND R1.학과 = ‘컴퓨터공학’ AND R1.이름 = ‘강남 길’;', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-045:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-045'), 4, 'SELECT 과목번호, 과목이름 FROM R1, R2 WHERE R1.학번 = R2.학번 OR R1.학과 = ‘컴퓨터공학’ OR R1.이름 = ‘홍길동’;', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4814,19 +6562,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-046:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-046'), 1, '로킹 기법', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-046:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-046'), 2, '시분할 기법', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-046:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-046'), 3, '타임 스탬프 기법', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-046:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-046'), 4, '다중 버전 기법', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4847,19 +6607,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-047:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-047'), 1, 'FROM 절에는 질의에 의해 검색될 데이터들을 포함하는 테이 블명을 기술한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-047:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-047'), 2, '검색결과에 중복되는 레코드를 없애기 위해서는 WHERE 절 에 ‘DISTINCT’ 키워드를 사용한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-047:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-047'), 3, 'HAVING 절은 GROUP BY 절과 함께 사용되며, 그룹에 대한 조건을 지정한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-047:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-047'), 4, 'ORDER BY 절은 특정 속성을 기준으로 정렬하여 검색할 때 사용한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4880,19 +6652,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-048:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-048'), 1, '결정자가 후보키가 아닌 함수 종속 제거', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-048:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-048'), 2, '이행적 함수 종속 제거', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-048:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-048'), 3, '부분적 함수 종속 제거', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-048:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-048'), 4, '원자값이 아닌 도메인 분해', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4913,19 +6697,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-049:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-049'), 1, 'ERASE', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-049:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-049'), 2, 'KILL', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-049:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-049'), 3, 'DROP', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-049:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-049'), 4, 'DELETE', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4946,19 +6742,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-050:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-050'), 1, 'COMMIT 연산', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-050:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-050'), 2, 'BACKUP 연산', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-050:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-050'), 3, 'LOG 연산', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-050:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-050'), 4, 'ROLLBACK 연산', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -4979,19 +6787,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-051:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-051'), 1, 'ALTER', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-051:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-051'), 2, 'SELECT', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-051:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-051'), 3, 'CREATE', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-051:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-051'), 4, 'INSERT', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5012,19 +6832,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-052:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-052'), 1, '검색이상', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-052:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-052'), 2, '삽입이상', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-052:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-052'), 3, '삭제이상', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-052:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-052'), 4, '갱신이상 - 4', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5045,19 +6877,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-053:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-053'), 1, '20202222 20 CS200 학번', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-053:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-053'), 2, '2020222 학번 20201111 20202222', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-053:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-053'), 3, '20203333 학번 학점 수 과목번호 20201111 15 NULL 20202222 20 CS200', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-053:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-053'), 4, '20203333 NULL CS300', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5078,19 +6922,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-054:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-054'), 1, '튜플의 수', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-054:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-054'), 2, '테이블의 수', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-054:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-054'), 3, '데이터베이스의 수', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-054:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-054'), 4, '애트리뷰트의 수', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5111,19 +6967,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-055:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-055'), 1, 'SET', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-055:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-055'), 2, 'FROM', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-055:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-055'), 3, 'INTO', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-055:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-055'), 4, 'IN', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5144,19 +7012,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-056:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-056'), 1, '라운드-로빈', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-056:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-056'), 2, '범위 분할', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-056:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-056'), 3, '예측 분할', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-056:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-056'), 4, '해시 분할', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5177,19 +7057,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-057:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-057'), 1, '모든 속성 값은 원자 값을 갖는다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-057:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-057'), 2, '한 릴레이션에 포함된 튜플은 모두 상이하다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-057:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-057'), 3, '한 릴레이션에 포함된 튜플 사이에는 순서가 없다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-057:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-057'), 4, '한 릴레이션을 구성하는 속성 사이에는 순서가 존재한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5210,19 +7102,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-058:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-058'), 1, '속성은 개체의 특성을 기술한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-058:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-058'), 2, '속성은 데이터베이스를 구성하는 가장 작은 논리적 단위이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-058:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-058'), 3, '속성은 파일 구조상 데이터 항목 또는 데이터 필드에 해당된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-058:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-058'), 4, '속성의 수를 “cardinality”라고 한다. 4 - 2회', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5243,19 +7147,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-059:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-059'), 1, '참조 무결성', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-059:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-059'), 2, '보안 무결성', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-059:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-059'), 3, '개체 무결성', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-059:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-059'), 4, '정보 무결성', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5276,19 +7192,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-060:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-060'), 1, '개체타입 – 사각형', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-060:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-060'), 2, '속성 - 원형', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-060:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-060'), 3, '관계타입 - 마름모', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-060:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-060'), 4, '연결 – 삼각형 제4과목 프로그래밍 언어 활용', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5309,19 +7237,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-061:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-061'), 1, '기억장소 이용 효율이 증가한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-061:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-061'), 2, '입·출력 시간이 늘어난다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-061:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-061'), 3, '내부 단편화가 감소한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-061:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-061'), 4, '페이지 맵 테이블의 크기가 감소한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5342,19 +7282,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-062:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-062'), 1, '3', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-062:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-062'), 2, '4', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-062:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-062'), 3, '7', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-062:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-062'), 4, '10', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5375,19 +7327,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-063:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-063'), 1, '0', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-063:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-063'), 2, '2', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-063:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-063'), 3, '4', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-063:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-063'), 4, '6', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5408,19 +7372,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-064:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-064'), 1, '255.255.255.0', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-064:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-064'), 2, '255.255.255.224', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-064:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-064'), 3, '255.255.255.240', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-064:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-064'), 4, '255.255.255.248', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5441,19 +7417,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-065:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-065'), 1, '패킷을 발신지로부터 최종 목적지까지 전달하는 책임을 진다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-065:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-065'), 2, '한 노드로부터 다른 노드로 프레임을 전송하는 책임을 진다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-065:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-065'), 3, '패킷에 발신지와 목적지의 논리 주소를 추가한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-065:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-065'), 4, '라우터 또는 교환기는 패킷 전달을 위해 경로를 지정하거나 교환 기능을 제공한다. - 5', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5474,19 +7462,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-066:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-066'), 1, '1', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-066:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-066'), 2, '11', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-066:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-066'), 3, '66', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-066:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-066'), 4, '98', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5507,19 +7507,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-067:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-067'), 1, 'Sequential Cohesion', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-067:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-067'), 2, 'Procedural Cohesion', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-067:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-067'), 3, 'Logical Cohesion', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-067:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-067'), 4, 'Coincidental Cohesion', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5540,19 +7552,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-068:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-068'), 1, '소프트웨어 구성에 필요한 기본 구조를 제공함으로써 재사용 이 가능하게 해준다', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-068:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-068'), 2, '소프트웨어 개발 시 구조가 잡혀 있기 때문에 확장이 불가능하 다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-068:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-068'), 3, '소프트웨어 아키텍처(Architecture)와 동일한 개념이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-068:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-068'), 4, '모듈화(Modularity)가 불가능하다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5573,19 +7597,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-069:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-069'), 1, '5, 5, 5', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-069:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-069'), 2, '5, 6, 5', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-069:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-069'), 3, '6, 5, 5', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-069:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-069'), 4, '5, 6, 4', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5606,19 +7642,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-070:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-070'), 1, '55', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-070:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-070'), 2, '77', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-070:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-070'), 3, '121', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-070:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-070'), 4, '132', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5639,19 +7687,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-071:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-071'), 1, '문자열을 수치 데이터로 바꾸는 문자 변환함수와 수치를 문자 열로 바꿔주는 변환함수 등이 있다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-071:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-071'), 2, '문자열 처리 함수로 strlen()이 포함되어 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-071:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-071'), 3, '표준 입출력 라이브러리이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-071:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-071'), 4, '삼각 함수, 제곱근, 지수 등 수학적인 함수를 내장하고 있다. 5 - 2회', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5672,19 +7732,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-072:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-072'), 1, '반복, 스택, 부프로그램은 시간 지역성(Temporal Locality)과 관련이 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-072:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-072'), 2, '공간 지역성(Spatial Locality)은 프로세스가 어떤 페이지를 참조했다면 이후 가상주소 공간상 그 페이지와 인접한 페이지 들을 참조할 가능성이 높음을 의미한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-072:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-072'), 3, '일반적으로 페이지 교환에 보내는 시간보다 프로세스 수행에 보내는 시간이 더 크면 스레싱(Thrashing)이 발생한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-072:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-072'), 4, '스레싱(Thrashing) 현상을 방지하기 위해서는 각 프로세스가 필요로 하는 프레임을 제공할 수 있어야 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5705,19 +7777,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-073:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-073'), 1, 'Detection', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-073:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-073'), 2, 'Avoidance', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-073:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-073'), 3, 'Recovery', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-073:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-073'), 4, 'Prevention', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5738,19 +7822,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-074:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-074'), 1, 'Common Coupling', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-074:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-074'), 2, 'Content Coupling', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-074:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-074'), 3, 'External Coupling', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-074:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-074'), 4, 'Stamp Coupling', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5771,19 +7867,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-075:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-075'), 1, '프로토타입(Prototype)의 개념이 존재한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-075:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-075'), 2, '클래스 기반으로 객체 상속을 지원한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-075:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-075'), 3, 'Prototype Link와 Prototype Object를 활용할 수 있다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-075:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-075'), 4, '객체지향 언어이다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5804,19 +7912,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-076:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-076'), 1, '㉠, ㉥, ㉣, ㉢, ㉡, ㉤', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-076:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-076'), 2, '㉠, ㉣, ㉥, ㉢, ㉡, ㉤', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-076:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-076'), 3, '㉠, ㉣, ㉥, ㉢, ㉤, ㉡', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-076:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-076'), 4, '㉠, ㉥, ㉣, ㉤, ㉡, ㉢', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5837,19 +7957,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-077:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-077'), 1, '2', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-077:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-077'), 2, '3', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-077:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-077'), 3, '4', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-077:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-077'), 4, '5', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5870,19 +8002,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-078:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-078'), 1, '변수를 출력하고자 할 때는 export를 사용해야 한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-078:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-078'), 2, 'export가 매개변수 없이 쓰일 경우 현재 설정된 환경변수들이 출력된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-078:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-078'), 3, '사용자가 생성하는 변수는 export 명령어로 표시하지 않는 한 현재 쉘에 국한된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-078:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-078'), 4, '변수를 export 시키면 전역(Global)변수처럼 되어 끝까지 기 억된다. - 6', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5903,19 +8047,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-079:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-079'), 1, '인접한 노드 사이의 프레임 전송 및 오류를 제어한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-079:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-079'), 2, '흐름 제어(Flow Control)의 기능을 수행한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-079:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-079'), 3, '전이중(Full Duplex) 방식의 양방향 가상회선을 제공한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-079:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-079'), 4, '전송 데이터와 응답 데이터를 함께 전송할 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5936,19 +8092,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-080:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-080'), 1, 'STA', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-080:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-080'), 2, 'Collision Domain', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-080:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-080'), 3, 'CSMA/CA', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-080:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-080'), 4, 'CSMA/CD 제5과목 : 정보시스템 구축 관리', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -5969,19 +8137,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-081:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-081'), 1, 'SSH의 기본 네트워크 포트는 220번을 사용한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-081:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-081'), 2, '전송되는 데이터는 암호화 된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-081:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-081'), 3, '키를 통한 인증은 클라이언트의 공개키를 서버에 등록해야 한 다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-081:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-081'), 4, '서로 연결되어 있는 컴퓨터 간 원격 명령 실행이나 셀 서비스 등을 수행한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6002,19 +8182,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-082:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-082'), 1, 'Block Host', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-082:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-082'), 2, 'Tree Host', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-082:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-082'), 3, 'Screened Subnet', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-082:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-082'), 4, 'Ring Homed', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6035,19 +8227,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-083:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-083'), 1, 'Addition Error', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-083:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-083'), 2, 'Omission Error', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-083:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-083'), 3, 'Sequence Error', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-083:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-083'), 4, 'Transcription Error', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6068,19 +8272,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-084:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-084'), 1, 'Memristor', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-084:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-084'), 2, 'MEMS', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-084:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-084'), 3, 'SNMP', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-084:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-084'), 4, 'N-Screen', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6101,19 +8317,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-085:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-085'), 1, '식별 및 인증', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-085:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-085'), 2, '임의적 접근 통제', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-085:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-085'), 3, '고가용성 지원', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-085:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-085'), 4, '강제적 접근 통제 6 - 2회', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6134,19 +8362,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-086:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-086'), 1, 'Stack Guard', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-086:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-086'), 2, 'Bridge', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-086:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-086'), 3, 'ASLR', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-086:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-086'), 4, 'FIN', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6167,19 +8407,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-087:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-087'), 1, 'Clark-Wilson Integrity Model', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-087:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-087'), 2, 'PDCA Model', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-087:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-087'), 3, 'Bell-Lapadula Model', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-087:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-087'), 4, 'Chinese Wall Model', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6200,19 +8452,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-088:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-088'), 1, '획득 프로세스', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-088:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-088'), 2, '개발 프로세스', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-088:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-088'), 3, '성능평가 프로세스', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-088:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-088'), 4, '유지보수 프로세스', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6233,19 +8497,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-089:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-089'), 1, '네트워크 변화에 신속하게 대처할 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-089:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-089'), 2, '거리 벡터 라우팅 프로토콜이라고 한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-089:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-089'), 3, '멀티캐스팅을 지원한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-089:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-089'), 4, '최단 경로 탐색에 Dijkstra 알고리즘을 사용한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6266,19 +8542,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-090:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-090'), 1, 'SAN', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-090:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-090'), 2, 'MBR', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-090:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-090'), 3, 'NAC', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-090:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-090'), 4, 'NIC', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6299,19 +8587,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-091:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-091'), 1, '클래스 설계서', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-091:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-091'), 2, '통합시험 결과서', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-091:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-091'), 3, '프로그램 코드', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-091:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-091'), 4, '사용자 요구사항 정의서', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6332,19 +8632,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-092:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-092'), 1, 'PUTNAM', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-092:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-092'), 2, 'COCOMO', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-092:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-092'), 3, 'FP', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-092:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-092'), 4, 'SLIM', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6365,19 +8677,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-093:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-093'), 1, '수준 7 - 미완성 단계', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-093:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-093'), 2, '수준 5 - 최적화 단계', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-093:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-093'), 3, '수준 4 - 예측 단계', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-093:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-093'), 4, '수준 3 - 확립 단계 - 7', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6398,19 +8722,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-094:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-094'), 1, 'L2 스위치', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-094:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-094'), 2, 'HIPO', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-094:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-094'), 3, '라우터', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-094:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-094'), 4, 'RAD', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6431,19 +8767,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-095:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-095'), 1, 'RSA', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-095:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-095'), 2, 'AES', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-095:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-095'), 3, 'DSA', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-095:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-095'), 4, 'ECC', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6464,19 +8812,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-096:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-096'), 1, '암호화 수행시 일방향 암호화만 지원한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-096:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-096'), 2, 'ESP는 발신지 인증, 데이터 무결성, 기밀성 모두를 보장한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-096:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-096'), 3, '운영 모드는 Tunnel 모드와 Transport 모드로 분류된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-096:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-096'), 4, 'AH는 발신지 호스트를 인증하고, IP 패킷의 무결성을 보장한 다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6497,19 +8857,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-097:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-097'), 1, 'type', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-097:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-097'), 2, 'mkdir', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-097:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-097'), 3, 'ftp', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-097:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-097'), 4, 'nmap', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6530,19 +8902,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-098:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-098'), 1, 'Apnic', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-098:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-098'), 2, 'Topology', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-098:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-098'), 3, 'Sqoop', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-098:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-098'), 4, 'SDB', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6563,19 +8947,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-099:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-099'), 1, '임의의 길이의 입력 데이터를 받아 고정된 길이의 해쉬 값으로 변환한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-099:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-099'), 2, '주로 공개키 암호화 방식에서 키 생성을 위해 사용한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-099:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-099'), 3, '대표적인 해쉬 알고리즘으로 HAVAL, SHA-1 등이 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-099:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-099'), 4, '해쉬 함수는 일방향 함수(One-way function)이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6596,19 +8992,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-100:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-100'), 1, 'COCOMO', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-100:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-100'), 2, 'Putnam', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-100:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-100'), 3, 'Function-Point', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-100:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-2-100'), 4, 'PERT 7 -', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 -- 2021년 3회 정보처리기사 필기
 
@@ -6633,19 +9041,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-001:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-001'), 1, '요구사항이 고객이 정말 원하는 시스템을 제대로 정의하고 있 는지 점검하는 과정이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-001:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-001'), 2, '개발완료 이후에 문제점이 발견될 경우 막대한 재작업 비용이 들 수 있기 때문에 요구사항 검증은 매우 중요하다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-001:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-001'), 3, '요구사항이 실제 요구를 반영하는지, 문서상의 요구사항은 서 로 상충되지 않는지 등을 점검한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-001:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-001'), 4, '요구사항 검증 과정을 통해 모든 요구사항 문제를 발견할 수 있다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6666,19 +9086,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-002:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-002'), 1, 'Association', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-002:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-002'), 2, 'Dependency', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-002:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-002'), 3, 'Realization', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-002:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-002'), 4, 'Generalization', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6699,19 +9131,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-003:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-003'), 1, '빠른 개발을 위해 테스트를 수행하지 않는다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-003:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-003'), 2, '사용자의 요구사항은 언제든지 변할 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-003:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-003'), 3, '고객과 직접 대면하며 요구사항을 이야기하기 위해 사용자 스 토리(User Story)를 활용할 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-003:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-003'), 4, '기존의 방법론에 비해 실용성(Pragmatism)을 강조한 것이라 고 볼 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6732,19 +9176,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-004:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-004'), 1, '자료 추상화', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-004:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-004'), 2, '제어 추상화', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-004:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-004'), 3, '과정 추상화', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-004:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-004'), 4, '강도 추상화', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6765,19 +9221,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-005:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-005'), 1, '필요하지 않은 정보는 접근할 수 없도록 하여 한 모듈 또는 하부 시스템이 다른 모듈의 구현에 영향을 받지 않게 설계되는 것을 의미한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-005:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-005'), 2, '모듈들 사이의 독립성을 유지시키는 데 도움이 된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-005:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-005'), 3, '설계에서 은닉되어야 할 기본 정보로는 IP 주소와 같은 물리적 코드, 상세 데이터 구조 등이 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-005:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-005'), 4, '모듈 내부의 자료 구조와 접근 동작들에만 수정을 국한하기 때문에 요구사항 등 변화에 따른 수정이 불가능하다. - 1 기출문제 & 정답 및 해설 년 3회 정보처리기사 필기 인적인 용도로만 사용할 수 있습니다. 허락 없이 복제하거나 수 없습니다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6798,19 +9266,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-006:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-006'), 1, '개발팀이 응용문제를 이해하는 데 도움을 줄 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-006:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-006'), 2, '유지보수 단계에서만 모델링 기법을 활용한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-006:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-006'), 3, '개발될 시스템에 대하여 여러 분야의 엔지니어들이 공통된 개 념을 공유하는 데 도움을 준다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-006:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-006'), 4, '절차적인 프로그램을 위한 자료 흐름도는 프로세스 위주의 모 델링 방법이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6831,19 +9311,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-007:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-007'), 1, '요구 분석은 소프트웨어 개발의 실제적인 첫 단계로, 사용자의 요구에 대해 이해하는 단계라 할 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-007:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-007'), 2, '요구 추출(Requirement Elicitation)은 프로젝트 계획 단계에 정의한 문제의 범위 안에 있는 사용자의 요구를 찾는 단계이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-007:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-007'), 3, '도메인 분석(Domain Analysis)은 요구에 대한 정보를 수집하 고 배경을 분석하여 이를 토대로 모델링을 하게 된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-007:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-007'), 4, '기능적(Functional) 요구에서 시스템 구축에 대한 성능, 보안, 품질, 안정 등에 대한 요구사항을 도출한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6864,19 +9356,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-008:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-008'), 1, 'Instance', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-008:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-008'), 2, 'Operation', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-008:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-008'), 3, 'Item', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-008:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-008'), 4, 'Hiding', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6897,19 +9401,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-009:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-009'), 1, '일반적으로 실시간 시스템에서 사용된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-009:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-009'), 2, '마스터 프로세스는 일반적으로 연산, 통신, 조정을 책임진다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-009:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-009'), 3, '슬레이브 프로세스는 데이터 수집 기능을 수행할 수 없다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-009:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-009'), 4, '마스터 프로세스는 슬레이브 프로세스들을 제어할 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6930,19 +9446,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-010:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-010'), 1, 'Data Flow Diagram', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-010:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-010'), 2, 'UML Diagram', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-010:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-010'), 3, 'E-R Diagram', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-010:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-010'), 4, 'AVL Diagram', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6963,19 +9491,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-011:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-011'), 1, '캡슐화는 상위 클래스에서 속성이나 연산을 전달받아 새로운 형태의 클래스로 확장하여 사용하는 것을 의미한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-011:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-011'), 2, '객체는 실세계에 존재하거나 생각할 수 있는 것을 말한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-011:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-011'), 3, '클래스는 하나 이상의 유사한 객체들을 묶어 공통된 특성을 표현한 것이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-011:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-011'), 4, '다형성은 상속받은 여러 개의 하위 객체들이 다른 형태의 특성 을 갖는 객체로 이용될 수 있는 성질이다. 1 - 3회', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -6996,19 +9536,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-012:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-012'), 1, '사용자와 시스템이 정보를 주고받는 상호작용이 잘 이루어지 도록 하는 장치나 소프트웨어를 의미한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-012:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-012'), 2, '편리한 유지보수를 위해 개발자 중심으로 설계되어야 한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-012:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-012'), 3, '배우기가 용이하고 쉽게 사용할 수 있도록 만들어져야 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-012:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-012'), 4, '사용자 요구사항이 UI에 반영될 수 있도록 구성해야 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7029,19 +9581,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-013:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-013'), 1, '디자인 패턴을 목적(Purpose)으로 분류할 때 생성, 구조, 행위 로 분류할 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-013:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-013'), 2, 'Strategy 패턴은 대표적인 구조 패턴으로 인스턴스를 복제하 여 사용하는 구조를 말한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-013:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-013'), 3, '행위 패턴은 클래스나 객체들이 상호작용하는 방법과 책임을 분산하는 방법을 정의한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-013:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-013'), 4, 'Singleton 패턴은 특정 클래스의 인스턴스가 오직 하나임을 보장하고, 이 인스턴스에 대한 접근 방법을 제공한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7062,19 +9626,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-014:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-014'), 1, '빠른 릴리즈를 통해 문제점을 빠르게 파악할 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-014:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-014'), 2, '정확한 결과 도출을 위해 계획 수립과 문서화에 중점을 둔다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-014:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-014'), 3, '고객과의 의사소통을 중요하게 생각한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-014:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-014'), 4, '진화하는 요구사항을 수용하는데 적합하다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7095,19 +9671,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-015:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-015'), 1, '기능 모델링', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-015:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-015'), 2, '동적 모델링', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-015:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-015'), 3, '객체 모델링', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-015:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-015'), 4, '정적 모델링', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7128,19 +9716,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-016:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-016'), 1, '객체들의 상호 작용을 나타내기 위해 사용한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-016:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-016'), 2, '시간의 흐름에 따라 객체들이 주고 받는 메시지의 전달 과정을 강조한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-016:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-016'), 3, '동적 다이어그램보다는 정적 다이어그램에 가깝다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-016:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-016'), 4, '교류 다이어그램(Interaction Diagram)의 한 종류로 볼 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7161,19 +9761,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-017:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-017'), 1, '동적 모델링 기법이 사용될 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-017:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-017'), 2, '기능 중심으로 시스템을 파악하며 순차적인 처리가 중요시되 는 하향식(Top-down) 방식으로 볼 수 있다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-017:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-017'), 3, '데이터와 행위를 하나로 묶어 객체를 정의하고 추상화시키는 작업이라 할 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-017:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-017'), 4, '코드 재사용에 의한 프로그램 생산성 향상 및 요구에 따른 시스 템의 쉬운 변경이 가능하다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7194,19 +9806,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-018:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-018'), 1, 'GUI(Graphical User Interface)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-018:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-018'), 2, 'CLI(Command Line Interface)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-018:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-018'), 3, 'CUI(Cell User Interface)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-018:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-018'), 4, 'MUI(Mobile User Interface)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7227,19 +9851,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-019:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-019'), 1, '분산 시스템에서 다양한 부분을 관리하고 통신하며 데이터를 교환하게 해주는 소프트웨어로 볼 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-019:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-019'), 2, '위치 투명성(Location Transparency)을 제공한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-019:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-019'), 3, '분산 시스템의 여러 컴포넌트가 요구하는 재사용 가능한 서비 스의 구현을 제공한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-019:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-019'), 4, '애플리케이션과 사용자 사이에서만 분산 서비스를 제공한다. - 2', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7260,19 +9896,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-020:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-020'), 1, '파이프 필터 아키텍처에서 데이터는 파이프를 통해 양방향으 로 흐르며, 필터 이동 시 오버헤드가 발생하지 않는다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-020:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-020'), 2, '외부에서 인식할 수 있는 특성이 담긴 소프트웨어의 골격이 되는 기본 구조로 볼 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-020:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-020'), 3, '데이터 중심 아키텍처는 공유 데이터 저장소를 통해 접근자 간의 통신이 이루어지므로 각 접근자의 수정과 확장이 용이하 다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-020:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-020'), 4, '이해 관계자들의 품질 요구사항을 반영하여 품질 속성을 결정 한다. 제2과목 소프트웨어 개발', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7293,19 +9941,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-021:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-021'), 1, '시스템에 고의로 실패를 유도하고 시스템이 정상적으로 복귀 하는지 테스트한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-021:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-021'), 2, '시스템에 과다 정보량을 부과하여 과부하 시에도 시스템이 정 상적으로 작동되는지를 테스트한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-021:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-021'), 3, '사용자의 이벤트에 시스템이 응답하는 시간, 특정 시간 내에 처리하는 업무량, 사용자 요구에 시스템이 반응하는 속도 등을 테스트한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-021:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-021'), 4, '부당하고 불법적인 침입을 시도하여 보안시스템이 불법적인 침투를 잘 막아내는지 테스트한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7326,19 +9986,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-022:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-022'), 1, '6, 3, 5, 7, 9', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-022:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-022'), 2, '3, 5, 6, 7, 9', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-022:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-022'), 3, '6, 7, 3, 5, 9', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-022:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-022'), 4, '3, 5, 9, 6, 7', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7359,19 +10031,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-023:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-023'), 1, 'ABECDFG', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-023:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-023'), 2, 'ABECFDG', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-023:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-023'), 3, 'ABCDEFG', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-023:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-023'), 4, 'ABEFGCD', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7392,19 +10076,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-024:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-024'), 1, '통합 프로그램', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-024:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-024'), 2, '저장소', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-024:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-024'), 3, '모듈', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-024:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-024'), 4, '데이터 2 - 3회', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7425,19 +10121,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-025:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-025'), 1, '시험대상 모듈을 호출하는 간이 소프트웨어이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-025:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-025'), 2, '필요에 따라 매개 변수를 전달하고 모듈을 수행한 후의 결과를 보여줄 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-025:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-025'), 3, '상향식 통합 테스트에서 사용된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-025:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-025'), 4, '테스트 대상 모듈이 호출하는 하위 모듈의 역할을 한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7458,19 +10166,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-026:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-026'), 1, '스택, 트리', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-026:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-026'), 2, '큐, 데크', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-026:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-026'), 3, '큐, 그래프', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-026:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-026'), 4, '리스트, 그래프', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7491,19 +10211,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-027:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-027'), 1, 'Overflow', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-027:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-027'), 2, 'Top = Top + 1', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-027:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-027'), 3, 'Underflow', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-027:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-027'), 4, 'Top = Top', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7524,19 +10256,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-028:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-028'), 1, '(가)-㉠, (나)-㉡, (다)-㉢', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-028:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-028'), 2, '(가)-㉢, (나)-㉡, (다)-㉠', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-028:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-028'), 3, '(가)-㉠, (나)-㉢, (다)-㉡', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-028:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-028'), 4, '(가)-㉢, (나)-㉠, (다)-㉡', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7557,19 +10301,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-029:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-029'), 1, 'D, C, B, A', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-029:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-029'), 2, 'B, C, D, A', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-029:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-029'), 3, 'C, B, A, D', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-029:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-029'), 4, 'D, B, C, A', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7590,19 +10346,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-030:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-030'), 1, '소프트웨어 테스트에서 검증과 확인을 구별하면 찾고자 하는 결함 유형을 명확하게 하는 데 도움이 된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-030:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-030'), 2, '검증은 소프트웨어 개발 과정을 테스트하는 것이고, 확인은 소프트웨어 결과를 테스트 것이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-030:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-030'), 3, '검증은 작업 제품이 요구 명세의 기능, 비기능 요구사항을 얼마 - 3 나 잘 준수하는지 측정하는 작업이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-030:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-030'), 4, '검증은 작업 제품이 사용자의 요구에 적합한지 측정하며, 확인 은 작업 제품이 개발자의 기대를 충족시키는지를 측정한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7623,19 +10391,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-031:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-031'), 1, '통합 테스트(Integration Test)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-031:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-031'), 2, '단위 테스트(Unit Test)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-031:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-031'), 3, '시스템 테스트(System Test)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-031:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-031'), 4, '인수 테스트(Acceptance Test)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7656,19 +10436,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-032:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-032'), 1, '형상 식별은 형상 관리 계획을 근거로 형상관리의 대상이 무엇 인지 식별하는 과정이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-032:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-032'), 2, '형상 관리를 통해 가시성과 추적성을 보장함으로써 소프트웨 어의 생산성과 품질을 높일 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-032:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-032'), 3, '형상 통제 과정에서는 형상 목록의 변경 요구를 즉시 수용 및 반영해야 한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-032:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-032'), 4, '형상 감사는 형상 관리 계획대로 형상 관리가 진행되고 있는지, 형상 항목의 변경이 요구 사항에 맞도록 제대로 이뤄졌는지 등을 살펴보는 활동이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7689,19 +10481,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-033:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-033'), 1, '소스 코드를 실행시키지 않고 분석한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-033:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-033'), 2, '코드에 있는 오류나 잠재적인 오류를 찾아내기 위한 활동이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-033:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-033'), 3, '하드웨어적인 방법으로만 코드 분석이 가능하다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-033:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-033'), 4, '자료 흐름이나 논리 흐름을 분석하여 비정상적인 패턴을 찾을 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7722,19 +10526,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-034:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-034'), 1, 'Fault', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-034:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-034'), 2, 'Testcase', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-034:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-034'), 3, 'Mistake', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-034:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-034'), 4, 'Inspection', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7755,19 +10571,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-035:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-035'), 1, '공백을 이용하여 실행문 그룹과 주석을 명확히 구분한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-035:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-035'), 2, '복잡한 논리식과 산술식은 괄호와 들여쓰기(Indentation)를 통 해 명확히 표현한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-035:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-035'), 3, '빈 줄을 사용하여 선언부와 구현부를 구별한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-035:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-035'), 4, '한 줄에 최대한 많은 문장을 코딩한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7788,19 +10616,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-036:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-036'), 1, 'Portability', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-036:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-036'), 2, 'Efficiency', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-036:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-036'), 3, 'Usability', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-036:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-036'), 4, 'Correctness', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7821,19 +10661,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-037:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-037'), 1, '이진 탐색트리', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-037:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-037'), 2, 'AVL 트리', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-037:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-037'), 3, '2-3 트리', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-037:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-037'), 4, '레드-블랙 트리', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7854,19 +10706,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-038:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-038'), 1, 'ABDCEF', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-038:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-038'), 2, 'ABCDEF', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-038:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-038'), 3, 'DBECFA', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-038:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-038'), 4, 'DBAECF 3 - 3회', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7887,19 +10751,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-039:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-039'), 1, '스터브(Stub)와 드라이버(Driver)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-039:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-039'), 2, '입력 도메인 분석', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-039:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-039'), 3, '랜덤(Random) 테스트', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-039:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-039'), 4, '자료 흐름도', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7920,19 +10796,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-040:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-040'), 1, '콘텐츠를 제공하는 저작권자를 의미한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-040:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-040'), 2, '콘텐츠를 메타 데이터와 함께 배포 가능한 단위로 묶는다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-040:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-040'), 3, '라이선스를 발급하고 관리한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-040:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-040'), 4, '배포된 콘텐츠의 이용 권한을 통제한다. 제3과목 데이터베이스 구축', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7953,19 +10841,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-041:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-041'), 1, '무결성 규정에는 데이터가 만족해야 될 제약 조건, 규정을 참조 할 때 사용하는 식별자 등의 요소가 포함될 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-041:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-041'), 2, '무결성 규정의 대상으로는 도메인, 키, 종속성 등이 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-041:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-041'), 3, '정식으로 허가 받은 사용자가 아닌 불법적인 사용자에 의한 갱신으로부터 데이터베이스를 보호하기 위한 규정이다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-041:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-041'), 4, '릴레이션 무결성 규정(Relation Integrity Rules)은 릴레이션 을 조작하는 과정에서의 의미적 관계(Semantic Relationship) 를 명세한 것이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -7986,19 +10886,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-042:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-042'), 1, '트랜잭션', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-042:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-042'), 2, '뷰', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-042:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-042'), 3, '튜플', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-042:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-042'), 4, '카디널리티', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8019,19 +10931,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-043:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-043'), 1, '(1, 컴퓨터), (2, 국문), (3, 수학)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-043:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-043'), 2, '(2, 컴퓨터), (2, 국문), (2, 수학)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-043:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-043'), 3, '(3, 컴퓨터), (3, 국문), (3, 수학)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-043:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-043'), 4, '(1, 컴퓨터), (1, 국문), (1, 수학), (2, 컴퓨터), (2, 국문), (2, 수학), (3, 컴퓨터), (3, 국문), (3, 수학)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8052,19 +10976,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-044:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-044'), 1, '물리적 설계의 목적은 효율적인 방법으로 데이터를 저장하는 것이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-044:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-044'), 2, '트랜잭션 처리량과 응답시간, 디스크 용량 등을 고려해야 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-044:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-044'), 3, '저장 레코드의 형식, 순서, 접근 경로와 같은 정보를 사용하여 설계한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-044:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-044'), 4, '트랜잭션의 인터페이스를 설계하며, 데이터 타입 및 데이터 타입들 간의 관계로 표현한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8085,19 +11021,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-045:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-045'), 1, '개체 무결성 제약조건', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-045:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-045'), 2, '참조 무결성 제약조건', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-045:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-045'), 3, '도메인 무결성 제약조건', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-045:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-045'), 4, '속성 무결성 제약조건', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8118,19 +11066,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-046:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-046'), 1, 'LIKE 절', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-046:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-046'), 2, 'WHERE 절', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-046:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-046'), 3, 'GROUP BY 절', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-046:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-046'), 4, 'ORDER BY 절', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8151,19 +11111,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-047:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-047'), 1, '디비전(Division)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-047:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-047'), 2, '프로젝트(Project)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-047:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-047'), 3, '조인(Join)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-047:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-047'), 4, '포크(Fork)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8184,19 +11156,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-048:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-048'), 1, 'SELECT 학생명 FROM 학적 WHERE 전화번호 DON''T NULL;', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-048:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-048'), 2, 'SELECT 학생명 FROM 학적 WHERE 전화번호 != NOT NULL;', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-048:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-048'), 3, 'SELECT 학생명 FROM 학적 WHERE 전화번호 IS NOT NULL;', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-048:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-048'), 4, 'SELECT 학생명 FROM 학적 WHERE 전화번호 IS NULL;', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8217,19 +11201,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-049:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-049'), 1, '후보키', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-049:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-049'), 2, '대체키', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-049:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-049'), 3, '슈퍼키', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-049:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-049'), 4, '외래키', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8250,19 +11246,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-050:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-050'), 1, '인덱스의 기본 목적은 검색 성능을 최적화하는 것으로 볼 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-050:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-050'), 2, 'B-트리 인덱스는 분기를 목적으로 하는 Branch Block을 가지 고 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-050:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-050'), 3, 'BETWEEN 등 범위(Range) 검색에 활용될 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-050:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-050'), 4, '시스템이 자동으로 생성하여 사용자가 변경할 수 없다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8283,19 +11291,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-051:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-051'), 1, '로킹 단위가 크면 병행성 수준이 낮아진다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-051:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-051'), 2, '로킹 단위가 크면 병행 제어 기법이 복잡해진다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-051:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-051'), 3, '로킹 단위가 작으면 로크(lock)의 수가 적어진다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-051:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-051'), 4, '로킹은 파일 단위로 이루어지며, 레코드와 필드는 로킹 단위가 될 수 없다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8316,19 +11336,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-052:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-052'), 1, '원하는 릴레이션을 정의하는 방법을 제공하며 비절차적 언어 이다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-052:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-052'), 2, '릴레이션 조작을 위한 연산의 집합으로 피연산자와 결과가 모 두 릴레이션이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-052:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-052'), 3, '일반 집합 연산과 순수 관계 연산으로 구분된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-052:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-052'), 4, '질의에 대한 해를 구하기 위해 수행해야 할 연산의 순서를 명시 한다. 4 - 3회', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8349,19 +11381,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-053:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-053'), 1, '이상(Anomaly)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-053:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-053'), 2, '제한(Restriction)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-053:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-053'), 3, '종속성(Dependency)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-053:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-053'), 4, '변환(Translation)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8382,19 +11426,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-054:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-054'), 1, 'CREATE', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-054:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-054'), 2, 'DELETE', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-054:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-054'), 3, 'ALTER', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-054:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-054'), 4, 'DROP', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8415,19 +11471,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-055:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-055'), 1, '데이터베이스의 개념적 설계 단계 이전에 수행한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-055:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-055'), 2, '데이터 구조의 안정성을 최대화한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-055:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-055'), 3, '중복을 배제하여 삽입, 삭제, 갱신 이상의 발생을 방지한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-055:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-055'), 4, '데이터 삽입 시 릴레이션을 재구성할 필요성을 줄인다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8448,19 +11516,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-056:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-056'), 1, 'Log', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-056:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-056'), 2, 'Consistency', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-056:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-056'), 3, 'Isolation', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-056:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-056'), 4, 'Durability', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8481,19 +11561,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-057:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-057'), 1, 'AND', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-057:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-057'), 2, 'OTHER', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-057:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-057'), 3, 'OR', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-057:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-057'), 4, 'NOT', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8514,19 +11606,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-058:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-058'), 1, '로킹 기법', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-058:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-058'), 2, '타임 스탬프 기법', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-058:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-058'), 3, '검증 기법', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-058:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-058'), 4, '배타 로크 기법', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8547,19 +11651,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-059:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-059'), 1, '제3정규형', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-059:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-059'), 2, '제4정규형', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-059:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-059'), 3, '제5정규형', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-059:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-059'), 4, '제6정규형', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8580,19 +11696,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-060:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-060'), 1, 'Y → X', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-060:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-060'), 2, 'Y ⊂ X', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-060:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-060'), 3, 'X → Y', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-060:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-060'), 4, 'X ⊂ Y 제4과목 프로그래밍 언어 활용', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8613,19 +11741,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-061:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-061'), 1, 'Temporal Cohesion', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-061:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-061'), 2, 'Logical Cohesion', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-061:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-061'), 3, 'Coincidental Cohesion', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-061:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-061'), 4, 'Sequential Cohesion', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8646,19 +11786,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-062:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-062'), 1, 'Stop-and-wait ARQ', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-062:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-062'), 2, 'Go-back-N ARO', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-062:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-062'), 3, 'Selective-Repeat ARQ', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-062:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-062'), 4, 'Non-Acknowledge ARQ - 5', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8679,19 +11831,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-063:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-063'), 1, '45', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-063:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-063'), 2, '55', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-063:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-063'), 3, '66', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-063:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-063'), 4, '78', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8712,19 +11876,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-064:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-064'), 1, 'nation', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-064:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-064'), 2, 'nationalter', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-064:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-064'), 3, 'alter', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-064:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-064'), 4, 'alternation', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8745,19 +11921,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-065:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-065'), 1, 'Heap Collector', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-065:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-065'), 2, 'Garbage Collector', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-065:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-065'), 3, 'Memory Collector', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-065:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-065'), 4, 'Variable Collector', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8778,19 +11966,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-066:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-066'), 1, '0', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-066:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-066'), 2, '1', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-066:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-066'), 3, '2', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-066:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-066'), 4, '3', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8811,19 +12011,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-067:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-067'), 1, '--', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-067:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-067'), 2, '%', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-067:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-067'), 3, '&', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-067:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-067'), 4, '=', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8844,19 +12056,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-068:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-068'), 1, '53-65-67-37-14-98-122-124-183', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-068:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-068'), 2, '53-98-183-37-122-14-124-65-67', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-068:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-068'), 3, '53-37-14-65-67-98-122-124-183', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-068:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-068'), 4, '53-67-65-124-14-122-37-183-98 5 - 3회', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8877,19 +12101,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-069:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-069'), 1, '192.168.1.192', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-069:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-069'), 2, '192.168.1.195', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-069:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-069'), 3, '192.168.1.196', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-069:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-069'), 4, '192.168.1.198', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8910,19 +12146,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-070:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-070'), 1, '200.168.30.1', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-070:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-070'), 2, '10.3.2.1 4', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-070:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-070'), 3, '225.2.4.1', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-070:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-070'), 4, '172.16.98.3', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8943,19 +12191,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-071:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-071'), 1, '0', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-071:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-071'), 2, '4', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-071:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-071'), 3, '8', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-071:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-071'), 4, '12', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -8976,19 +12236,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-072:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-072'), 1, 'C++', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-072:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-072'), 2, 'JAVA', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-072:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-072'), 3, 'C#', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-072:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-072'), 4, 'Python', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9009,19 +12281,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-073:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-073'), 1, '13', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-073:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-073'), 2, '21', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-073:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-073'), 3, '34', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-073:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-073'), 4, '55', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9042,19 +12326,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-074:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-074'), 1, '프로세스가 준비 상태에서 프로세서가 배당되어 실행 상태로 변화하는 것을 디스패치(Dispatch)라고 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-074:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-074'), 2, '프로세스 제어 블록(PCB, Process Control Block)은 프로세 스 식별자, 프로세스 상태 등의 정보로 구성된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-074:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-074'), 3, '이전 프로세스의 상태 레지스터 내용을 보관하고 다른 프로세 스의 레지스터를 적재하는 과정을 문맥 교환(Context Switching)이라고 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-074:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-074'), 4, '프로세스는 스레드(Thread) 내에서 실행되는 흐름의 단위이 며, 스레드와 달리 주소 공간에 실행 스택(Stack)이 없다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9075,19 +12371,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-075:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-075'), 1, '오류가 발생했을 때 전파되어 다른 오류의 원인이 되는 파문 - 6 효과(Ripple Effect)를 최소화해야 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-075:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-075'), 2, '인터페이스가 정확히 설정되어 있지 않을 경우 불필요한 인터 페이스가 나타나 모듈 사이의 의존도는 높아지고 결합도가 증 가한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-075:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-075'), 3, '모듈들이 변수를 공유하여 사용하게 하거나 제어 정보를 교류 하게 함으로써 결합도를 낮추어야 한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-075:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-075'), 4, '다른 모듈과 데이터 교류가 필요한 경우 전역변수(Global Variable)보다는 매개변수(Parameter)를 사용하는 것이 결합 도를 낮추는 데 도움이 된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9108,19 +12416,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-076:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-076'), 1, '순서 번호(Sequence Number)는 전달하는 바이트마다 번호 가 부여된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-076:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-076'), 2, '수신 번호 확인(Acknowledgement Number)은 상대편 호스 트에서 받으려는 바이트의 번호를 정의한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-076:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-076'), 3, '체크섬(Checksum)은 데이터를 포함한 세그먼트의 오류를 검 사한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-076:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-076'), 4, '윈도우 크기는 송수신 측의 버퍼 크기로 최대 크기는 32767bit이다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9141,19 +12461,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-077:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-077'), 1, '소프트웨어의 모듈은 프로그래밍 언어에서 Subroutine, Function 등으로 표현될 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-077:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-077'), 2, '모듈의 수가 증가하면 상대적으로 각 모듈의 크기가 커지며, 모듈 사이의 상호교류가 감소하여 과부하(Overload) 현상이 나타난다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-077:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-077'), 3, '모듈화는 시스템을 지능적으로 관리할 수 있도록 해주며, 복잡 도 문제를 해결하는 데 도움을 준다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-077:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-077'), 4, '모듈화는 시스템의 유지보수와 수정을 용이하게 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9174,19 +12506,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-078:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-078'), 1, 'FIFO(First-In-First-Out)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-078:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-078'), 2, 'LUF(Least Used First)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-078:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-078'), 3, 'Optimal', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-078:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-078'), 4, 'LRU(Least Recently Used)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9207,19 +12551,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-079:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-079'), 1, 'int else;', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-079:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-079'), 2, 'int Test2;', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-079:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-079'), 3, 'int pc;', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-079:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-079'), 4, 'int True;', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9240,19 +12596,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-080:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-080'), 1, '파일 관리를 위해 시스템이 필요로 하는 정보를 가지고 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-080:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-080'), 2, '보조기억장치에 저장되어 있다가 파일이 개방(open)되면 주기 억장치로 이동된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-080:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-080'), 3, '사용자가 파일 디스크립터를 직접 참조할 수 있다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-080:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-080'), 4, '파일 제어 블록(File Control Block)이라고도 한다. 제5과목 : 정보시스템 구축 관리', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9273,19 +12641,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-081:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-081'), 1, '이상 탐지 기법(Anomaly Detection)은 Signature Base나 Knowledge Base라고도 불리며 이미 발견되고 정립된 공격 패턴을 입력해두었다가 탐지 및 차단한다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-081:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-081'), 2, 'HIDS(Host-Based Intrusion Detection)는 운영체제에 설정 된 사용자 계정에 따라 어떤 사용자가 어떤 접근을 시도하고 어떤 작업을 했는지에 대한 기록을 남기고 추적한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-081:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-081'), 3, 'NIDS(Network-Based Intrusion Detection System)로는 대 표적으로 Snort가 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-081:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-081'), 4, '외부 인터넷에 서비스를 제공하는 서버가 위치하는 네트워크 인 DMZ(Demilitarized Zone)에는 IDS가 설치될 수 있다. 6 - 3회', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9306,19 +12686,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-082:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-082'), 1, 'Mandatory Access Control', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-082:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-082'), 2, 'User Access Control', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-082:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-082'), 3, 'Discretionary Access Control', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-082:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-082'), 4, 'Data-Label Access Control', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9339,19 +12731,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-083:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-083'), 1, '타조(Tajo)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-083:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-083'), 2, '원 세그(One Seg)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-083:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-083'), 3, '포스퀘어(Foursquare)', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-083:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-083'), 4, '텐서플로(TensorFlow)', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9372,19 +12776,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-084:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-084'), 1, 'N2OS', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-084:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-084'), 2, 'PaaS-TA', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-084:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-084'), 3, 'KAWS', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-084:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-084'), 4, 'Metaverse', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9405,19 +12821,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-085:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-085'), 1, '적절한 권한을 가진 인가자만 특정 시스템이나 정보에 접근할 수 있도록 통제하는 것이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-085:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-085'), 2, '시스템 및 네트워크에 대한 접근 제어의 가장 기본적인 수단은 IP와 서비스 포트로 볼 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-085:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-085'), 3, 'DBMS에 보안 정책을 적용하는 도구인 XDMCP를 통해 데이 터베이스에 대한 접근제어를 수행할 수 있다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-085:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-085'), 4, '네트워크 장비에서 수행하는 IP에 대한 접근 제어로는 관리 인터페이스의 접근제어와 ACL(Access Control List) 등이 있 다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9438,19 +12866,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-086:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-086'), 1, '반제품 상태의 제품을 토대로 도메인별로 필요한 서비스 컴포 넌트를 사용하여 재사용성 확대와 성능을 보장 받을 수 있게 하는 개발 소프트웨어이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-086:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-086'), 2, '개발해야 할 애플리케이션의 일부분이 이미 구현되어 있어 동 일한 로직 반복을 줄일 수 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-086:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-086'), 3, '라이브러리와 달리 사용자 코드가 직접 호출하여 사용하기 때 문에 소프트웨어 개발 프레임워크가 직접 코드의 흐름을 제어 할 수 없다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-086:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-086'), 4, '생산성 향상과 유지보수성 향상 등의 장점이 있다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9471,19 +12911,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-087:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-087'), 1, 'VLAN', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-087:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-087'), 2, 'STP', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-087:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-087'), 3, 'L2AN', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-087:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-087'), 4, 'ARP', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9504,19 +12956,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-088:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-088'), 1, 'SQL Injection은 임의로 작성한 SQL 구문을 애플리케이션에 삽입하는 공격방식이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-088:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-088'), 2, 'SQL Injection 취약점이 발생하는 곳은 주로 웹 애플리케이션 과 데이터베이스가 연동되는 부분이다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-088:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-088'), 3, 'DBMS의 종류와 관계없이 SQL Injection 공격 기법은 모두 동일하다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-088:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-088'), 4, '로그인과 같이 웹에서 사용자의 입력 값을 받아 데이터베이스 SQL문으로 데이터를 요청하는 경우 SQL Injection을 수행할 수 있다. - 7', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9537,19 +13001,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-089:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-089'), 1, 'DES', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-089:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-089'), 2, 'AES', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-089:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-089'), 3, 'SMT', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-089:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-089'), 4, 'RSA', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9570,19 +13046,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-090:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-090'), 1, 'Software Defined Storage', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-090:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-090'), 2, 'Distribution Oriented Storage', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-090:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-090'), 3, 'Network Architected Storage', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-090:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-090'), 4, 'Systematic Network Storage', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9603,19 +13091,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-091:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-091'), 1, 'Embeded', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-091:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-091'), 2, 'Organic', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-091:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-091'), 3, 'Semi-detached', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-091:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-091'), 4, 'Semi-embeded', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9636,19 +13136,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-092:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-092'), 1, 'Format String', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-092:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-092'), 2, 'Ransomware', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-092:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-092'), 3, 'Buffer overflow', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-092:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-092'), 4, 'Adware', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9669,19 +13181,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-093:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-093'), 1, 'Waterfall Model', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-093:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-093'), 2, 'Prototype Model', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-093:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-093'), 3, 'Cocomo Model', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-093:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-093'), 4, 'Spiral Model', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9702,19 +13226,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-094:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-094'), 1, '비교적 대규모 시스템에 적합하다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-094:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-094'), 2, '개발 순서는 계획 및 정의, 위험 분석, 공학적 개발, 고객 평가 순으로 진행된다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-094:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-094'), 3, '소프트웨어를 개발하면서 발생할 수 있는 위험을 관리하고 최 소화하는 것을 목적으로 한다.', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-094:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-094'), 4, '계획, 설계, 개발, 평가의 개발 주기가 한 번만 수행된다.', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9735,19 +13271,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-095:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-095'), 1, 'Role-Based Access Control', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-095:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-095'), 2, 'Ping Flood', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-095:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-095'), 3, 'Brute-Force', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-095:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-095'), 4, 'Trojan Horses 7 - 3회', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9768,19 +13316,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-096:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-096'), 1, 'MLFQ', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-096:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-096'), 2, 'MQTT', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-096:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-096'), 3, 'Zigbee', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-096:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-096'), 4, 'MTSP', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9801,19 +13361,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-097:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-097'), 1, 'SOS', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-097:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-097'), 2, 'SBO', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-097:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-097'), 3, 'SSO', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-097:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-097'), 4, 'SOA', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9834,19 +13406,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-098:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-098'), 1, 'Pass flag', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-098:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-098'), 2, 'Bucket', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-098:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-098'), 3, 'Opcode', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-098:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-098'), 4, 'Salt', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9867,19 +13451,31 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-099:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-099'), 1, 'Effort Per Task기법', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-099:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-099'), 2, '전문가 감정 기법', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-099:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-099'), 3, '델파이기법', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-099:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-099'), 4, 'LOC기법', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
@@ -9900,18 +13496,30 @@ ON CONFLICT (id) DO UPDATE SET
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-100:choice:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-100'), 1, 'WWW', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-100:choice:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-100'), 2, 'OWASP', TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-100:choice:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-100'), 3, 'WBSEC', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 INSERT INTO public.choices (id, question_id, number, content, is_correct)
 VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-100:choice:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:written:jeongchogi-written-2021-3-100'), 4, 'ITU - 8 8 -', FALSE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (question_id, number) DO UPDATE SET
+  id = EXCLUDED.id,
+  content = EXCLUDED.content,
+  is_correct = EXCLUDED.is_correct;
 
 COMMIT;
