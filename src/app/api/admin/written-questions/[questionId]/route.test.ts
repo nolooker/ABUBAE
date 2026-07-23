@@ -60,6 +60,7 @@ describe('PATCH /api/admin/written-questions/[questionId]', () => {
     const response = await PATCH(request(), context())
 
     expect(response.status).toBe(401)
+    await expect(response.json()).resolves.toEqual({ error: 'authentication required' })
     expect(supabase.rpc).not.toHaveBeenCalled()
   })
 
@@ -71,7 +72,34 @@ describe('PATCH /api/admin/written-questions/[questionId]', () => {
     const response = await PATCH(request(), context())
 
     expect(response.status).toBe(403)
+    await expect(response.json()).resolves.toEqual({ error: 'master access is required' })
     expect(supabase.rpc).not.toHaveBeenCalled()
+  })
+
+  it.each([
+    null,
+    [],
+    {},
+    { id: questionId, number: '8', subject: 'Networking', content: valid.content, updated_at: '2026-07-23T01:00:00Z' },
+  ])('returns a redacted 500 for a malformed successful RPC result: %o', async (data) => {
+    const supabase = client({ data, error: null })
+    createClient.mockResolvedValue(supabase)
+
+    const response = await PATCH(request(), context())
+
+    expect(response.status).toBe(500)
+    await expect(response.json()).resolves.toEqual({ error: 'unable to update question' })
+  })
+
+  it('returns a redacted 500 for an unexpected RPC exception', async () => {
+    const supabase = client()
+    supabase.rpc.mockRejectedValue(new Error('database host and credentials'))
+    createClient.mockResolvedValue(supabase)
+
+    const response = await PATCH(request(), context())
+
+    expect(response.status).toBe(500)
+    await expect(response.json()).resolves.toEqual({ error: 'unable to update question' })
   })
 
   it('returns 400 for invalid ids, malformed JSON, and invalid edit payloads', async () => {
@@ -127,6 +155,7 @@ describe('PATCH /api/admin/written-questions/[questionId]', () => {
 
   it.each([
     [{ code: 'PGRST116', message: 'no rows returned' }, 404],
+    [{ code: 'P0001', message: 'written question not found' }, 404],
     [{ code: 'P0001', message: 'database exception', details: 'stale question' }, 409],
     [{ code: '40001', message: 'serialization failure' }, 409],
     [{ code: 'XX000', message: 'database failed' }, 500],
@@ -138,5 +167,18 @@ describe('PATCH /api/admin/written-questions/[questionId]', () => {
 
     expect(response.status).toBe(status)
     await expect(response.json()).resolves.toHaveProperty('error')
+  })
+
+  it('does not expose database error details', async () => {
+    const supabase = client({
+      data: null,
+      error: { code: 'XX000', message: 'connection password=secret', details: 'internal host name' },
+    })
+    createClient.mockResolvedValue(supabase)
+
+    const response = await PATCH(request(), context())
+
+    expect(response.status).toBe(500)
+    await expect(response.json()).resolves.toEqual({ error: 'unable to update question' })
   })
 })

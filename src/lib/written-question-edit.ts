@@ -27,6 +27,13 @@ function isPlainObject(value: unknown): value is InputRecord {
     && Object.getPrototypeOf(value) === Object.prototype
 }
 
+function isDenseArray(value: unknown[]): boolean {
+  for (let index = 0; index < value.length; index += 1) {
+    if (!Object.prototype.hasOwnProperty.call(value, index)) return false
+  }
+  return true
+}
+
 function nonBlankString(value: unknown, field: string, maximumLength: number): string {
   if (typeof value !== 'string') throw new Error(`${field} must be a string`)
   if (!value.trim()) throw new Error(`${field} must not be blank`)
@@ -63,6 +70,7 @@ export function validateWrittenQuestionEdit(input: unknown): WrittenQuestionEdit
   if (!Array.isArray(input.choices) || input.choices.length !== 4) {
     throw new Error('exactly four choices are required')
   }
+  if (!isDenseArray(input.choices)) throw new Error('choices must be dense')
   const choices = input.choices.map((choice, index) => nonBlankString(
     choice,
     `choice ${index + 1}`,
@@ -71,6 +79,9 @@ export function validateWrittenQuestionEdit(input: unknown): WrittenQuestionEdit
 
   if (!Array.isArray(input.acceptedAnswerIndexes) || input.acceptedAnswerIndexes.length === 0) {
     throw new Error('at least one accepted answer is required')
+  }
+  if (!isDenseArray(input.acceptedAnswerIndexes)) {
+    throw new Error('acceptedAnswerIndexes must be dense')
   }
   if (!input.acceptedAnswerIndexes.every((index) => Number.isInteger(index) && index >= 0 && index <= 3)) {
     throw new Error('acceptedAnswerIndexes must contain integers from 0 through 3')

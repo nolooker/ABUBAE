@@ -21,6 +21,15 @@ describe('validateWrittenQuestionEdit', () => {
     expect(() => validateWrittenQuestionEdit({ ...valid, acceptedAnswerIndexes: [] })).toThrow('accepted answer')
   })
 
+  it('rejects sparse choices and sparse accepted-answer arrays', () => {
+    const sparseChoices = ['A', , 'C', 'D']
+    const sparseAnswers = [1, , 3]
+
+    expect(() => validateWrittenQuestionEdit({ ...valid, choices: sparseChoices })).toThrow('choices must be dense')
+    expect(() => validateWrittenQuestionEdit({ ...valid, acceptedAnswerIndexes: sparseAnswers }))
+      .toThrow('acceptedAnswerIndexes must be dense')
+  })
+
   it.each([
     [{ ...valid, extra: true }, 'only content, choices, acceptedAnswerIndexes, explanation, and expectedUpdatedAt are allowed'],
     [Object.assign(Object.create(null), valid), 'payload must be a plain object'],

@@ -121,7 +121,7 @@ export async function PATCH(request: Request, { params }: Context) {
     if (error) return rpcFailure(error)
 
     const question = editedQuestion(data, input)
-    if (!question) return Response.json({ error: 'question not found' }, { status: 404 })
+    if (!question) return Response.json({ error: 'unable to update question' }, { status: 500 })
     return Response.json(question)
   } catch {
     return Response.json({ error: 'unable to update question' }, { status: 500 })
