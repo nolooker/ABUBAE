@@ -15,6 +15,56 @@ describe('WrittenRoundRunner', () => {
     vi.unstubAllGlobals()
   })
 
+  it('shows editing only to master and replaces the current question after saving', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        id: 'q1',
+        number: 1,
+        subject: 'Software design',
+        content: 'Updated question',
+        choices: ['A', 'B', 'C', 'D'],
+        updatedAt: '2026-07-23T00:01:00.000Z',
+      }),
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    const user = userEvent.setup()
+    render(
+      <WrittenRoundRunner
+        canEdit
+        editableQuestions={{
+          q1: {
+            id: 'q1',
+            number: 1,
+            subject: 'Software design',
+            content: 'Original question',
+            choices: ['A', 'B', 'C', 'D'],
+            updatedAt: '2026-07-23T00:00:00.000Z',
+            acceptedAnswerIndexes: [1],
+            explanation: 'Explanation',
+          },
+        }}
+        year={2021}
+        round={1}
+        title="2021 round 1"
+        questions={[{ id: 'q1', number: 1, subject: 'Software design', content: 'Original question', choices: ['A', 'B', 'C', 'D'], updatedAt: '2026-07-23T00:00:00.000Z' }]}
+      />,
+    )
+
+    await user.click(screen.getByRole('button', { name: 'Edit question' }))
+    await user.clear(screen.getByLabelText('Question'))
+    await user.type(screen.getByLabelText('Question'), 'Updated question')
+    await user.click(screen.getByRole('button', { name: 'Save' }))
+
+    expect(await screen.findByRole('heading', { name: '1. Updated question' })).toBeInTheDocument()
+  })
+
+  it('does not render editing for normal users', () => {
+    render(<WrittenRoundRunner canEdit={false} year={2021} round={1} title="2021 round 1" questions={questions} />)
+
+    expect(screen.queryByRole('button', { name: 'Edit question' })).not.toBeInTheDocument()
+  })
+
   it('keeps selected answers while navigating between questions', async () => {
     vi.stubGlobal('scrollTo', vi.fn())
     const user = userEvent.setup()
