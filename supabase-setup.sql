@@ -1,12 +1,12 @@
--- =============================================
--- edu-brand MVP 테이블 생성 SQL
--- Supabase SQL Editor에서 전체 복붙 후 Run
--- =============================================
+-- ABUBAE Supabase setup: repeatable for new and existing projects.
+-- 기존 행을 삭제하지 않으며, 중복된 문제/선택지 키가 있으면 안전하게 실패합니다.
+
+BEGIN;
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA extensions;
 
--- 1. 시험/자격증 카테고리
-CREATE TABLE exams (
+-- Base schema
+CREATE TABLE IF NOT EXISTS public.exams (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   slug TEXT UNIQUE NOT NULL,
   name TEXT NOT NULL,
@@ -17,55 +17,41 @@ CREATE TABLE exams (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 2. 사용자 프로필 (Supabase Auth와 연동)
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS public.users (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   email TEXT UNIQUE NOT NULL,
   nickname TEXT,
   avatar_url TEXT,
-  role TEXT NOT NULL DEFAULT 'user' CHECK (role IN ('user', 'master')),
   membership_type TEXT DEFAULT 'free' CHECK (membership_type IN ('free', 'standard', 'premium')),
   membership_expires_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 3. 기출문제
-CREATE TABLE questions (
+CREATE TABLE IF NOT EXISTS public.questions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  exam_id UUID REFERENCES exams(id) ON DELETE CASCADE,
+  exam_id UUID REFERENCES public.exams(id) ON DELETE CASCADE,
   year INT NOT NULL,
   round INT NOT NULL,
-  exam_type TEXT NOT NULL DEFAULT 'written',
   subject TEXT NOT NULL,
   number INT NOT NULL,
   content TEXT NOT NULL,
   explanation TEXT,
   difficulty INT DEFAULT 2 CHECK (difficulty BETWEEN 1 AND 5),
   is_premium BOOLEAN DEFAULT FALSE,
-  reviewed BOOLEAN NOT NULL DEFAULT FALSE,
-  published BOOLEAN NOT NULL DEFAULT FALSE,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_by UUID REFERENCES users(id),
-  CONSTRAINT questions_round_number_unique UNIQUE(exam_id, exam_type, year, round, number)
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 4. 선택지
-CREATE TABLE choices (
+CREATE TABLE IF NOT EXISTS public.choices (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  question_id UUID REFERENCES questions(id) ON DELETE CASCADE,
+  question_id UUID REFERENCES public.questions(id) ON DELETE CASCADE,
   number INT NOT NULL CHECK (number BETWEEN 1 AND 4),
   content TEXT NOT NULL,
   is_correct BOOLEAN DEFAULT FALSE
 );
 
-CREATE UNIQUE INDEX choices_question_number_unique
-  ON choices(question_id, number);
-
--- 5. 콘텐츠 포스트 (블로그 + 공지 + 후기 + 요약노트 통합)
-CREATE TABLE posts (
+CREATE TABLE IF NOT EXISTS public.posts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  exam_id UUID REFERENCES exams(id) ON DELETE SET NULL,
+  exam_id UUID REFERENCES public.exams(id) ON DELETE SET NULL,
   type TEXT NOT NULL CHECK (type IN ('blog', 'notice', 'review', 'note')),
   title TEXT NOT NULL,
   slug TEXT UNIQUE NOT NULL,
@@ -78,10 +64,9 @@ CREATE TABLE posts (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 6. 디지털 자료 (PDF 등)
-CREATE TABLE resources (
+CREATE TABLE IF NOT EXISTS public.resources (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  exam_id UUID REFERENCES exams(id) ON DELETE SET NULL,
+  exam_id UUID REFERENCES public.exams(id) ON DELETE SET NULL,
   title TEXT NOT NULL,
   description TEXT,
   file_url TEXT,
@@ -92,26 +77,46 @@ CREATE TABLE resources (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 7. 즐겨찾기
-CREATE TABLE bookmarks (
+CREATE TABLE IF NOT EXISTS public.bookmarks (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
   target_type TEXT NOT NULL CHECK (target_type IN ('post', 'question', 'resource')),
   target_id UUID NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(user_id, target_type, target_id)
 );
 
--- 8. 다운로드 권한 (무료 자료 or 구매 완료)
-CREATE TABLE download_grants (
+CREATE TABLE IF NOT EXISTS public.download_grants (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-  resource_id UUID REFERENCES resources(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  resource_id UUID REFERENCES public.resources(id) ON DELETE CASCADE,
   granted_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(user_id, resource_id)
 );
 
--- 회원가입 시 Supabase Auth 사용자를 public.users 프로필로 자동 동기화
+-- Additive Master question editing fields for existing projects.
+ALTER TABLE public.users
+  ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'user'
+  CHECK (role IN ('user', 'master'));
+
+ALTER TABLE public.questions
+  ADD COLUMN IF NOT EXISTS exam_type TEXT NOT NULL DEFAULT 'written',
+  ADD COLUMN IF NOT EXISTS reviewed BOOLEAN NOT NULL DEFAULT FALSE,
+  ADD COLUMN IF NOT EXISTS published BOOLEAN NOT NULL DEFAULT FALSE,
+  ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  ADD COLUMN IF NOT EXISTS updated_by UUID REFERENCES public.users(id);
+
+-- Do not merge duplicates: index creation stops the transaction for cleanup.
+CREATE UNIQUE INDEX IF NOT EXISTS public.questions_round_number_unique
+  ON public.questions(exam_id, exam_type, year, round, number);
+CREATE UNIQUE INDEX IF NOT EXISTS public.choices_question_number_unique
+  ON public.choices(question_id, number);
+
+-- Promote only the already-existing designated profile.
+UPDATE public.users
+SET role = 'master'
+WHERE pg_catalog.lower(email) = 'seoteang@gmail.com';
+
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS pg_catalog.trigger
 LANGUAGE plpgsql
@@ -132,41 +137,51 @@ BEGIN
 END;
 $$;
 
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
 AFTER INSERT ON auth.users
 FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
--- =============================================
--- 샘플 데이터 (시작용)
--- =============================================
-
-INSERT INTO exams (slug, name, description, order_index) VALUES
+-- Starter exams keep any pre-existing row with the same slug unchanged.
+INSERT INTO public.exams (slug, name, description, order_index) VALUES
   ('jeongchogi', '정보처리기사', 'IT 분야 대표 국가기술자격증. 소프트웨어 설계부터 실기까지', 1),
   ('sqld', 'SQLD', '데이터베이스 SQL 개발자 자격증', 2),
-  ('comhwal', '컴퓨터활용능력 1급', '스프레드시트와 데이터베이스 활용 능력 검증', 3);
+  ('comhwal', '컴퓨터활용능력 1급', '스프레드시트와 데이터베이스 활용 능력 검증', 3)
+ON CONFLICT (slug) DO NOTHING;
 
--- =============================================
--- RLS (Row Level Security) 설정
--- =============================================
+-- RLS policies are recreated so the final definitions are deterministic.
+ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS users_select_own ON public.users;
+CREATE POLICY users_select_own ON public.users FOR SELECT USING (auth.uid() = id);
 
--- users: users can read only their own profile.
-ALTER TABLE users ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "users_select_own" ON users FOR SELECT USING (auth.uid() = id);
+ALTER TABLE public.bookmarks ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS bookmarks_all_own ON public.bookmarks;
+CREATE POLICY bookmarks_all_own ON public.bookmarks USING (auth.uid() = user_id);
 
--- bookmarks: 본인 데이터만
-ALTER TABLE bookmarks ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "bookmarks_all_own" ON bookmarks USING (auth.uid() = user_id);
+ALTER TABLE public.download_grants ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS grants_select_own ON public.download_grants;
+CREATE POLICY grants_select_own ON public.download_grants FOR SELECT USING (auth.uid() = user_id);
 
--- download_grants: 본인 데이터만 조회
-ALTER TABLE download_grants ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "grants_select_own" ON download_grants FOR SELECT USING (auth.uid() = user_id);
+ALTER TABLE public.exams ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS exams_public_read ON public.exams;
+CREATE POLICY exams_public_read ON public.exams FOR SELECT USING (true);
 
--- exams, posts, resources: 전체 공개 읽기
-ALTER TABLE exams ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "exams_public_read" ON exams FOR SELECT USING (true);
+ALTER TABLE public.questions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.choices ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS questions_public_read ON public.questions;
+DROP POLICY IF EXISTS choices_public_read ON public.choices;
+DROP POLICY IF EXISTS questions_master_select ON public.questions;
+DROP POLICY IF EXISTS choices_master_select ON public.choices;
+DROP POLICY IF EXISTS questions_master_update ON public.questions;
+DROP POLICY IF EXISTS choices_master_update ON public.choices;
 
-ALTER TABLE questions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE choices ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.posts ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS posts_public_read ON public.posts;
+CREATE POLICY posts_public_read ON public.posts FOR SELECT USING (is_published = true);
+
+ALTER TABLE public.resources ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS resources_public_read ON public.resources;
+CREATE POLICY resources_public_read ON public.resources FOR SELECT USING (is_published = true);
 
 CREATE OR REPLACE FUNCTION public.is_master()
 RETURNS pg_catalog.bool LANGUAGE sql STABLE SECURITY DEFINER SET search_path = '' AS $$
@@ -297,8 +312,4 @@ GRANT EXECUTE ON FUNCTION public.get_written_question_for_edit(pg_catalog.uuid) 
 REVOKE ALL ON FUNCTION public.update_written_question(pg_catalog.uuid, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text, pg_catalog.timestamptz) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION public.update_written_question(pg_catalog.uuid, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text, pg_catalog.timestamptz) TO authenticated;
 
-ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "posts_public_read" ON posts FOR SELECT USING (is_published = true);
-
-ALTER TABLE resources ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "resources_public_read" ON resources FOR SELECT USING (is_published = true);
+COMMIT;

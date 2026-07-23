@@ -1154,3 +1154,18 @@ app/blog/[slug]/page.tsx               # 블로그 포스트
 ```
 
 **핵심 원칙**: 완성보다 배포. 완벽보다 일관성. 트래픽 없이 기능 개발 금지.
+
+---
+
+## Repeatable Supabase setup
+
+Run `supabase-setup.sql` in the Supabase SQL Editor for either a fresh project or
+an existing ABUBAE project. The script is repeatable: it preserves existing rows,
+keeps existing sample exams when their slugs already exist, and promotes only the
+existing profile whose email is `seoteang@gmail.com` (case-insensitive) to
+`master`. It never creates a missing profile.
+
+The script intentionally stops and rolls back if pre-existing duplicate question
+keys or choice keys prevent the required unique indexes from being created. Clean
+up those duplicates explicitly before running it again; the setup does not merge
+or delete existing data automatically.
