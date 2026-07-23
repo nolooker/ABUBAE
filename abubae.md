@@ -68,6 +68,8 @@
 2. `supabase/seeds/2021-written.sql`
 3. `UPDATE public.users SET role = 'master' WHERE email = '<운영자 이메일>';`
 
+`2021-written.sql`은 최초 데이터 적재용이며 재실행해도 기존 문항과 선택지를 덮어쓰지 않는다. Master가 수정한 질문·선택지·정답·해설과 검수 상태, 수정 시각 및 수정자 정보는 유지된다. 원본 데이터로 되돌려야 할 때는 일반 시드 재실행 대신 별도의 검토된 복구 SQL을 사용한다.
+
 적용 뒤에는 다음을 확인한다.
 
 ```sql

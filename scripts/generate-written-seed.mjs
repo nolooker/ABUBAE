@@ -29,17 +29,7 @@ export function renderWrittenSeed(round) {
       `  ${id}, id, 'written', ${round.year}, ${round.round}, ${sqlLiteral(question.subject)}, ${question.number},`,
       `  ${sqlLiteral(question.content)}, ${sqlLiteral(question.explanation)}, FALSE, TRUE`,
       "FROM public.exams WHERE slug = 'jeongchogi'",
-      'ON CONFLICT (id) DO UPDATE SET',
-      '  exam_id = EXCLUDED.exam_id,',
-      '  exam_type = EXCLUDED.exam_type,',
-      '  year = EXCLUDED.year,',
-      '  round = EXCLUDED.round,',
-      '  subject = EXCLUDED.subject,',
-      '  number = EXCLUDED.number,',
-      '  content = EXCLUDED.content,',
-      '  explanation = EXCLUDED.explanation,',
-      '  reviewed = EXCLUDED.reviewed,',
-      '  published = EXCLUDED.published;',
+      'ON CONFLICT (id) DO NOTHING;',
     ].join('\n')
 
     const choicesSql = question.choices.map((choice, index) => {
@@ -48,10 +38,7 @@ export function renderWrittenSeed(round) {
       return [
         'INSERT INTO public.choices (id, question_id, number, content, is_correct)',
         `VALUES (${choiceUuid(question.id, choiceNumber)}, ${id}, ${choiceNumber}, ${sqlLiteral(choice)}, ${isCorrect})`,
-        'ON CONFLICT (question_id, number) DO UPDATE SET',
-        '  id = EXCLUDED.id,',
-        '  content = EXCLUDED.content,',
-        '  is_correct = EXCLUDED.is_correct;',
+        'ON CONFLICT (question_id, number) DO NOTHING;',
       ].join('\n')
     })
 
@@ -65,7 +52,7 @@ export function renderWrittenSeed(round) {
   ].join('\n\n')
 }
 
-function load2021Rounds() {
+export function load2021Rounds() {
   return readdirSync(contentDirectory)
     .filter((file) => /^2021-\d+\.candidates\.json$/.test(file))
     .sort()
