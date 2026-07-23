@@ -108,7 +108,7 @@ describe('WrittenQuestionEditDialog', () => {
       acceptedAnswerIndexes: [0, 1],
       updatedAt: '2026-07-23T00:01:00.000Z',
     }))
-    expect(screen.getByRole('status')).toHaveTextContent('문제가 저장되었습니다.')
+    expect(screen.getByRole('status')).toBeEmptyDOMElement()
   })
 
   it('preserves the draft after a conflict, refreshes the baseline, and retries with the latest timestamp', async () => {

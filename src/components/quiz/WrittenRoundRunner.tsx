@@ -39,6 +39,7 @@ export default function WrittenRoundRunner({ year, round, title, questions, canE
   const [showEditDialog, setShowEditDialog] = useState(false)
   const [isLoadingEdit, setIsLoadingEdit] = useState(false)
   const [editError, setEditError] = useState<string | null>(null)
+  const [editAnnouncement, setEditAnnouncement] = useState<string | null>(null)
   const [editingQuestion, setEditingQuestion] = useState<EditableWrittenQuestion | null>(null)
   const [editableQuestionCache, setEditableQuestionCache] = useState<Record<string, EditableWrittenQuestion>>({})
   const current = roundQuestions[currentIndex]
@@ -85,6 +86,7 @@ export default function WrittenRoundRunner({ year, round, title, questions, canE
   const openEditDialog = async () => {
     if (!canEdit) return
 
+    setEditAnnouncement(null)
     setShowEditDialog(true)
     setEditError(null)
     const cachedQuestion = editableQuestionCache[current.id] ?? editableQuestions?.[current.id]
@@ -138,6 +140,7 @@ export default function WrittenRoundRunner({ year, round, title, questions, canE
     }
     setRoundQuestions((previous) => previous.map((question) => question.id === updated.id ? publicQuestion : question))
     setEditableQuestionCache((previous) => ({ ...previous, [updated.id]: updated }))
+    setEditAnnouncement('문제가 저장되었습니다.')
     setShowEditDialog(false)
     setEditingQuestion(null)
   }
@@ -148,6 +151,9 @@ export default function WrittenRoundRunner({ year, round, title, questions, canE
 
   return (
     <>
+      <p role="status" aria-live="polite" className={editAnnouncement ? 'mb-4 text-sm font-semibold text-blue-700' : 'sr-only'}>
+        {editAnnouncement ?? ''}
+      </p>
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <section className="ab-card p-5 sm:p-8">
           <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[var(--border)] pb-5">

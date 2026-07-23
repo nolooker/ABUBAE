@@ -123,7 +123,6 @@ export default function WrittenQuestionEditDialog({ question, onClose, onSaved, 
       const updated: unknown = await response.json()
       if (!isEditedQuestion(updated, question.id)) throw new Error('invalid response')
       setHasConflict(false)
-      setAnnouncement('문제가 저장되었습니다.')
       onSaved({
         ...updated,
         acceptedAnswerIndexes: [...acceptedAnswerIndexes],

@@ -22,14 +22,15 @@ The admin shell is available at `/admin`. Sign in with the normal Supabase login
 
 ## Supabase Data Flow
 
-The app now reads through `src/lib/data.ts`.
+The written-exam flow reads published questions through the server-only
+`src/lib/written-question-repository.ts` repository and its service-role
+Supabase client. Correct answers are never sent by the public question page;
+grading also runs on the server.
 
-Data priority:
-
-```txt
-Supabase tables first
-fallback to src/lib/mock-data.ts if tables are empty or not created yet
-```
+Some legacy pages still use `src/lib/data.ts`. Under the final question and
+choice RLS rules, that legacy browser client cannot read those protected
+tables and may fall back to `src/lib/mock-data.ts`. It is not the data path for
+the written-exam runner.
 
 Setup order:
 
@@ -37,7 +38,9 @@ Setup order:
 2. Go to SQL Editor.
 3. Paste and run `supabase-setup.sql`.
 4. Add real rows to `exams`, `questions`, `choices`, and `resources`.
-5. Refresh the local site. Pages will use Supabase data automatically.
+5. Configure the required server and public environment variables, then
+   refresh the local site. The written-exam pages use the server repository;
+   legacy pages may continue to show mock fallback data.
 
 Main tables used by the current UI:
 

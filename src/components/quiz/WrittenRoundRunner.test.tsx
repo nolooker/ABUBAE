@@ -57,6 +57,8 @@ describe('WrittenRoundRunner', () => {
     await user.click(screen.getByRole('button', { name: 'Save' }))
 
     expect(await screen.findByRole('heading', { name: '1. Updated question' })).toBeInTheDocument()
+    expect(screen.queryByRole('dialog', { name: 'Edit question 1' })).not.toBeInTheDocument()
+    expect(screen.getByRole('status')).toHaveTextContent('문제가 저장되었습니다.')
   })
 
   it('does not render editing for normal users', () => {

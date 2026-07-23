@@ -124,6 +124,7 @@ BEGIN
   UPDATE public.questions
   SET content = p_content,
       explanation = p_explanation,
+      reviewed = TRUE,
       updated_at = pg_catalog.now(),
       updated_by = auth.uid()
   WHERE id = p_question_id

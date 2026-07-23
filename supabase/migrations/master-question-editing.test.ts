@@ -15,6 +15,8 @@ describe('master question editing migration', () => {
     expect(migrationSql).toContain('CREATE OR REPLACE FUNCTION public.get_written_question_for_edit(')
     expect(migrationSql).toContain('CREATE OR REPLACE FUNCTION public.update_written_question(')
     expect(migrationSql).toContain("RAISE EXCEPTION 'stale question'")
+    expect(migrationSql).toMatch(/UPDATE public\.questions\s+SET content = p_content,\s+explanation = p_explanation,\s+reviewed = TRUE,/)
+    expect(setupSql).toMatch(/UPDATE public\.questions\s+SET content = p_content,\s+explanation = p_explanation,\s+reviewed = TRUE,/)
   })
 
   it('keeps user RLS executable and routes all question editing through RPCs', () => {
