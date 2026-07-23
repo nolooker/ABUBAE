@@ -1,5 +1,8 @@
 # ABUBAE MVP Completion Implementation Plan
 
+> [!WARNING]
+> **Superseded historical plan — do not execute.** This document predates the unified Supabase Master authorization design. Follow [the Master inline-question-edit design](../specs/2026-07-23-master-inline-question-edit-design.md) and [its implementation plan](2026-07-23-master-inline-question-edit.md) for current guidance. In particular, **do not execute any legacy admin-code instructions in this document**: do not restore `src/lib/admin-auth.ts`, `ADMIN_MASTER_KEY`, cookie sessions, or the `master` fallback.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Make the documented ABUBAE MVP build reliably without Supabase credentials and complete authentication, question practice, resource delivery, and launch-quality navigation.
@@ -8,7 +11,7 @@
 
 **Tech Stack:** Next.js 16.2 App Router, React 19.2, TypeScript 5, Supabase SSR/Auth/Postgres, Tailwind CSS 4, Vitest, Testing Library, Playwright
 
-## Global Constraints
+## Historical Constraints (superseded; do not execute)
 
 - Node.js must be 20.9 or newer; the audited machine uses Node.js 24.12.0.
 - Public exam, question, and resource pages must render from mock data when Supabase variables are absent.
@@ -38,7 +41,7 @@
 - Create `tests/e2e/mvp.spec.ts` and `playwright.config.ts`: cover public, auth-degraded, and admin smoke flows.
 - Modify `README.md`: document environment variables, database setup, test commands, and degraded local behavior.
 
-### Task 1: Make Supabase Optional for Public and Build-Time Rendering
+### Historical Task 1: Make Supabase Optional for Public and Build-Time Rendering (superseded; do not execute)
 
 **Files:**
 - Modify: `src/lib/supabase/client.ts`
