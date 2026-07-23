@@ -107,12 +107,75 @@ ALTER TABLE public.questions
   ADD COLUMN IF NOT EXISTS updated_by UUID REFERENCES public.users(id);
 
 -- Do not merge duplicates: index creation stops the transaction for cleanup.
-CREATE UNIQUE INDEX IF NOT EXISTS public.questions_round_number_unique
+CREATE UNIQUE INDEX IF NOT EXISTS questions_round_number_unique
   ON public.questions(exam_id, exam_type, year, round, number);
-CREATE UNIQUE INDEX IF NOT EXISTS public.choices_question_number_unique
+CREATE UNIQUE INDEX IF NOT EXISTS choices_question_number_unique
   ON public.choices(question_id, number);
 
+-- IF NOT EXISTS skips a same-named index, so verify its complete definition.
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_catalog.pg_index AS index_definition
+    JOIN pg_catalog.pg_class AS index_relation
+      ON index_relation.oid = index_definition.indexrelid
+    WHERE index_relation.relnamespace = 'public'::pg_catalog.regnamespace
+      AND index_relation.relname = 'questions_round_number_unique'
+      AND index_definition.indrelid = 'public.questions'::pg_catalog.regclass
+      AND index_definition.indisunique
+      AND index_definition.indpred IS NULL
+      AND index_definition.indnatts = index_definition.indnkeyatts
+      AND index_definition.indnkeyatts = 5
+      AND (
+        SELECT pg_catalog.array_agg(attribute.attname ORDER BY index_key.ordinality)
+        FROM pg_catalog.unnest(index_definition.indkey) WITH ORDINALITY AS index_key(attnum, ordinality)
+        JOIN pg_catalog.pg_attribute AS attribute
+          ON attribute.attrelid = index_definition.indrelid
+         AND attribute.attnum = index_key.attnum
+      ) = ARRAY['exam_id', 'exam_type', 'year', 'round', 'number']::pg_catalog.name[]
+  ) THEN
+    RAISE EXCEPTION 'questions_round_number_unique has an unexpected definition';
+  END IF;
+
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_catalog.pg_index AS index_definition
+    JOIN pg_catalog.pg_class AS index_relation
+      ON index_relation.oid = index_definition.indexrelid
+    WHERE index_relation.relnamespace = 'public'::pg_catalog.regnamespace
+      AND index_relation.relname = 'choices_question_number_unique'
+      AND index_definition.indrelid = 'public.choices'::pg_catalog.regclass
+      AND index_definition.indisunique
+      AND index_definition.indpred IS NULL
+      AND index_definition.indnatts = index_definition.indnkeyatts
+      AND index_definition.indnkeyatts = 2
+      AND (
+        SELECT pg_catalog.array_agg(attribute.attname ORDER BY index_key.ordinality)
+        FROM pg_catalog.unnest(index_definition.indkey) WITH ORDINALITY AS index_key(attnum, ordinality)
+        JOIN pg_catalog.pg_attribute AS attribute
+          ON attribute.attrelid = index_definition.indrelid
+         AND attribute.attnum = index_key.attnum
+      ) = ARRAY['question_id', 'number']::pg_catalog.name[]
+  ) THEN
+    RAISE EXCEPTION 'choices_question_number_unique has an unexpected definition';
+  END IF;
+END;
+$$;
+
 -- Promote only the already-existing designated profile.
+DO $$
+BEGIN
+  IF (
+    SELECT pg_catalog.count(*)
+    FROM public.users
+    WHERE pg_catalog.lower(email) = 'seoteang@gmail.com'
+  ) > 1 THEN
+    RAISE EXCEPTION 'multiple profiles match seoteang@gmail.com';
+  END IF;
+END;
+$$;
+
 UPDATE public.users
 SET role = 'master'
 WHERE pg_catalog.lower(email) = 'seoteang@gmail.com';
@@ -174,6 +237,8 @@ DROP POLICY IF EXISTS questions_master_select ON public.questions;
 DROP POLICY IF EXISTS choices_master_select ON public.choices;
 DROP POLICY IF EXISTS questions_master_update ON public.questions;
 DROP POLICY IF EXISTS choices_master_update ON public.choices;
+REVOKE SELECT ON TABLE public.questions FROM anon, authenticated;
+REVOKE SELECT ON TABLE public.choices FROM anon, authenticated;
 
 ALTER TABLE public.posts ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS posts_public_read ON public.posts;

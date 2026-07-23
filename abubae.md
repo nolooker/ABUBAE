@@ -1165,7 +1165,22 @@ keeps existing sample exams when their slugs already exist, and promotes only th
 existing profile whose email is `seoteang@gmail.com` (case-insensitive) to
 `master`. It never creates a missing profile.
 
+If more than one existing profile matches that email case-insensitively, the
+setup stops and rolls back rather than promote multiple profiles. Zero matches
+remain a no-op.
+
 The script intentionally stops and rolls back if pre-existing duplicate question
 keys or choice keys prevent the required unique indexes from being created. Clean
 up those duplicates explicitly before running it again; the setup does not merge
 or delete existing data automatically.
+
+PostgreSQL index names are intentionally unqualified: each index is created on
+its schema-qualified `public` table, which determines the index schema. Because
+`IF NOT EXISTS` can skip a same-named existing index, the setup then checks the
+PostgreSQL catalog and rolls back unless each index is unique, non-partial, and
+has the exact required ordered columns.
+
+For the Master editing boundary, the setup removes known legacy question/choice
+policies and revokes direct `SELECT` on those tables from `anon` and
+`authenticated`. Browser clients must use the granted security-definer RPCs;
+server-side service-role access remains separate.

@@ -4,8 +4,13 @@ import { describe, expect, it } from 'vitest'
 const migrationSql = readFileSync('supabase/migrations/202607230001_master_question_editing.sql', 'utf8')
 const setupSql = readFileSync('supabase-setup.sql', 'utf8')
 const schemaSql = [migrationSql, setupSql]
-const executableSql = (sql: string) => sql.replace(/--.*$/gm, '')
+const executableSql = (sql: string) => sql.replace(/\/\*[\s\S]*?\*\//g, '').replace(/--.*$/gm, '')
 const usersRlsStatement = /^\s*ALTER TABLE public\.users ENABLE ROW LEVEL SECURITY;\s*$/m
+const destructiveDelete = /\bDELETE(?:(?:\s+)|(?:\/\*[\s\S]*?\*\/))+FROM\b/i
+const directReadPolicy = (table: 'questions' | 'choices') => new RegExp(
+  `CREATE\\s+POLICY\\s+(?:"[^"]+"|\\S+)\\s+ON\\s+public\\.${table}\\b`,
+  'i',
+)
 const baseTables = [
   'exams',
   'users',
@@ -15,6 +20,18 @@ const baseTables = [
   'resources',
   'bookmarks',
   'download_grants',
+]
+const expectedUniqueIndexes = [
+  {
+    name: 'questions_round_number_unique',
+    table: 'questions',
+    columns: ['exam_id', 'exam_type', 'year', 'round', 'number'],
+  },
+  {
+    name: 'choices_question_number_unique',
+    table: 'choices',
+    columns: ['question_id', 'number'],
+  },
 ]
 
 describe('master question editing migration', () => {
@@ -64,6 +81,11 @@ describe('master question editing migration', () => {
     expect(executableSql('-- ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;')).not.toMatch(usersRlsStatement)
   })
 
+  it('recognizes question and choice policies even when they omit a command clause', () => {
+    expect('CREATE POLICY future_question_policy ON public.questions TO authenticated;').toMatch(directReadPolicy('questions'))
+    expect('CREATE POLICY future_choice_policy ON public.choices WITH CHECK (true);').toMatch(directReadPolicy('choices'))
+  })
+
   it('makes the integrated setup safe to execute against fresh and existing projects', () => {
     for (const table of baseTables) {
       expect(setupSql).toMatch(new RegExp(`CREATE TABLE IF NOT EXISTS public\\.${table}\\s*\\(`))
@@ -73,8 +95,6 @@ describe('master question editing migration', () => {
       expect(setupSql).toMatch(new RegExp(`ADD COLUMN IF NOT EXISTS ${column}\\b`))
     }
 
-    expect(setupSql).toMatch(/CREATE UNIQUE INDEX IF NOT EXISTS public\.questions_round_number_unique/)
-    expect(setupSql).toMatch(/CREATE UNIQUE INDEX IF NOT EXISTS public\.choices_question_number_unique/)
     expect(setupSql).toMatch(/INSERT INTO public\.exams[\s\S]*ON CONFLICT \(slug\) DO NOTHING;/)
     expect(setupSql).toContain('BEGIN;')
     expect(setupSql).toContain('COMMIT;')
@@ -93,12 +113,28 @@ describe('master question editing migration', () => {
     }
   })
 
+  it('validates expected unique index definitions after repeatable creation', () => {
+    expect(setupSql).not.toMatch(/CREATE UNIQUE INDEX IF NOT EXISTS public\./)
+
+    for (const { name, table, columns } of expectedUniqueIndexes) {
+      expect(setupSql).toMatch(new RegExp(
+        `CREATE UNIQUE INDEX IF NOT EXISTS ${name}\\s+ON public\\.${table}\\(${columns.join('\\s*,\\s*')}\\);`,
+      ))
+      expect(setupSql).toMatch(new RegExp(
+        `index_relation\\.relname = '${name}'[\\s\\S]*?index_definition\\.indrelid = 'public\\.${table}'::pg_catalog\\.regclass[\\s\\S]*?index_definition\\.indisunique[\\s\\S]*?index_definition\\.indpred IS NULL[\\s\\S]*?index_definition\\.indnatts = index_definition\\.indnkeyatts[\\s\\S]*?ARRAY\\[${columns.map((column) => `'${column}'`).join(', ')}\\]::pg_catalog\\.name\\[\\]`,
+      ))
+    }
+
+    expect(setupSql).toMatch(/DO \$\$[\s\S]*RAISE EXCEPTION 'questions_round_number_unique has an unexpected definition';[\s\S]*RAISE EXCEPTION 'choices_question_number_unique has an unexpected definition';[\s\S]*END;\s*\$\$;/)
+  })
+
   it('never deletes data or grants direct question and choice reads', () => {
     const sql = executableSql(setupSql)
 
     expect(sql).not.toMatch(/\bDROP TABLE\b/i)
     expect(sql).not.toMatch(/\bTRUNCATE\b/i)
-    expect(sql).not.toMatch(/\bDELETE FROM\b/i)
+    expect(sql).not.toMatch(destructiveDelete)
+    expect('DELETE /* preserve rows */\n FROM public.questions;').toMatch(destructiveDelete)
     expect(sql).not.toMatch(/INSERT INTO public\.exams[\s\S]*ON CONFLICT[\s\S]*DO UPDATE/i)
     expect(sql).toContain('DROP POLICY IF EXISTS questions_public_read ON public.questions;')
     expect(sql).toContain('DROP POLICY IF EXISTS choices_public_read ON public.choices;')
@@ -106,7 +142,22 @@ describe('master question editing migration', () => {
     expect(sql).toContain('DROP POLICY IF EXISTS choices_master_select ON public.choices;')
     expect(sql).toContain('DROP POLICY IF EXISTS questions_master_update ON public.questions;')
     expect(sql).toContain('DROP POLICY IF EXISTS choices_master_update ON public.choices;')
-    expect(sql).not.toMatch(/CREATE POLICY\s+"?questions_(public_read|master_(select|update))"?/i)
-    expect(sql).not.toMatch(/CREATE POLICY\s+"?choices_(public_read|master_(select|update))"?/i)
+    expect(sql).toContain('REVOKE SELECT ON TABLE public.questions FROM anon, authenticated;')
+    expect(sql).toContain('REVOKE SELECT ON TABLE public.choices FROM anon, authenticated;')
+    for (const schema of schemaSql) {
+      expect(executableSql(schema)).not.toMatch(directReadPolicy('questions'))
+      expect(executableSql(schema)).not.toMatch(directReadPolicy('choices'))
+    }
+  })
+
+  it('promotes exactly the designated existing profile and nothing else', () => {
+    const sql = executableSql(setupSql)
+    const masterAssignments = sql.match(/\bSET\s+role\s*=\s*'master'/gi) ?? []
+
+    expect(masterAssignments).toHaveLength(1)
+    expect(sql).toMatch(/DO \$\$[\s\S]*?SELECT pg_catalog\.count\(\*\)[\s\S]*?FROM public\.users[\s\S]*?WHERE pg_catalog\.lower\(email\) = 'seoteang@gmail\.com'[\s\S]*?> 1[\s\S]*?RAISE EXCEPTION 'multiple profiles match seoteang@gmail\.com';[\s\S]*?END;\s*\$\$;/)
+    expect(sql).toMatch(/UPDATE\s+public\.users\s+SET\s+role\s*=\s*'master'\s+WHERE\s+pg_catalog\.lower\(email\)\s*=\s*'seoteang@gmail\.com';/i)
+    expect(sql).not.toMatch(/INSERT\s+INTO\s+(?:public\.users|auth\.users)[\s\S]*seoteang@gmail\.com/i)
+    expect(sql).not.toMatch(/INSERT\s+INTO\s+public\.users\s*\([^)]*\brole\b[^)]*\)[\s\S]*'master'/i)
   })
 })
