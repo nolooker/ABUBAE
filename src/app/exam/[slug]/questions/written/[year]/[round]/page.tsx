@@ -6,10 +6,12 @@ import { getPublicWrittenRound } from '@/lib/written-content'
 
 type Props = { params: Promise<{ slug: string; year: string; round: string }> }
 
+export const dynamic = 'force-dynamic'
+
 export default async function WrittenRoundPage({ params }: Props) {
   const { slug, year, round } = await params
   if (slug !== 'jeongchogi') notFound()
-  const content = getPublicWrittenRound(Number(year), Number(round))
+  const content = await getPublicWrittenRound(Number(year), Number(round))
   if (!content) notFound()
 
   return (

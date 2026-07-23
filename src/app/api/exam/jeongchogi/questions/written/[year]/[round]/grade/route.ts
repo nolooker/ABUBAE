@@ -1,4 +1,4 @@
-import { gradeWrittenSubmission } from '@/lib/written-content'
+import { gradeWrittenSubmission, WrittenContentUnavailableError } from '@/lib/written-content'
 import type { WrittenAnswers } from '@/lib/written-exam'
 
 type Context = {
@@ -13,10 +13,13 @@ export async function POST(request: Request, { params }: Context) {
       return Response.json({ error: 'answers must be an object' }, { status: 400 })
     }
 
-    const result = gradeWrittenSubmission(Number(year), Number(round), payload.answers as WrittenAnswers)
+    const result = await gradeWrittenSubmission(Number(year), Number(round), payload.answers as WrittenAnswers)
     if (!result) return Response.json({ error: 'round not found' }, { status: 404 })
     return Response.json(result)
   } catch (error) {
+    if (error instanceof WrittenContentUnavailableError) {
+      return Response.json({ error: 'written content unavailable' }, { status: 503 })
+    }
     const message = error instanceof Error ? error.message : 'invalid submission'
     return Response.json({ error: message }, { status: 400 })
   }

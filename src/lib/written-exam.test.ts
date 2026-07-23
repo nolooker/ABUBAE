@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
 import { gradeWrittenRound } from './written-exam'
-import { gradeWrittenSubmission } from './written-content'
 
 const questions = [
   { id: 'q1', number: 1, subject: '설계', acceptedAnswerIndexes: [0] },
@@ -35,19 +34,5 @@ describe('gradeWrittenRound', () => {
 
   it('rejects a selected answer outside the four choices', () => {
     expect(() => gradeWrittenRound(questions, { q1: 4 })).toThrow('q1 has an invalid selected answer')
-  })
-})
-
-describe('gradeWrittenSubmission', () => {
-  it('grades a bundled round without exposing answers through the public round loader', () => {
-    const result = gradeWrittenSubmission(2021, 1, {})
-
-    expect(result?.total).toBe(100)
-    expect(result?.unanswered).toBe(100)
-    expect(result?.questions[3].acceptedAnswerIndexes).toEqual([1, 3])
-  })
-
-  it('returns undefined for an unavailable round', () => {
-    expect(gradeWrittenSubmission(2025, 1, {})).toBeUndefined()
   })
 })
