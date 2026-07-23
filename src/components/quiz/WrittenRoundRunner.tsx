@@ -3,15 +3,22 @@
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
-import type { PublicWrittenQuestion } from '@/lib/written-content'
 import type { WrittenGradeResult } from '@/lib/written-exam'
 import WrittenRoundResult from './WrittenRoundResult'
+
+type WrittenRoundQuestion = {
+  id: string
+  number: number
+  subject: string
+  content: string
+  choices: string[]
+}
 
 type Props = {
   year: number
   round: number
   title: string
-  questions: PublicWrittenQuestion[]
+  questions: WrittenRoundQuestion[]
 }
 
 const choiceLabels = ['①', '②', '③', '④']

@@ -2,10 +2,17 @@
 
 import { useState } from 'react'
 
-import type { PublicWrittenQuestion } from '@/lib/written-content'
 import type { WrittenGradeResult } from '@/lib/written-exam'
 
-type Props = { title: string; questions: PublicWrittenQuestion[]; result: WrittenGradeResult; onRetry: () => void }
+type WrittenRoundQuestion = {
+  id: string
+  number: number
+  subject: string
+  content: string
+  choices: string[]
+}
+
+type Props = { title: string; questions: WrittenRoundQuestion[]; result: WrittenGradeResult; onRetry: () => void }
 const choiceLabels = ['①', '②', '③', '④']
 
 export default function WrittenRoundResult({ title, questions, result, onRetry }: Props) {

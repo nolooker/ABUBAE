@@ -36,7 +36,11 @@ export function gradeWrittenRound(
   questions: GradeableQuestion[],
   answers: WrittenAnswers,
 ): WrittenGradeResult {
+  const questionIds = new Set(questions.map((question) => question.id))
   for (const [questionId, selectedAnswer] of Object.entries(answers)) {
+    if (!questionIds.has(questionId)) {
+      throw new Error(`${questionId} is not part of this written round`)
+    }
     if (!Number.isInteger(selectedAnswer) || selectedAnswer < 0 || selectedAnswer > 3) {
       throw new Error(`${questionId} has an invalid selected answer`)
     }

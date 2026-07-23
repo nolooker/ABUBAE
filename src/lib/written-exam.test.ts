@@ -35,4 +35,10 @@ describe('gradeWrittenRound', () => {
   it('rejects a selected answer outside the four choices', () => {
     expect(() => gradeWrittenRound(questions, { q1: 4 })).toThrow('q1 has an invalid selected answer')
   })
+
+  it('rejects an answer for a question outside the loaded round', () => {
+    expect(() => gradeWrittenRound(questions, { unknown: 0 })).toThrow(
+      'unknown is not part of this written round',
+    )
+  })
 })
