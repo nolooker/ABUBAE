@@ -40,6 +40,11 @@ function stringValue(value: unknown): string {
   return value
 }
 
+function nullableStringValue(value: unknown): string {
+  if (value === null) return ''
+  return stringValue(value)
+}
+
 function positiveIntegerValue(value: unknown): number {
   if (!Number.isInteger(value) || (value as number) < 1) unavailable()
   return value as number
@@ -100,6 +105,7 @@ function gradeableQuestion(row: RecordValue) {
     id: stringValue(row.id),
     number: positiveIntegerValue(row.number),
     subject: stringValue(row.subject),
+    explanation: nullableStringValue(row.explanation),
     acceptedAnswerIndexes: gradingChoices(row.choices)
       .filter((choice) => choice.isCorrect)
       .map((choice) => choice.number - 1),
@@ -138,7 +144,7 @@ export function createWrittenQuestionRepository(supabase: SupabaseClient) {
     ): Promise<WrittenGradeResult | undefined> {
       const { data, error } = await supabase
         .from('questions')
-        .select('id,number,subject,choices(number,is_correct),exams!inner(slug)')
+        .select('id,number,subject,explanation,choices(number,is_correct),exams!inner(slug)')
         .eq('exam_type', 'written')
         .eq('year', year)
         .eq('round', round)

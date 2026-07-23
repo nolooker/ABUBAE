@@ -131,8 +131,8 @@ describe('WrittenRoundRunner', () => {
         score: 50,
         subjects: [{ subject: '소프트웨어 설계', total: 2, correct: 1, score: 50 }],
         questions: [
-          { id: 'q1', number: 1, subject: '소프트웨어 설계', selectedAnswerIndex: 1, acceptedAnswerIndexes: [1], isCorrect: true, isUnanswered: false },
-          { id: 'q2', number: 2, subject: '소프트웨어 설계', selectedAnswerIndex: null, acceptedAnswerIndexes: [2], isCorrect: false, isUnanswered: true },
+          { id: 'q1', number: 1, subject: '소프트웨어 설계', selectedAnswerIndex: 1, acceptedAnswerIndexes: [1], explanation: '수정된 해설', isCorrect: true, isUnanswered: false },
+          { id: 'q2', number: 2, subject: '소프트웨어 설계', selectedAnswerIndex: null, acceptedAnswerIndexes: [2], explanation: '', isCorrect: false, isUnanswered: true },
         ],
       }),
     })
@@ -152,6 +152,7 @@ describe('WrittenRoundRunner', () => {
 
     await waitFor(() => expect(screen.getByRole('heading', { name: '50점' })).toBeInTheDocument())
     expect(screen.getByText('이 결과는 저장되지 않습니다.')).toBeInTheDocument()
+    expect(screen.getByText('수정된 해설')).toBeInTheDocument()
     expect(fetchMock).toHaveBeenCalledWith(
       '/api/exam/jeongchogi/questions/written/2021/1/grade',
       expect.objectContaining({ method: 'POST' }),

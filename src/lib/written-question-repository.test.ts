@@ -23,7 +23,7 @@ const publicQuery: QueryExpectation = {
 }
 
 const gradingQuery: QueryExpectation = {
-  select: 'id,number,subject,choices(number,is_correct),exams!inner(slug)',
+  select: 'id,number,subject,explanation,choices(number,is_correct),exams!inner(slug)',
   filters: publicQuery.filters,
   order: 'number',
 }
@@ -79,6 +79,7 @@ function gradingQuestion(overrides: Record<string, unknown> = {}) {
     id: 'q1',
     number: 1,
     subject: 'software',
+    explanation: 'Edited explanation',
     exams: { slug: 'jeongchogi' },
     choices: [
       { number: 1, is_correct: false },
@@ -108,6 +109,7 @@ describe('written question repository', () => {
       updatedAt: '2026-07-23T00:00:00Z',
     })
     expect(round?.questions[0]).not.toHaveProperty('acceptedAnswerIndexes')
+    expect(round?.questions[0]).not.toHaveProperty('explanation')
   })
 
   it('loads correct choices only inside grading', async () => {
@@ -119,6 +121,18 @@ describe('written question repository', () => {
     const result = await repository.gradeWrittenSubmission(2021, 1, { q1: 1 })
 
     expect(result?.correct).toBe(1)
+    expect(result?.questions[0].explanation).toBe('Edited explanation')
+  })
+
+  it('treats a malformed grading explanation as unavailable content', async () => {
+    const repository = createWrittenQuestionRepository(createSupabaseClient({
+      data: [gradingQuestion({ explanation: false })],
+      error: null,
+    }, gradingQuery))
+
+    await expect(repository.gradeWrittenSubmission(2021, 1, { q1: 1 })).rejects.toMatchObject({
+      name: 'WrittenContentUnavailableError',
+    })
   })
 
   it('reports database failures as content unavailability', async () => {

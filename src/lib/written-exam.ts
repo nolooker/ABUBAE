@@ -3,6 +3,7 @@ export type GradeableQuestion = {
   number: number
   subject: string
   acceptedAnswerIndexes: number[]
+  explanation: string
 }
 
 export type WrittenAnswers = Record<string, number>
@@ -25,6 +26,7 @@ export type WrittenGradeResult = {
     subject: string
     selectedAnswerIndex: number | null
     acceptedAnswerIndexes: number[]
+    explanation: string
     isCorrect: boolean
     isUnanswered: boolean
   }>
@@ -55,6 +57,7 @@ export function gradeWrittenRound(
       subject: question.subject,
       selectedAnswerIndex,
       acceptedAnswerIndexes: [...question.acceptedAnswerIndexes],
+      explanation: question.explanation,
       isCorrect: !isUnanswered && question.acceptedAnswerIndexes.includes(selectedAnswerIndex),
       isUnanswered,
     }

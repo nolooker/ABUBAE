@@ -3,9 +3,9 @@ import { describe, expect, it } from 'vitest'
 import { gradeWrittenRound } from './written-exam'
 
 const questions = [
-  { id: 'q1', number: 1, subject: '설계', acceptedAnswerIndexes: [0] },
-  { id: 'q2', number: 2, subject: '설계', acceptedAnswerIndexes: [1, 2] },
-  { id: 'q3', number: 3, subject: '개발', acceptedAnswerIndexes: [3] },
+  { id: 'q1', number: 1, subject: '설계', acceptedAnswerIndexes: [0], explanation: '첫 번째 해설' },
+  { id: 'q2', number: 2, subject: '설계', acceptedAnswerIndexes: [1, 2], explanation: '두 번째 해설' },
+  { id: 'q3', number: 3, subject: '개발', acceptedAnswerIndexes: [3], explanation: '' },
 ]
 
 describe('gradeWrittenRound', () => {
@@ -27,9 +27,11 @@ describe('gradeWrittenRound', () => {
       id: 'q3',
       selectedAnswerIndex: null,
       acceptedAnswerIndexes: [3],
+      explanation: '',
       isCorrect: false,
       isUnanswered: true,
     })
+    expect(result.questions[0].explanation).toBe('첫 번째 해설')
   })
 
   it('rejects a selected answer outside the four choices', () => {

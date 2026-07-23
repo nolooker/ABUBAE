@@ -24,6 +24,7 @@ test.describe('master inline question editing', () => {
     const original = await readOriginalQuestion(editDialog)
 
     const replacementContent = `[E2E] Master edit ${Date.now()}`
+    const replacementExplanation = `[E2E] Explanation ${Date.now()}`
     const replacementAnswerIndex = original.correctChoices.findIndex((isCorrect) => !isCorrect)
     const originalAnswerIndex = original.correctChoices.findIndex(Boolean)
     if (replacementAnswerIndex < 0) {
@@ -33,6 +34,7 @@ test.describe('master inline question editing', () => {
 
     try {
       await editDialog.getByLabel('Question', { exact: true }).fill(replacementContent)
+      await editDialog.getByLabel('Explanation', { exact: true }).fill(replacementExplanation)
       await setCorrectChoice(editDialog, replacementAnswerIndex)
       await editDialog.getByRole('button', { name: 'Save', exact: true }).click()
       await expect(editDialog).toBeHidden()
@@ -44,6 +46,7 @@ test.describe('master inline question editing', () => {
       await expect(gradedQuestion(page, replacementContent).getByRole('listitem', {
         name: `Graded choice ${replacementAnswerIndex + 1}: correct answer`,
       })).toBeVisible()
+      await expect(gradedQuestion(page, replacementContent)).toContainText(replacementExplanation)
 
       await page.goto(questionPath)
       await gradeWithAnswer(page, originalAnswerIndex)
