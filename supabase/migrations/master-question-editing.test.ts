@@ -19,6 +19,13 @@ describe('master question editing migration', () => {
     expect(setupSql).toMatch(/UPDATE public\.questions\s+SET content = p_content,\s+explanation = p_explanation,\s+reviewed = TRUE,/)
   })
 
+  it('uses PostgreSQL built-in type names that exist', () => {
+    for (const sql of schemaSql) {
+      expect(sql).not.toContain('pg_catalog.boolean')
+      expect(sql).toMatch(/RETURNS pg_catalog\.bool/)
+    }
+  })
+
   it('keeps user RLS executable and routes all question editing through RPCs', () => {
     expect(migrationSql).toContain('ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;')
     expect(executableSql(setupSql)).toMatch(usersRlsStatement)

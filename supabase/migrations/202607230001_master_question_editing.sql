@@ -21,7 +21,7 @@ ALTER TABLE public.questions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.choices ENABLE ROW LEVEL SECURITY;
 
 CREATE OR REPLACE FUNCTION public.is_master()
-RETURNS pg_catalog.boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path = '' AS $$
+RETURNS pg_catalog.bool LANGUAGE sql STABLE SECURITY DEFINER SET search_path = '' AS $$
   SELECT EXISTS (
     SELECT 1 FROM public.users
     WHERE id = auth.uid() AND role = 'master'
