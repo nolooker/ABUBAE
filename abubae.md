@@ -51,6 +51,56 @@
 - 비회원 결과는 저장하지 않는다는 안내
 - 개발 서버 상호작용 오류를 피하기 위해 로컬 개발 명령은 Webpack 사용
 
+### Master 문항 편집 — 구현된 코드와 운영 전제
+
+다음 항목은 이 브랜치에 구현되어 있지만, Supabase 마이그레이션·시드·역할 부여와 배포는 **아직 적용하거나 완료했다고 주장하지 않는다**. 운영자는 아래의 적용 순서와 전제 조건을 충족한 뒤에만 기능을 사용한다.
+
+- 일반 사용자와 Master는 별도 관리자 로그인이나 쿠키가 아니라 같은 Supabase Auth 로그인과 `public.users.role`을 사용한다. 역할 값은 `user` 또는 `master`이며 기본값은 `user`다.
+- Master는 문제풀이 화면에서 현재 문항의 질문, 네 선택지, 하나 이상의 정답, 해설을 즉시 편집할 수 있다. 저장은 단일 RPC 트랜잭션으로 처리하고 `updated_at` 충돌을 확인한다. 저장된 내용은 해당 화면의 상태와 다음 새로고침에 반영된다.
+- 공개 문제 조회와 채점은 서버 전용 `SUPABASE_SERVICE_ROLE_KEY`로 수행한다. 브라우저는 `questions`와 `choices`를 직접 조회하지 않으며, 서비스 역할 키를 브라우저 번들·`NEXT_PUBLIC_` 환경 변수·로그에 넣지 않는다.
+- Master 권한 확인은 서버에서 Auth 사용자와 `public.users.role`을 함께 조회한다. 이전의 독립된 Admin 인증 방식은 사용하지 않는다.
+
+#### Supabase 적용 순서 (운영자 실행)
+
+아래 순서는 의도적으로 고정되어 있다. 아직 실행하지 않은 환경에서는 순서만 기록하며, 적용·배포 완료 상태로 표시하지 않는다.
+
+1. `supabase/migrations/202607230001_master_question_editing.sql`
+2. `supabase/seeds/2021-written.sql`
+3. `UPDATE public.users SET role = 'master' WHERE email = '<운영자 이메일>';`
+
+적용 뒤에는 다음을 확인한다.
+
+```sql
+SELECT role FROM public.users WHERE email = '<운영자 이메일>';
+SELECT count(*) FROM public.questions WHERE exam_type = 'written' AND year = 2021;
+SELECT count(*)
+FROM public.choices c
+JOIN public.questions q ON q.id = c.question_id
+WHERE q.exam_type = 'written' AND q.year = 2021;
+```
+
+기대값은 각각 `master`, `300`, `1200`이다. 이 확인은 실제 운영자가 SQL을 적용한 뒤에만 수행할 수 있다.
+
+#### 환경 변수와 E2E 전제 조건
+
+서버/배포 환경에는 다음 변수가 필요하다.
+
+```text
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+SUPABASE_SERVICE_ROLE_KEY
+```
+
+Master 편집 Playwright E2E를 실행하려면, 시드가 적용된 별도 테스트 프로젝트와 `master` 역할이 부여된 테스트 계정이 필요하다. 테스트 실행 환경에만 다음 값을 설정한다.
+
+```text
+MASTER_TEST_EMAIL
+MASTER_TEST_PASSWORD
+E2E_BASE_URL          # 선택 사항; 없으면 로컬 http://127.0.0.1:3000을 사용
+```
+
+`MASTER_TEST_EMAIL` 또는 `MASTER_TEST_PASSWORD`가 없으면 `npm run test:e2e -- tests/e2e/master-question-edit.spec.ts`는 명시적으로 skip한다. 테스트는 원본 질문·선택지·정답·해설을 읽고, 성공·실패 여부와 관계없이 `finally`에서 원래 데이터로 복원한다. 자격 증명은 기본값으로 대체하거나 출력하지 않는다.
+
 ### 복수 정답 정책
 
 원본 정답표의 복수·전항 정답은 단일 정답으로 임의 변경하지 않는다. 사용자는 객관식 선택지 하나만 고르며, 선택한 번호가 `acceptedAnswerIndexes` 중 하나이면 정답으로 처리한다.
@@ -61,14 +111,15 @@
 
 ### 콘텐츠 공개 상태
 
-300문항은 구조 검사를 통과했지만 사람의 사실 검수와 신규 아부배 해설 작성이 끝나지 않았다. 현재 후보 데이터는 모두 `reviewed: false`, `published: false`이며, 검수 완료 전 Supabase 공개 데이터로 전환하지 않는다.
+원본 후보 300문항은 구조 검사를 통과했지만 사람의 사실 검수와 신규 아부배 해설 작성이 끝나지 않았다. 후보 콘텐츠는 `reviewed: false`, `published: false`다. 이 브랜치의 시드 생성기는 구현상 2021년 문항을 `published: true`, `reviewed: false`로 만들지만, 시드는 아직 어떤 Supabase 프로젝트에도 적용되었다고 가정하지 않는다.
 
 ### 다음 구현 순서
 
 1. 300문항 사실 검수와 아부배식 신규 해설 작성
-2. `supabase-setup.sql` 확장과 2021년 시드 생성
-3. 로그인 회원의 풀이 기록·오답 이력 저장
-4. 2022~2025년 허가된 원본 확보 후 같은 검수 절차로 추가
+2. 운영용 Supabase 프로젝트에 위의 마이그레이션·시드·Master 역할을 순서대로 적용
+3. 별도 테스트 프로젝트에서 Master 즉시 편집과 E2E 복원 흐름 검증
+4. 로그인 회원의 풀이 기록·오답 이력 저장
+5. 2022~2025년 허가된 원본 확보 후 같은 검수 절차로 추가
 
 ---
 
@@ -1087,7 +1138,8 @@ npx shadcn-ui@latest init
 
 # .env.local
 NEXT_PUBLIC_SUPABASE_URL=your-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-key
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-key
+SUPABASE_SERVICE_ROLE_KEY=server-only-key
 TOSS_CLIENT_KEY=your-toss-key (나중에)
 
 # 만들 파일 순서
