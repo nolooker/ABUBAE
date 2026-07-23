@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { BarChart3, FileText, Library, MessageSquareText, Settings } from 'lucide-react'
-import { isAdminSession } from '@/lib/admin-auth'
-import { logoutAdmin } from './login/actions'
+import { getCurrentUserRole } from '@/lib/master-auth'
+import { logout } from './actions'
 
 export const metadata = {
   title: 'System Admin',
@@ -42,8 +42,8 @@ const adminCards = [
 ]
 
 export default async function AdminPage() {
-  if (!(await isAdminSession())) {
-    redirect('/admin/login')
+  if ((await getCurrentUserRole()) !== 'master') {
+    redirect('/login?next=/admin')
   }
 
   return (
@@ -56,7 +56,7 @@ export default async function AdminPage() {
             지금은 운영 화면의 골격입니다. 초반에는 Supabase Studio로 데이터를 관리하고, 반복 업무가 생기는 영역부터 Admin 기능을 붙입니다.
           </p>
         </div>
-        <form action={logoutAdmin}>
+        <form action={logout}>
           <button
             type="submit"
             className="rounded-xl border border-[var(--border)] bg-white px-4 py-2 text-[13px] font-bold text-[var(--text-secondary)] hover:bg-[var(--bg-muted)]"

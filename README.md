@@ -18,21 +18,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Admin Access
 
-The admin shell is available at `/admin`. Admin access uses a master code, separate from normal user login.
-
-Default local code:
-
-```bash
-master
-```
-
-For deployment, set a longer server-side code in `.env.local`:
-
-```bash
-ADMIN_MASTER_KEY=change-this-to-a-long-private-code
-```
-
-Then visit `/admin/login`, enter the master code, and continue to `/admin`.
+The admin shell is available at `/admin`. Sign in with the normal Supabase login; only users whose server-managed `public.users.role` is `master` can access it.
 
 ## Supabase Data Flow
 

@@ -10,9 +10,26 @@ type AuthMode = 'login' | 'signup'
 
 type AuthFormProps = {
   mode: AuthMode
+  nextPath?: string
 }
 
-export default function AuthForm({ mode }: AuthFormProps) {
+function getSafeNextPath(nextPath?: string) {
+  if (!nextPath?.startsWith('/') || nextPath.startsWith('//') || nextPath.includes('\\')) {
+    return '/mypage'
+  }
+
+  try {
+    const decodedNextPath = decodeURIComponent(nextPath)
+
+    return decodedNextPath.startsWith('//') || decodedNextPath.includes('\\')
+      ? '/mypage'
+      : nextPath
+  } catch {
+    return '/mypage'
+  }
+}
+
+export default function AuthForm({ mode, nextPath }: AuthFormProps) {
   const router = useRouter()
   const supabase = useMemo(() => createClient(), [])
   const isSignup = mode === 'signup'
@@ -78,7 +95,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
       return
     }
 
-    router.push('/mypage')
+    router.push(getSafeNextPath(nextPath))
     router.refresh()
   }
 
