@@ -15,6 +15,8 @@
 - Master만 질문, 보기 4개, 단일·복수 정답, 해설을 수정한다.
 - 저장은 승인 단계 없이 즉시 반영하되 `updated_at` 충돌 검사를 수행한다.
 - 공개 문제 응답에는 제출 전 정답을 포함하지 않는다.
+- 브라우저의 `questions`, `choices` 직접 조회를 허용하지 않으며 공개 문제는 서버 API/Server Component를 통해서만 제공한다.
+- 공개 조회와 채점용 DB 접근은 브라우저에 노출되지 않는 `SUPABASE_SERVICE_ROLE_KEY`를 사용한다.
 - 질문과 보기 저장은 하나의 DB 트랜잭션이며 부분 성공을 허용하지 않는다.
 - 서비스 역할 키를 브라우저에 전달하지 않는다.
 - 기존 미커밋 `src/app/page.tsx` 변경을 스테이징하거나 덮어쓰지 않는다.
@@ -49,8 +51,9 @@ describe('master question editing migration', () => {
     expect(sql).toContain("RAISE EXCEPTION 'stale question'")
   })
 
-  it('allows public reads but master-only writes', () => {
-    expect(sql).toContain('questions_public_read')
+  it('blocks browser table reads and permits master-only writes', () => {
+    expect(sql).not.toContain('questions_public_read')
+    expect(sql).not.toContain('choices_public_read')
     expect(sql).toContain('questions_master_update')
     expect(sql).toContain('public.is_master()')
   })
@@ -97,11 +100,9 @@ DROP POLICY IF EXISTS users_select_own ON public.users;
 DROP POLICY IF EXISTS users_update_own ON public.users;
 CREATE POLICY users_select_own ON public.users FOR SELECT USING (auth.uid() = id);
 DROP POLICY IF EXISTS questions_public_read ON public.questions;
-CREATE POLICY questions_public_read ON public.questions FOR SELECT USING (published OR public.is_master());
 DROP POLICY IF EXISTS choices_public_read ON public.choices;
-CREATE POLICY choices_public_read ON public.choices FOR SELECT USING (
-  EXISTS (SELECT 1 FROM public.questions q WHERE q.id = question_id AND (q.published OR public.is_master()))
-);
+CREATE POLICY questions_master_select ON public.questions FOR SELECT USING (public.is_master());
+CREATE POLICY choices_master_select ON public.choices FOR SELECT USING (public.is_master());
 CREATE POLICY questions_master_update ON public.questions FOR UPDATE
   USING (public.is_master()) WITH CHECK (public.is_master());
 CREATE POLICY choices_master_update ON public.choices FOR UPDATE
@@ -196,6 +197,9 @@ git commit -m "feat: generate written question seed"
 ### Task 3: Supabase 문제 저장소와 DB 기반 채점
 
 **Files:**
+- Create: `src/lib/supabase/service.ts`
+- Modify: `src/lib/supabase/client.ts`
+- Modify: `src/lib/supabase/server.ts`
 - Create: `src/lib/written-question-repository.ts`
 - Create: `src/lib/written-question-repository.test.ts`
 - Modify: `src/lib/written-content.ts`
@@ -205,7 +209,7 @@ git commit -m "feat: generate written question seed"
 
 **Interfaces:**
 - Produces: `getPublicWrittenRound(year, round)`, `gradeWrittenSubmission(year, round, answers)` 비동기 함수
-- Consumes: `createClient()` server client, 기존 `gradeWrittenRound`
+- Consumes: `createServiceClient()` server-only client, 기존 `gradeWrittenRound`
 
 - [ ] **Step 1: 저장소 매핑과 정답 은닉 실패 테스트 작성**
 
@@ -272,7 +276,7 @@ export function createWrittenQuestionRepository(supabase: SupabaseClient) {
 }
 ```
 
-`written-content.ts`는 서버 클라이언트를 생성하고 저장소에 위임한다. 페이지와 grade route는 Promise를 `await`한다. DB 오류는 `WrittenContentUnavailableError`로 정규화하고 JSON fallback을 사용하지 않는다.
+`src/lib/supabase/service.ts`에 `SUPABASE_SERVICE_ROLE_KEY`를 사용하는 `server-only` 클라이언트를 만들고 `written-content.ts`가 이를 저장소에 주입한다. 기존 browser/server Auth 클라이언트는 사용자가 제공한 `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`를 사용하도록 변수명을 통일한다. 페이지와 grade route는 Promise를 `await`한다. DB 오류는 `WrittenContentUnavailableError`로 정규화하고 JSON fallback을 사용하지 않는다. 서비스 클라이언트 모듈은 Client Component에서 import할 수 없어야 한다.
 
 - [ ] **Step 4: 저장소·route 테스트 통과 확인**
 
@@ -580,7 +584,7 @@ Master/일반 회원/비회원 각각으로 버튼 노출을 확인하고, 임�
 
 - [ ] **Step 4: Vercel 환경 확인**
 
-Vercel 프로젝트 `abubae`에 `NEXT_PUBLIC_SUPABASE_URL`, 코드가 실제 사용하는 publishable key 변수, 필요한 서버 전용 키가 Production/Preview에 정확히 존재하는지 값 노출 없이 확인한다. 서버 전용 키가 추가된다면 브라우저 번들에 포함되지 않는 이름을 사용한다.
+Vercel 프로젝트 `abubae`에 `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`가 Production/Preview에 정확히 존재하는지 값 노출 없이 확인한다. `SUPABASE_SERVICE_ROLE_KEY`는 브라우저 번들에 포함하지 않는다.
 
 - [ ] **Step 5: 최종 상태 커밋과 통합 선택**
 
