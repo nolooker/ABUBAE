@@ -15,7 +15,7 @@ export default async function WrittenRoundPage({ params }: Props) {
   return (
     <section className="mx-auto max-w-7xl px-4 py-8">
       <Link href={`/exam/${slug}/questions/written`} className="mb-5 inline-block text-sm font-semibold text-[var(--primary)]">← 회차 선택으로 돌아가기</Link>
-      <WrittenRoundRunner title={content.title} questions={content.questions} />
+      <WrittenRoundRunner year={Number(year)} round={Number(round)} title={content.title} questions={content.questions} />
     </section>
   )
 }

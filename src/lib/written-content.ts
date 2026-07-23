@@ -1,6 +1,7 @@
 import round1 from '../../content/written/jeongchogi/2021-1.candidates.json'
 import round2 from '../../content/written/jeongchogi/2021-2.candidates.json'
 import round3 from '../../content/written/jeongchogi/2021-3.candidates.json'
+import { gradeWrittenRound, type WrittenAnswers } from './written-exam'
 
 export type PublicWrittenQuestion = {
   id: string
@@ -37,5 +38,20 @@ export function getPublicWrittenRound(year: number, round: number) {
       choices,
     })) satisfies PublicWrittenQuestion[],
   }
+}
+
+export function gradeWrittenSubmission(year: number, round: number, answers: WrittenAnswers) {
+  const candidate = candidates.find((item) => item.year === year && item.round === round)
+  if (!candidate) return undefined
+
+  return gradeWrittenRound(
+    candidate.questions.map(({ id, number, subject, acceptedAnswerIndexes }) => ({
+      id,
+      number,
+      subject,
+      acceptedAnswerIndexes,
+    })),
+    answers,
+  )
 }
 
