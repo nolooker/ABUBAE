@@ -1181,3 +1181,16 @@ question/choice policy, regardless of its name, and revokes direct `SELECT` on
 those tables from `PUBLIC`, `anon`, and `authenticated`. Browser clients must use
 the granted security-definer RPCs; server-side service-role access remains
 separate.
+
+## Notice management security
+
+The canonical `supabase-setup.sql` path also enables RLS for `public.posts`,
+removes every non-`SELECT` posts policy, and revokes browser-facing `INSERT`,
+`UPDATE`, and `DELETE` privileges from `PUBLIC`, `anon`, and `authenticated`.
+Only published posts remain readable through `posts_public_read`.
+
+`supabase/migrations/202607240001_admin_notices.sql` is retained as a historical
+migration and is superseded for operator use. Admin notice list/create/update
+requests must first confirm the signed-in user is a `master`; only then may the
+server create its service-role client. The service-role key remains server-only
+and is never exposed through a `NEXT_PUBLIC_` environment variable.
