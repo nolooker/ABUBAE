@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { BarChart3, FileText, Library, MessageSquareText, Settings } from 'lucide-react'
 import { getCurrentUserRole } from '@/lib/master-auth'
@@ -32,6 +33,7 @@ const adminCards = [
     description: 'SEO 글, 공지, 합격 후기 콘텐츠를 관리합니다.',
     icon: MessageSquareText,
     status: '준비 중',
+    href: '/admin/notices',
   },
   {
     title: '판매/전환 지표',
@@ -70,8 +72,8 @@ export default async function AdminPage() {
         {adminCards.map((card) => {
           const Icon = card.icon
 
-          return (
-            <div key={card.title} className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-white p-5">
+          const content = (
+            <>
               <div className="mb-4 flex items-start justify-between gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--primary-light)] text-[var(--primary)]">
                   <Icon size={18} />
@@ -82,6 +84,16 @@ export default async function AdminPage() {
               </div>
               <h2 className="text-[16px] font-bold text-[var(--text-primary)]">{card.title}</h2>
               <p className="text-[13px] text-[var(--text-secondary)] mt-2 leading-relaxed">{card.description}</p>
+            </>
+          )
+
+          return card.href ? (
+            <Link key={card.title} href={card.href} className="block rounded-[var(--radius-lg)] border border-[var(--border)] bg-white p-5 hover:border-[var(--primary)]">
+              {content}
+            </Link>
+          ) : (
+            <div key={card.title} className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-white p-5">
+              {content}
             </div>
           )
         })}
