@@ -101,7 +101,7 @@ BEGIN
   SELECT pg_catalog.jsonb_build_object(
     'question', pg_catalog.to_jsonb(question_row),
     'choices', (
-      SELECT pg_catalog.coalesce(
+      SELECT COALESCE(
         pg_catalog.jsonb_agg(pg_catalog.to_jsonb(choice_row) ORDER BY choice_row.number),
         '[]'::pg_catalog.jsonb
       )
@@ -143,11 +143,11 @@ BEGIN
     RAISE EXCEPTION 'master role required';
   END IF;
 
-  IF pg_catalog.coalesce(pg_catalog.cardinality(p_choices), 0) <> 4 THEN
+  IF COALESCE(pg_catalog.cardinality(p_choices), 0) <> 4 THEN
     RAISE EXCEPTION 'exactly four choices are required';
   END IF;
 
-  IF pg_catalog.coalesce(pg_catalog.cardinality(p_correct_numbers), 0) < 1
+  IF COALESCE(pg_catalog.cardinality(p_correct_numbers), 0) < 1
     OR EXISTS (
       SELECT 1
       FROM pg_catalog.unnest(p_correct_numbers) AS correct_number

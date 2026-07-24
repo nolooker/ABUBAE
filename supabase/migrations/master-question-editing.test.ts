@@ -55,6 +55,7 @@ describe('master question editing migration', () => {
   it('uses PostgreSQL built-in type names that exist', () => {
     for (const sql of schemaSql) {
       expect(sql).not.toContain('pg_catalog.boolean')
+      expect(sql).not.toContain('pg_catalog.coalesce')
       expect(sql).toMatch(/RETURNS pg_catalog\.bool/)
     }
   })
