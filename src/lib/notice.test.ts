@@ -64,4 +64,28 @@ describe('validateNoticeId', () => {
       expectedUpdatedAt: '2026-02-30T00:00:00Z',
     }, { expectedUpdatedAt: true })).toThrow('expectedUpdatedAt must be an ISO timestamp')
   })
+
+  it.each([
+    '2026-07-24T00:00:00.1Z',
+    '2026-07-24T00:00:00.123456+00:00',
+    '2026-07-24T09:00:00.123456+09:00',
+  ])('accepts calendar-safe Postgres timestamps: %s', (expectedUpdatedAt) => {
+    expect(validateNoticeInput({
+      title: 'title',
+      slug: 'first-notice',
+      content: 'content',
+      isPublished: true,
+      expectedUpdatedAt,
+    }, { expectedUpdatedAt: true })).toMatchObject({ expectedUpdatedAt })
+  })
+
+  it('rejects timestamps with more than six fractional digits', () => {
+    expect(() => validateNoticeInput({
+      title: 'title',
+      slug: 'first-notice',
+      content: 'content',
+      isPublished: true,
+      expectedUpdatedAt: '2026-07-24T00:00:00.1234567Z',
+    }, { expectedUpdatedAt: true })).toThrow('expectedUpdatedAt must be an ISO timestamp')
+  })
 })

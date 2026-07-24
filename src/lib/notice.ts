@@ -33,14 +33,14 @@ type RecordValue = Record<string, unknown>
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 const slug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
-const isoTimestamp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/
+const isoTimestamp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$/
 
 export function isValidNoticeId(value: unknown): value is string {
   return typeof value === 'string' && uuid.test(value)
 }
 
 export function isValidNoticeSlug(value: unknown): value is string {
-  return typeof value === 'string' && slug.test(value)
+  return typeof value === 'string' && value.length <= 120 && slug.test(value)
 }
 
 export function isValidNoticeTimestamp(value: unknown): value is string {

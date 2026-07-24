@@ -58,6 +58,12 @@ function stringValue(value: unknown): string {
   return value
 }
 
+function textValue(value: unknown, maximum: number): string {
+  const text = stringValue(value)
+  if (text !== text.trim() || text.length > maximum) throw new NoticeRepositoryError()
+  return text
+}
+
 function booleanValue(value: unknown): boolean {
   if (typeof value !== 'boolean') throw new NoticeRepositoryError()
   return value
@@ -101,10 +107,10 @@ function publicDetail(row: RecordValue): PublicNoticeDetail {
   }
   return {
     id,
-    title: stringValue(row.title),
+    title: textValue(row.title, 120),
     slug: noticeSlug,
     createdAt,
-    content: stringValue(row.content),
+    content: textValue(row.content, 20_000),
     updatedAt,
   }
 }

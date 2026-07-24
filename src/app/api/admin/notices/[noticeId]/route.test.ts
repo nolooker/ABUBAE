@@ -44,8 +44,8 @@ const notice = {
   slug: 'first-notice',
   content: 'Content',
   isPublished: true,
-  createdAt: '2026-07-24T00:00:00Z',
-  updatedAt: '2026-07-24T00:00:00Z',
+  createdAt: '2026-07-24T00:00:00.123456+00:00',
+  updatedAt: '2026-07-24T09:00:00.654321+09:00',
 }
 
 function context(id = noticeId) {
@@ -153,5 +153,16 @@ describe('/api/admin/notices/[noticeId]', () => {
     expect(missing.status).toBe(404)
     expect(unexpected.status).toBe(500)
     await expect(unexpected.json()).resolves.toEqual({ error: 'unable to manage notices' })
+  })
+
+  it('maps duplicate slugs from PATCH to the specific 409 response', async () => {
+    mocks.createNoticeRepository.mockReturnValue({
+      updateNotice: vi.fn().mockRejectedValue(new mocks.NoticeDuplicateSlugError()),
+    })
+
+    const response = await PATCH(request(), context())
+
+    expect(response.status).toBe(409)
+    await expect(response.json()).resolves.toEqual({ error: 'notice slug already exists' })
   })
 })

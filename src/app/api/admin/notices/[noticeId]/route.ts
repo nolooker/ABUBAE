@@ -1,6 +1,7 @@
 import { MasterAuthorizationError, requireMaster, type MasterAuthClient } from '@/lib/master-auth'
 import { validateNoticeId, validateNoticeInput } from '@/lib/notice'
 import {
+  NoticeDuplicateSlugError,
   NoticeNotFoundError,
   NoticeStaleUpdateError,
   createNoticeRepository,
@@ -77,6 +78,9 @@ export async function PATCH(request: Request, context: Context) {
     }
     if (error instanceof NoticeStaleUpdateError) {
       return Response.json({ error: 'notice was updated by another request' }, { status: 409 })
+    }
+    if (error instanceof NoticeDuplicateSlugError) {
+      return Response.json({ error: 'notice slug already exists' }, { status: 409 })
     }
     if (error instanceof Error && error.message === 'noticeId must be a UUID') {
       return Response.json({ error: error.message }, { status: 400 })

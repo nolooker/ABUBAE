@@ -71,6 +71,20 @@ describe('notice repository', () => {
     expect(calls).toContainEqual(['eq', ['is_published', true]])
   })
 
+  it('accepts PostgREST microsecond timestamps in typed DTOs', async () => {
+    const microsecondRow = {
+      ...row,
+      created_at: '2026-07-24T00:00:00.123456+00:00',
+      updated_at: '2026-07-24T09:00:00.654321+09:00',
+    }
+    const { supabase } = client([{ data: microsecondRow, error: null }])
+
+    await expect(createNoticeRepository(supabase as never).getAdminNotice(row.id)).resolves.toMatchObject({
+      createdAt: microsecondRow.created_at,
+      updatedAt: microsecondRow.updated_at,
+    })
+  })
+
   it('creates an admin notice with its type and premium flag fixed server-side', async () => {
     const { supabase, calls } = client([{ data: row, error: null }])
 
@@ -153,6 +167,11 @@ describe('notice repository', () => {
     [undefined],
     [[{ ...row, id: 'not-a-uuid' }]],
     [[{ ...row, slug: 'Not a slug' }]],
+    [[{ ...row, slug: 'a'.repeat(121) }]],
+    [[{ ...row, title: ' Notice' }]],
+    [[{ ...row, title: 'x'.repeat(121) }]],
+    [[{ ...row, content: ' Content' }]],
+    [[{ ...row, content: 'x'.repeat(20_001) }]],
     [[{ ...row, created_at: '2026-02-30T00:00:00Z' }]],
     [[{ ...row, is_published: 'true' }]],
   ])('rejects malformed successful list data: %o', async (data) => {
