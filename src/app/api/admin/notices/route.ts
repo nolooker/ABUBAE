@@ -1,6 +1,6 @@
 import { MasterAuthorizationError, requireMaster, type MasterAuthClient } from '@/lib/master-auth'
 import { validateNoticeInput } from '@/lib/notice'
-import { NoticeConflictError, createNoticeRepository } from '@/lib/notice-repository'
+import { NoticeDuplicateSlugError, createNoticeRepository } from '@/lib/notice-repository'
 import { createClient } from '@/lib/supabase/server'
 import { createServiceClient } from '@/lib/supabase/service'
 
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
   } catch (error) {
     const authorization = authorizationFailure(error)
     if (authorization) return authorization
-    if (error instanceof NoticeConflictError) {
+    if (error instanceof NoticeDuplicateSlugError) {
       return Response.json({ error: 'notice slug already exists' }, { status: 409 })
     }
     return Response.json({ error: 'unable to manage notices' }, { status: 500 })

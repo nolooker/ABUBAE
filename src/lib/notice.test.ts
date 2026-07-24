@@ -56,5 +56,12 @@ describe('validateNoticeId', () => {
       isPublished: true,
       expectedUpdatedAt: '2026-07-24',
     }, { expectedUpdatedAt: true })).toThrow('expectedUpdatedAt must be an ISO timestamp')
+    expect(() => validateNoticeInput({
+      title: 'title',
+      slug: 'first-notice',
+      content: 'content',
+      isPublished: true,
+      expectedUpdatedAt: '2026-02-30T00:00:00Z',
+    }, { expectedUpdatedAt: true })).toThrow('expectedUpdatedAt must be an ISO timestamp')
   })
 })

@@ -6,6 +6,11 @@ import type {
   PublicNoticeDetail,
   PublicNoticeSummary,
 } from './notice'
+import {
+  isValidNoticeId,
+  isValidNoticeSlug,
+  isValidNoticeTimestamp,
+} from './notice'
 
 const publicFields = 'id,title,slug,content,created_at,updated_at'
 const adminFields = 'id,title,slug,content,is_published,created_at,updated_at'
@@ -27,10 +32,17 @@ export class NoticeNotFoundError extends NoticeRepositoryError {
   }
 }
 
-export class NoticeConflictError extends NoticeRepositoryError {
+export class NoticeDuplicateSlugError extends NoticeRepositoryError {
   constructor(message = 'notice conflicts with an existing record') {
     super(message)
-    this.name = 'NoticeConflictError'
+    this.name = 'NoticeDuplicateSlugError'
+  }
+}
+
+export class NoticeStaleUpdateError extends NoticeRepositoryError {
+  constructor() {
+    super('notice was updated by another request')
+    this.name = 'NoticeStaleUpdateError'
   }
 }
 
@@ -42,7 +54,7 @@ function recordValue(value: unknown): RecordValue {
 }
 
 function stringValue(value: unknown): string {
-  if (typeof value !== 'string') throw new NoticeRepositoryError()
+  if (typeof value !== 'string' || !value.trim()) throw new NoticeRepositoryError()
   return value
 }
 
@@ -52,7 +64,6 @@ function booleanValue(value: unknown): boolean {
 }
 
 function rows(value: unknown): RecordValue[] {
-  if (value === null || value === undefined) return []
   if (!Array.isArray(value)) throw new NoticeRepositoryError()
   return value.map(recordValue)
 }
@@ -63,24 +74,38 @@ function isDuplicateSlug(error: QueryError): boolean {
 
 function resultError(error: QueryError | null): void {
   if (!error) return
-  if (isDuplicateSlug(error)) throw new NoticeConflictError('notice slug already exists')
+  if (isDuplicateSlug(error)) throw new NoticeDuplicateSlugError('notice slug already exists')
   throw new NoticeRepositoryError()
 }
 
 function publicSummary(row: RecordValue): PublicNoticeSummary {
+  const detail = publicDetail(row)
   return {
-    id: stringValue(row.id),
-    title: stringValue(row.title),
-    slug: stringValue(row.slug),
-    createdAt: stringValue(row.created_at),
+    id: detail.id,
+    title: detail.title,
+    slug: detail.slug,
+    createdAt: detail.createdAt,
   }
 }
 
 function publicDetail(row: RecordValue): PublicNoticeDetail {
+  const id = stringValue(row.id)
+  const noticeSlug = stringValue(row.slug)
+  const createdAt = stringValue(row.created_at)
+  const updatedAt = stringValue(row.updated_at)
+  if (!isValidNoticeId(id)
+    || !isValidNoticeSlug(noticeSlug)
+    || !isValidNoticeTimestamp(createdAt)
+    || !isValidNoticeTimestamp(updatedAt)) {
+    throw new NoticeRepositoryError()
+  }
   return {
-    ...publicSummary(row),
+    id,
+    title: stringValue(row.title),
+    slug: noticeSlug,
+    createdAt,
     content: stringValue(row.content),
-    updatedAt: stringValue(row.updated_at),
+    updatedAt,
   }
 }
 
@@ -168,6 +193,11 @@ export function createNoticeRepository(supabase: SupabaseClient) {
       input: NoticeInput,
       expectedUpdatedAt: string,
     ): Promise<AdminNotice> {
+      if (!isValidNoticeTimestamp(expectedUpdatedAt)) {
+        throw new NoticeRepositoryError('expected update timestamp is invalid')
+      }
+      const expectedTime = Date.parse(expectedUpdatedAt)
+      const updatedAt = new Date(Math.max(Date.now(), expectedTime + 1)).toISOString()
       const { data, error } = await supabase
         .from('posts')
         .update({
@@ -175,6 +205,7 @@ export function createNoticeRepository(supabase: SupabaseClient) {
           slug: input.slug,
           content: input.content,
           is_published: input.isPublished,
+          updated_at: updatedAt,
         })
         .eq('id', id)
         .eq('updated_at', expectedUpdatedAt)
@@ -185,7 +216,7 @@ export function createNoticeRepository(supabase: SupabaseClient) {
       resultError(error)
       if (data !== null) return adminNotice(recordValue(data))
 
-      if (await this.getAdminNotice(id)) throw new NoticeConflictError('notice was updated by another request')
+      if (await this.getAdminNotice(id)) throw new NoticeStaleUpdateError()
       throw new NoticeNotFoundError()
     },
   }

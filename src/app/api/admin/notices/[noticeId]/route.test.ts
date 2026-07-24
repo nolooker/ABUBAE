@@ -6,7 +6,8 @@ const mocks = vi.hoisted(() => {
       super('Master access is required')
     }
   }
-  class NoticeConflictError extends Error {}
+  class NoticeDuplicateSlugError extends Error {}
+  class NoticeStaleUpdateError extends Error {}
   class NoticeNotFoundError extends Error {}
 
   return {
@@ -15,7 +16,8 @@ const mocks = vi.hoisted(() => {
     createNoticeRepository: vi.fn(),
     requireMaster: vi.fn(),
     MasterAuthorizationError,
-    NoticeConflictError,
+    NoticeDuplicateSlugError,
+    NoticeStaleUpdateError,
     NoticeNotFoundError,
   }
 })
@@ -28,7 +30,8 @@ vi.mock('@/lib/master-auth', () => ({
 }))
 vi.mock('@/lib/notice-repository', () => ({
   createNoticeRepository: mocks.createNoticeRepository,
-  NoticeConflictError: mocks.NoticeConflictError,
+  NoticeDuplicateSlugError: mocks.NoticeDuplicateSlugError,
+  NoticeStaleUpdateError: mocks.NoticeStaleUpdateError,
   NoticeNotFoundError: mocks.NoticeNotFoundError,
 }))
 
@@ -81,6 +84,22 @@ describe('/api/admin/notices/[noticeId]', () => {
     expect(mocks.createServiceClient).not.toHaveBeenCalled()
   })
 
+  it('authorizes detail GET and PATCH before it creates the service-role repository', async () => {
+    mocks.requireMaster.mockRejectedValueOnce(new mocks.MasterAuthorizationError('anonymous'))
+    const getAnonymous = await GET(new Request('http://localhost'), context())
+    mocks.requireMaster.mockRejectedValueOnce(new mocks.MasterAuthorizationError('user'))
+    const getNonMaster = await GET(new Request('http://localhost'), context())
+    mocks.requireMaster.mockRejectedValueOnce(new mocks.MasterAuthorizationError('anonymous'))
+    const patchAnonymous = await PATCH(request(), context())
+    mocks.requireMaster.mockRejectedValueOnce(new mocks.MasterAuthorizationError('user'))
+    const patchNonMaster = await PATCH(request(), context())
+
+    expect([getAnonymous.status, getNonMaster.status, patchAnonymous.status, patchNonMaster.status])
+      .toEqual([401, 403, 401, 403])
+    expect(mocks.createServiceClient).not.toHaveBeenCalled()
+    expect(mocks.createNoticeRepository).not.toHaveBeenCalled()
+  })
+
   it('returns 404 for a missing notice and the typed DTO for an existing notice', async () => {
     mocks.createNoticeRepository.mockReturnValueOnce({ getAdminNotice: vi.fn().mockResolvedValue(undefined) })
       .mockReturnValueOnce({ getAdminNotice: vi.fn().mockResolvedValue(notice) })
@@ -119,7 +138,7 @@ describe('/api/admin/notices/[noticeId]', () => {
 
   it('maps stale updates, missing notices, and unexpected errors safely', async () => {
     mocks.createNoticeRepository.mockReturnValueOnce({
-      updateNotice: vi.fn().mockRejectedValue(new mocks.NoticeConflictError()),
+      updateNotice: vi.fn().mockRejectedValue(new mocks.NoticeStaleUpdateError()),
     }).mockReturnValueOnce({
       updateNotice: vi.fn().mockRejectedValue(new mocks.NoticeNotFoundError()),
     }).mockReturnValueOnce({

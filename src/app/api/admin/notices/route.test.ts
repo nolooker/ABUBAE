@@ -6,7 +6,7 @@ const mocks = vi.hoisted(() => {
       super('Master access is required')
     }
   }
-  class NoticeConflictError extends Error {}
+  class NoticeDuplicateSlugError extends Error {}
 
   return {
     createClient: vi.fn(),
@@ -14,7 +14,7 @@ const mocks = vi.hoisted(() => {
     createNoticeRepository: vi.fn(),
     requireMaster: vi.fn(),
     MasterAuthorizationError,
-    NoticeConflictError,
+    NoticeDuplicateSlugError,
   }
 })
 
@@ -26,7 +26,7 @@ vi.mock('@/lib/master-auth', () => ({
 }))
 vi.mock('@/lib/notice-repository', () => ({
   createNoticeRepository: mocks.createNoticeRepository,
-  NoticeConflictError: mocks.NoticeConflictError,
+  NoticeDuplicateSlugError: mocks.NoticeDuplicateSlugError,
 }))
 
 import { GET, POST } from './route'
@@ -76,6 +76,18 @@ describe('/api/admin/notices', () => {
     expect(mocks.createServiceClient).not.toHaveBeenCalled()
   })
 
+  it('authorizes POST before it creates the service-role repository', async () => {
+    mocks.requireMaster.mockRejectedValueOnce(new mocks.MasterAuthorizationError('anonymous'))
+    const anonymous = await POST(request())
+    mocks.requireMaster.mockRejectedValueOnce(new mocks.MasterAuthorizationError('user'))
+    const nonMaster = await POST(request())
+
+    expect(anonymous.status).toBe(401)
+    expect(nonMaster.status).toBe(403)
+    expect(mocks.createServiceClient).not.toHaveBeenCalled()
+    expect(mocks.createNoticeRepository).not.toHaveBeenCalled()
+  })
+
   it('lists only the typed admin DTO for a master', async () => {
     const repository = { listAdminNotices: vi.fn().mockResolvedValue([notice]) }
     mocks.createNoticeRepository.mockReturnValue(repository)
@@ -115,7 +127,7 @@ describe('/api/admin/notices', () => {
 
   it('maps duplicate slugs to 409 and redacts unexpected failures', async () => {
     mocks.createNoticeRepository.mockReturnValueOnce({
-      createNotice: vi.fn().mockRejectedValue(new mocks.NoticeConflictError('duplicate slug')),
+      createNotice: vi.fn().mockRejectedValue(new mocks.NoticeDuplicateSlugError('duplicate slug')),
     }).mockReturnValueOnce({
       createNotice: vi.fn().mockRejectedValue(new Error('database password=secret')),
     })

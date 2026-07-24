@@ -11,7 +11,6 @@ BEGIN
     FROM pg_catalog.pg_policies
     WHERE schemaname = 'public'
       AND tablename = 'posts'
-      AND cmd <> 'SELECT'
   LOOP
     EXECUTE pg_catalog.format(
       'DROP POLICY IF EXISTS %I ON %I.%I',

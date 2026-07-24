@@ -1,8 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import {
-  NoticeConflictError,
+  NoticeDuplicateSlugError,
   NoticeNotFoundError,
+  NoticeStaleUpdateError,
   createNoticeRepository,
 } from './notice-repository'
 
@@ -97,21 +98,32 @@ describe('notice repository', () => {
       slug: row.slug,
       content: row.content,
       isPublished: true,
-    })).rejects.toBeInstanceOf(NoticeConflictError)
+    })).rejects.toBeInstanceOf(NoticeDuplicateSlugError)
   })
 
   it('updates only an existing notice with the expected updated_at timestamp', async () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-07-24T02:00:00Z'))
     const { supabase, calls } = client([{ data: { ...row, updated_at: '2026-07-24T01:00:00Z' }, error: null }])
 
-    await expect(createNoticeRepository(supabase as never).updateNotice(
+    const result = await createNoticeRepository(supabase as never).updateNotice(
       row.id,
       { title: 'Updated', slug: row.slug, content: 'Updated content', isPublished: false },
       row.updated_at,
-    )).resolves.toMatchObject({ title: row.title, isPublished: true })
+    )
+    expect(result).toMatchObject({ title: row.title, isPublished: true })
     expect(calls).toContainEqual(['eq', ['id', row.id]])
     expect(calls).toContainEqual(['eq', ['updated_at', row.updated_at]])
     expect(calls).toContainEqual(['eq', ['type', 'notice']])
     expect(calls).toContainEqual(['eq', ['is_premium', false]])
+    expect(calls).toContainEqual(['update', [{
+      title: 'Updated',
+      slug: row.slug,
+      content: 'Updated content',
+      is_published: false,
+      updated_at: '2026-07-24T02:00:00.000Z',
+    }]])
+    vi.useRealTimers()
   })
 
   it('distinguishes a missing notice from a stale update', async () => {
@@ -123,7 +135,7 @@ describe('notice repository', () => {
       row.id,
       { title: 'Updated', slug: row.slug, content: 'Updated content', isPublished: false },
       row.updated_at,
-    )).rejects.toBeInstanceOf(NoticeConflictError)
+    )).rejects.toBeInstanceOf(NoticeStaleUpdateError)
 
     const missing = client([
       { data: null, error: null },
@@ -134,5 +146,19 @@ describe('notice repository', () => {
       { title: 'Updated', slug: row.slug, content: 'Updated content', isPublished: false },
       row.updated_at,
     )).rejects.toBeInstanceOf(NoticeNotFoundError)
+  })
+
+  it.each([
+    [null],
+    [undefined],
+    [[{ ...row, id: 'not-a-uuid' }]],
+    [[{ ...row, slug: 'Not a slug' }]],
+    [[{ ...row, created_at: '2026-02-30T00:00:00Z' }]],
+    [[{ ...row, is_published: 'true' }]],
+  ])('rejects malformed successful list data: %o', async (data) => {
+    const { supabase } = client([{ data, error: null }])
+
+    await expect(createNoticeRepository(supabase as never).listAdminNotices())
+      .rejects.toThrow('notice data is unavailable')
   })
 })

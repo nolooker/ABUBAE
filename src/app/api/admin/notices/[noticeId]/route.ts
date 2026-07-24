@@ -1,8 +1,8 @@
 import { MasterAuthorizationError, requireMaster, type MasterAuthClient } from '@/lib/master-auth'
 import { validateNoticeId, validateNoticeInput } from '@/lib/notice'
 import {
-  NoticeConflictError,
   NoticeNotFoundError,
+  NoticeStaleUpdateError,
   createNoticeRepository,
 } from '@/lib/notice-repository'
 import { createClient } from '@/lib/supabase/server'
@@ -75,7 +75,7 @@ export async function PATCH(request: Request, context: Context) {
     if (error instanceof NoticeNotFoundError) {
       return Response.json({ error: 'notice not found' }, { status: 404 })
     }
-    if (error instanceof NoticeConflictError) {
+    if (error instanceof NoticeStaleUpdateError) {
       return Response.json({ error: 'notice was updated by another request' }, { status: 409 })
     }
     if (error instanceof Error && error.message === 'noticeId must be a UUID') {
