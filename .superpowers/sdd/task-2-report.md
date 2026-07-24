@@ -99,7 +99,44 @@ git diff --cached --check
 
 Results:
 
+- `npm test`: 27 files and 184 tests passed.
+- `npm run lint`: passed with no warnings.
+- `npx tsc --noEmit --incremental false`: passed (exit code 0).
+- `git diff --cached --check`: passed before the second review-fix commit.
+
+Results:
+
 - `npm test`: 27 files and 183 tests passed.
 - `npm run lint`: passed with no warnings.
 - `npx tsc --noEmit --incremental false`: passed (exit code 0).
 - `git diff --cached --check`: passed before the review-fix commit.
+
+## Second review-fix TDD evidence
+
+### RED
+
+Command:
+
+```powershell
+npm test -- src/components/admin/NoticeForm.test.tsx src/app/admin/notices/page.test.tsx
+```
+
+Result: 2 failing tests (9 passing of 11): a successful save cleared the render-snapshot lock before navigation unmounted the form, and edit links had indistinguishable accessible names despite visible `수정` text.
+
+### GREEN
+
+The same focused command passed after adding a synchronous `useRef` mutex that remains locked on success and screen-reader-only notice titles in edit links:
+
+```text
+Test Files  2 passed (2)
+Tests  11 passed (11)
+```
+
+### Second review-fix verification commands
+
+```powershell
+npm test
+npm run lint
+npx tsc --noEmit --incremental false
+git diff --cached --check
+```

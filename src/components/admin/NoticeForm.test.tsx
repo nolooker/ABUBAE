@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
@@ -79,25 +79,44 @@ describe('NoticeForm', () => {
     })
   })
 
-  it('locks every editable control and ignores a second submit while saving', async () => {
+  it('uses a synchronous mutex for same-tick submissions and stays locked after a successful redirect begins', async () => {
     let resolveResponse: ((response: { ok: boolean; status: number; json: () => Promise<typeof notice> }) => void) | undefined
     const fetchMock = vi.fn().mockReturnValue(new Promise((resolve) => { resolveResponse = resolve }))
     vi.stubGlobal('fetch', fetchMock)
-    const user = userEvent.setup()
-    render(<NoticeForm mode="edit" initialNotice={notice} />)
+    render(<NoticeForm mode="create" />)
 
-    await user.click(screen.getByRole('button', { name: 'Save changes' }))
+    const form = screen.getByRole('button', { name: 'Create notice' }).closest('form')!
+    fireEvent.submit(form)
+    fireEvent.submit(form)
 
     expect(screen.getByLabelText('Title')).toBeDisabled()
     expect(screen.getByLabelText('Slug')).toBeDisabled()
     expect(screen.getByLabelText('Content')).toBeDisabled()
     expect(screen.getByLabelText('Published')).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Saving...' })).toBeDisabled()
-    fireEvent.submit(screen.getByRole('button', { name: 'Saving...' }).closest('form')!)
     expect(fetchMock).toHaveBeenCalledOnce()
 
+    resolveResponse?.({ ok: true, status: 201, json: async () => notice })
+    await waitFor(() => expect(push).toHaveBeenCalledWith('/admin/notices?status=saved'))
+    expect(screen.getByRole('button', { name: 'Saving...' })).toBeDisabled()
+  })
+
+  it('unlocks after a failed save so the form can be retried', async () => {
+    let resolveResponse: ((response: { ok: boolean; status: number; json: () => Promise<typeof notice> }) => void) | undefined
+    const fetchMock = vi.fn()
+      .mockReturnValueOnce(new Promise((resolve) => { resolveResponse = resolve }))
+      .mockResolvedValue({ ok: false, status: 500, json: async () => notice })
+    vi.stubGlobal('fetch', fetchMock)
+    render(<NoticeForm mode="edit" initialNotice={notice} />)
+
+    const form = screen.getByRole('button', { name: 'Save changes' }).closest('form')!
+    fireEvent.submit(form)
     resolveResponse?.({ ok: false, status: 500, json: async () => notice })
+
     await screen.findByRole('alert')
+    expect(screen.getByRole('button', { name: 'Save changes' })).toBeEnabled()
+    fireEvent.submit(form)
+    expect(fetchMock).toHaveBeenCalledTimes(2)
   })
 
   it.each([

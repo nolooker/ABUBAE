@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { useRef, useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import type { AdminNotice, NoticeInput, NoticeUpdateInput } from '@/lib/notice'
 
@@ -34,6 +34,7 @@ export default function NoticeForm({ mode, initialNotice }: NoticeFormProps) {
   const [draft, setDraft] = useState<Draft>(() => initialDraft(initialNotice))
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const savingRef = useRef(false)
   const isEdit = mode === 'edit'
 
   const updateDraft = <Key extends keyof Draft>(field: Key, value: Draft[Key]) => {
@@ -42,7 +43,8 @@ export default function NoticeForm({ mode, initialNotice }: NoticeFormProps) {
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (isSaving) return
+    if (savingRef.current) return
+    savingRef.current = true
     setIsSaving(true)
     setError(null)
     const payload: NoticeInput | NoticeUpdateInput = isEdit
@@ -61,6 +63,8 @@ export default function NoticeForm({ mode, initialNotice }: NoticeFormProps) {
 
       if (!response.ok) {
         setError(errorMessage(response.status))
+        savingRef.current = false
+        setIsSaving(false)
         return
       }
 
@@ -68,7 +72,7 @@ export default function NoticeForm({ mode, initialNotice }: NoticeFormProps) {
       router.push('/admin/notices?status=saved')
     } catch {
       setError('Unable to save the notice. Please try again.')
-    } finally {
+      savingRef.current = false
       setIsSaving(false)
     }
   }

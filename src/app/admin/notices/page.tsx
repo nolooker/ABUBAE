@@ -38,7 +38,9 @@ export default async function NoticesPage({ searchParams }: NoticesPageProps = {
               </div>
               <div className="flex items-center gap-3">
                 <span className={notice.isPublished ? 'rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700' : 'rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-700'}>{notice.isPublished ? 'Published' : 'Draft'}</span>
-                <Link href={`/admin/notices/${notice.id}/edit`} className="rounded-lg border border-[var(--border)] px-3 py-1.5 text-sm font-bold text-[var(--text-primary)]">수정</Link>
+                <Link href={`/admin/notices/${notice.id}/edit`} className="rounded-lg border border-[var(--border)] px-3 py-1.5 text-sm font-bold text-[var(--text-primary)]">
+                  수정<span className="sr-only">: {notice.title}</span>
+                </Link>
               </div>
             </div>
           </article>
