@@ -34,7 +34,6 @@ export default function NoticeForm({ mode, initialNotice }: NoticeFormProps) {
   const [draft, setDraft] = useState<Draft>(() => initialDraft(initialNotice))
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [announcement, setAnnouncement] = useState<string | null>(null)
   const isEdit = mode === 'edit'
 
   const updateDraft = <Key extends keyof Draft>(field: Key, value: Draft[Key]) => {
@@ -43,9 +42,9 @@ export default function NoticeForm({ mode, initialNotice }: NoticeFormProps) {
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (isSaving) return
     setIsSaving(true)
     setError(null)
-    setAnnouncement(null)
     const payload: NoticeInput | NoticeUpdateInput = isEdit
       ? { ...draft, expectedUpdatedAt: initialNotice!.updatedAt }
       : draft
@@ -66,7 +65,6 @@ export default function NoticeForm({ mode, initialNotice }: NoticeFormProps) {
       }
 
       if (!isEdit) setDraft(emptyDraft)
-      setAnnouncement('Notice saved.')
       router.push('/admin/notices?status=saved')
     } catch {
       setError('Unable to save the notice. Please try again.')
@@ -96,7 +94,6 @@ export default function NoticeForm({ mode, initialNotice }: NoticeFormProps) {
         </label>
       </fieldset>
       {error && <p role="alert" className="text-sm font-semibold text-red-600">{error}</p>}
-      <p role="status" aria-live="polite" className={announcement ? 'text-sm font-semibold text-blue-700' : 'sr-only'}>{announcement ?? ''}</p>
       <button type="submit" disabled={isSaving} className="rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-60">
         {isSaving ? 'Saving...' : isEdit ? 'Save changes' : 'Create notice'}
       </button>

@@ -62,3 +62,44 @@ Tests  9 passed (9)
 ## Concerns
 
 None. Tests requiring Vite were executed with approved elevated execution because the sandbox blocks Vite's child-process spawn on Windows. No Supabase instance, secrets, or external state were accessed.
+
+## Review-fix TDD evidence
+
+### RED
+
+Command:
+
+```powershell
+npm test -- src/components/admin/NoticeForm.test.tsx src/app/admin/notices/page.test.tsx
+```
+
+Result: 3 failing tests (7 passing of 10), each for the intended missing behavior:
+
+- The list did not render the exact `새 공지 작성` and `수정` labels.
+- The destination list page rendered no `role="status"` confirmation for `?status=saved`.
+- A forced second form submit while the first request was pending called `fetch` twice.
+
+### GREEN
+
+The same focused command passed after adding the destination-page status, Korean labels, and submit re-entry guard:
+
+```text
+Test Files  2 passed (2)
+Tests  10 passed (10)
+```
+
+### Review-fix verification commands
+
+```powershell
+npm test
+npm run lint
+npx tsc --noEmit --incremental false
+git diff --cached --check
+```
+
+Results:
+
+- `npm test`: 27 files and 183 tests passed.
+- `npm run lint`: passed with no warnings.
+- `npx tsc --noEmit --incremental false`: passed (exit code 0).
+- `git diff --cached --check`: passed before the review-fix commit.

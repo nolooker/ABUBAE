@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
@@ -49,7 +49,6 @@ describe('NoticeForm', () => {
         isPublished: true,
       }),
     })
-    expect(await screen.findByRole('status')).toHaveTextContent('Notice saved.')
     expect(screen.getByLabelText('Title')).toHaveValue('')
     expect(screen.getByLabelText('Slug')).toHaveValue('')
     expect(screen.getByLabelText('Content')).toHaveValue('')
@@ -80,9 +79,10 @@ describe('NoticeForm', () => {
     })
   })
 
-  it('locks every editable control while saving', async () => {
+  it('locks every editable control and ignores a second submit while saving', async () => {
     let resolveResponse: ((response: { ok: boolean; status: number; json: () => Promise<typeof notice> }) => void) | undefined
-    vi.stubGlobal('fetch', vi.fn().mockReturnValue(new Promise((resolve) => { resolveResponse = resolve })))
+    const fetchMock = vi.fn().mockReturnValue(new Promise((resolve) => { resolveResponse = resolve }))
+    vi.stubGlobal('fetch', fetchMock)
     const user = userEvent.setup()
     render(<NoticeForm mode="edit" initialNotice={notice} />)
 
@@ -93,6 +93,8 @@ describe('NoticeForm', () => {
     expect(screen.getByLabelText('Content')).toBeDisabled()
     expect(screen.getByLabelText('Published')).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Saving...' })).toBeDisabled()
+    fireEvent.submit(screen.getByRole('button', { name: 'Saving...' }).closest('form')!)
+    expect(fetchMock).toHaveBeenCalledOnce()
 
     resolveResponse?.({ ok: false, status: 500, json: async () => notice })
     await screen.findByRole('alert')

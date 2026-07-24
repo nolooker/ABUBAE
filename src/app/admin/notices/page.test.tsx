@@ -53,9 +53,15 @@ describe('admin notice pages', () => {
     expect(screen.getByText('Published notice')).toBeInTheDocument()
     expect(screen.getByText('Published')).toBeInTheDocument()
     expect(screen.getByText('Draft')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Create notice' })).toHaveAttribute('href', '/admin/notices/new')
-    expect(screen.getByRole('link', { name: 'Edit Published notice' })).toHaveAttribute('href', `/admin/notices/${notice.id}/edit`)
+    expect(screen.getByRole('link', { name: '새 공지 작성' })).toHaveAttribute('href', '/admin/notices/new')
+    expect(screen.getAllByRole('link', { name: '수정' })).toHaveLength(2)
     expect(screen.getAllByText('Updated Jul 24, 2026')).toHaveLength(2)
+  })
+
+  it('announces a saved notice on the destination list page', async () => {
+    render(await NoticesPage({ searchParams: Promise.resolve({ status: 'saved' }) }))
+
+    expect(screen.getByRole('status')).toHaveTextContent('공지사항이 저장되었습니다.')
   })
 
   it('links the admin notice card to notice management', async () => {
