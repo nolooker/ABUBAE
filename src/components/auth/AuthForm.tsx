@@ -29,6 +29,13 @@ function getSafeNextPath(nextPath?: string) {
   }
 }
 
+function isLoginSuccess(payload: unknown): payload is { ok: true } {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return false
+
+  const record = payload as Record<string, unknown>
+  return Object.keys(record).length === 1 && record.ok === true
+}
+
 export default function AuthForm({ mode, nextPath }: AuthFormProps) {
   const router = useRouter()
   const supabase = useMemo(() => createClient(), [])
@@ -98,6 +105,12 @@ export default function AuthForm({ mode, nextPath }: AuthFormProps) {
             ? payload.error
             : 'Unable to sign in. Please try again.',
         )
+        setIsSubmitting(false)
+        return
+      }
+
+      if (!isLoginSuccess(payload)) {
+        setError('Unable to sign in. Please try again.')
         setIsSubmitting(false)
         return
       }

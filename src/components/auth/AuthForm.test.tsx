@@ -107,6 +107,40 @@ describe('AuthForm', () => {
     expect(push).not.toHaveBeenCalled()
   })
 
+  it('does not navigate for a successful response with extra fields', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ ok: true, role: 'master' }),
+    }))
+    const { container } = render(<AuthForm mode="login" />)
+    const email = container.querySelector('input[type="email"]') as HTMLInputElement
+    const password = container.querySelector('input[type="password"]') as HTMLInputElement
+
+    fireEvent.change(email, { target: { value: 'master@example.com' } })
+    fireEvent.change(password, { target: { value: 'password' } })
+    fireEvent.submit(container.querySelector('form')!)
+
+    expect(await screen.findByText('Unable to sign in. Please try again.')).toBeInTheDocument()
+    expect(push).not.toHaveBeenCalled()
+  })
+
+  it('does not navigate for a successful response without JSON', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => { throw new Error('invalid JSON') },
+    }))
+    const { container } = render(<AuthForm mode="login" />)
+    const email = container.querySelector('input[type="email"]') as HTMLInputElement
+    const password = container.querySelector('input[type="password"]') as HTMLInputElement
+
+    fireEvent.change(email, { target: { value: 'master@example.com' } })
+    fireEvent.change(password, { target: { value: 'password' } })
+    fireEvent.submit(container.querySelector('form')!)
+
+    expect(await screen.findByText('Unable to sign in. Please try again.')).toBeInTheDocument()
+    expect(push).not.toHaveBeenCalled()
+  })
+
   it('keeps sign-up in the browser client flow', async () => {
     const { container } = render(<AuthForm mode="signup" />)
     const email = container.querySelector('input[type="email"]') as HTMLInputElement
