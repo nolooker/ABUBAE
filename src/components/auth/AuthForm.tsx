@@ -84,19 +84,30 @@ export default function AuthForm({ mode, nextPath }: AuthFormProps) {
       return
     }
 
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: trimmedEmail,
-      password,
-    })
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: trimmedEmail, password }),
+      })
+      const payload: unknown = await response.json().catch(() => undefined)
 
-    if (signInError) {
-      setError(signInError.message)
+      if (!response.ok) {
+        setError(
+          payload && typeof payload === 'object' && 'error' in payload && typeof payload.error === 'string'
+            ? payload.error
+            : 'Unable to sign in. Please try again.',
+        )
+        setIsSubmitting(false)
+        return
+      }
+
+      router.push(getSafeNextPath(nextPath))
+      router.refresh()
+    } catch {
+      setError('Unable to sign in. Please try again.')
       setIsSubmitting(false)
-      return
     }
-
-    router.push(getSafeNextPath(nextPath))
-    router.refresh()
   }
 
   return (
