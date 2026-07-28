@@ -11,9 +11,9 @@ type NoticesPageProps = {
   searchParams?: Promise<{ status?: string }>
 }
 
-export default async function NoticesPage({ searchParams }: NoticesPageProps = {}) {
+export default async function NoticesPage(props: NoticesPageProps) {
   if ((await getCurrentUserRole()) !== 'master') redirect('/login?next=/admin/notices')
-  const status = (await searchParams)?.status
+  const status = (await props?.searchParams)?.status
   const notices = await listAdminNotices()
 
   return (

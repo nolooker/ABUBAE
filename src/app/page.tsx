@@ -358,7 +358,7 @@ export default function HomePage() {
               </Link>
             ))}
           </div>
-          <p className="text-[11px] text-[var(--text-muted)]">© 2024 아부배. All rights reserved.</p>
+          <p className="text-[11px] text-[var(--text-muted)]">© 2025 아부배. All rights reserved.</p>
         </div>
       </footer>
 

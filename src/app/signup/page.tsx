@@ -14,7 +14,7 @@ export default function SignupPage() {
           <div className="text-center mb-6">
             <p className="text-[13px] font-bold text-[var(--primary)] mb-2">무료 회원가입</p>
             <h1 className="text-2xl md:text-3xl font-bold text-[var(--text-primary)] leading-tight">
-              오늘 푼 문제를 내 공부 기록으로 남기세요
+              오늘 푼 문제를 기록으로 남기세요
             </h1>
             <p className="text-[14px] text-[var(--text-secondary)] mt-3 leading-relaxed">
               먼저 계정을 만들고, 다음 단계에서 즐겨찾기와 무료 PDF 다운로드를 연결합니다.
