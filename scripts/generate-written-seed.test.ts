@@ -80,6 +80,7 @@ describe('checked-in 2021 written seed', () => {
     const firstRender = renderSeedSql(load2021Rounds())
     const secondRender = renderSeedSql(load2021Rounds())
     const checkedInSql = readFileSync('supabase/seeds/2021-written.sql', 'utf8')
+      .replace(/\r\n/g, '\n')
 
     expect(firstRender).toBe(secondRender)
     expect(checkedInSql).toBe(firstRender)
