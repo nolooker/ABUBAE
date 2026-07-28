@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { createClient } from '@/lib/supabase/server'
 
 const products = {
   jeongchogi: [
@@ -161,7 +162,11 @@ function ProductCard({
   )
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = await createClient()
+  const { data } = await supabase.auth.getUser()
+  const nickname = data.user?.user_metadata?.nickname || data.user?.email?.split('@')[0] || null
+
   return (
     <div className="min-h-screen bg-[var(--bg-subtle)]">
       {/* [화면] 홈 전용 네비게이션 */}
@@ -209,12 +214,21 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <Link
-            href="/signup"
-            className="ab-btn ab-btn-secondary ab-btn-md shrink-0"
-          >
-            무료 시작
-          </Link>
+          {nickname ? (
+            <Link
+              href="/mypage"
+              className="ab-btn ab-btn-secondary ab-btn-md shrink-0"
+            >
+              {nickname}님
+            </Link>
+          ) : (
+            <Link
+              href="/signup"
+              className="ab-btn ab-btn-secondary ab-btn-md shrink-0"
+            >
+              무료 시작
+            </Link>
+          )}
         </div>
       </nav>
 

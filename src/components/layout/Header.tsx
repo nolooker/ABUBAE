@@ -1,9 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { ArrowRight, Menu, Search, Sparkles, X } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 
 // [화면 데이터] 상단 배너 문구입니다.
 // enabled를 false로 바꾸면 홈/내부 페이지 모두에서 숨길 수 있습니다.
@@ -27,6 +28,22 @@ export default function Header() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [bannerOpen, setBannerOpen] = useState(announcement.enabled)
+  const [nickname, setNickname] = useState<string | null>(null)
+  const supabase = useMemo(() => createClient(), [])
+
+  useEffect(() => {
+    function applyUser(user: { user_metadata?: { nickname?: string }; email?: string } | null | undefined) {
+      setNickname(user?.user_metadata?.nickname || user?.email?.split('@')[0] || null)
+    }
+
+    supabase.auth.getUser().then(({ data }) => applyUser(data.user))
+
+    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+      applyUser(session?.user)
+    })
+
+    return () => subscription.subscription.unsubscribe()
+  }, [supabase])
 
   if (pathname === '/') {
     return null
@@ -103,12 +120,21 @@ export default function Header() {
                 <Search size={16} />
               </button>
 
-              <Link
-                href="/signup"
-                className="hidden rounded-xl border border-[var(--border-strong)] bg-white px-4 py-2 text-[13px] font-semibold text-[var(--text-primary)] transition-colors hover:bg-[var(--bg-subtle)] md:inline-flex"
-              >
-                무료 시작
-              </Link>
+              {nickname ? (
+                <Link
+                  href="/mypage"
+                  className="hidden rounded-xl border border-[var(--border-strong)] bg-white px-4 py-2 text-[13px] font-semibold text-[var(--text-primary)] transition-colors hover:bg-[var(--bg-subtle)] md:inline-flex"
+                >
+                  {nickname}님
+                </Link>
+              ) : (
+                <Link
+                  href="/signup"
+                  className="hidden rounded-xl border border-[var(--border-strong)] bg-white px-4 py-2 text-[13px] font-semibold text-[var(--text-primary)] transition-colors hover:bg-[var(--bg-subtle)] md:inline-flex"
+                >
+                  무료 시작
+                </Link>
+              )}
 
               <button
                 type="button"
@@ -140,20 +166,32 @@ export default function Header() {
               </div>
 
               <div className="mt-3 flex items-center gap-2 border-t border-[var(--border)] pt-3">
-                <Link
-                  href="/login"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex flex-1 items-center justify-center rounded-xl border border-[var(--border)] px-3 py-2 text-[13px] font-medium text-[var(--text-primary)]"
-                >
-                  로그인
-                </Link>
-                <Link
-                  href="/signup"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex flex-1 items-center justify-center rounded-xl bg-[var(--primary)] px-3 py-2 text-[13px] font-semibold text-white"
-                >
-                  무료 시작
-                </Link>
+                {nickname ? (
+                  <Link
+                    href="/mypage"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex flex-1 items-center justify-center rounded-xl bg-[var(--primary)] px-3 py-2 text-[13px] font-semibold text-white"
+                  >
+                    {nickname}님
+                  </Link>
+                ) : (
+                  <>
+                    <Link
+                      href="/login"
+                      onClick={() => setMobileOpen(false)}
+                      className="flex flex-1 items-center justify-center rounded-xl border border-[var(--border)] px-3 py-2 text-[13px] font-medium text-[var(--text-primary)]"
+                    >
+                      로그인
+                    </Link>
+                    <Link
+                      href="/signup"
+                      onClick={() => setMobileOpen(false)}
+                      className="flex flex-1 items-center justify-center rounded-xl bg-[var(--primary)] px-3 py-2 text-[13px] font-semibold text-white"
+                    >
+                      무료 시작
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
