@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
 import { listPublishedNotices } from '@/lib/notice-repository'
 
 function noticeDate(timestamp: string) {
@@ -168,76 +167,10 @@ function ProductCard({
 }
 
 export default async function HomePage() {
-  const supabase = await createClient()
-  const { data } = await supabase.auth.getUser()
-  const nickname = data.user?.user_metadata?.nickname || data.user?.email?.split('@')[0] || null
   const notices = await listPublishedNotices(3).catch(() => [])
 
   return (
     <div className="min-h-screen bg-[var(--bg-subtle)]">
-      {/* [화면] 홈 전용 네비게이션 */}
-      <nav className="sticky top-0 z-50 border-b border-[var(--border)] bg-white">
-        <div className="relative mx-auto flex h-[82px] max-w-6xl items-center justify-between overflow-hidden px-6">
-          <Link
-            href="/"
-            className="flex h-full w-[260px] shrink-0 items-center"
-            aria-label="아직 부족해도 괜찮은 배움 홈으로 이동"
-          >
-            <Image
-              src="/images/brand/abubae-logo-primary.png"
-              alt="아직 부족해도 괜찮은 배움 로고"
-              width={180}
-              height={180}
-              className="h-[62px] w-auto object-contain"
-              priority
-            />
-          </Link>
-
-          <div className="absolute left-1/2 flex -translate-x-1/2 items-center gap-10">
-            <Link
-              href="/notices"
-              className="text-[15px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-            >
-              공지사항
-            </Link>
-            <Link
-              href="/resources"
-              className="text-[15px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-            >
-              합격후기
-            </Link>
-            <Link
-              href="/exam/jeongchogi/questions"
-              className="text-[15px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-            >
-              기출문제
-            </Link>
-            <Link
-              href="/mypage"
-              className="text-[15px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-            >
-              나눔소식
-            </Link>
-          </div>
-
-          {nickname ? (
-            <Link
-              href="/mypage"
-              className="ab-btn ab-btn-secondary ab-btn-md shrink-0"
-            >
-              {nickname}님
-            </Link>
-          ) : (
-            <Link
-              href="/signup"
-              className="ab-btn ab-btn-secondary ab-btn-md shrink-0"
-            >
-              무료 시작
-            </Link>
-          )}
-        </div>
-      </nav>
-
       <div className="mx-auto max-w-4xl px-4 py-6">
         {/* [화면] 디자인 파일 기준 메인 히어로 */}
         <section className="ab-card relative mb-6 overflow-hidden p-8 text-center">
