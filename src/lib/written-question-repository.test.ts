@@ -91,7 +91,67 @@ function gradingQuestion(overrides: Record<string, unknown> = {}) {
   }
 }
 
+function createSummaryClient(result: QueryResult) {
+  const filters: Array<[string, unknown]> = []
+  let selected: string | undefined
+
+  const query: PromiseLike<QueryResult> & { select: (s: string) => typeof query; eq: (c: string, v: unknown) => typeof query } = {
+    select(selection: string) {
+      selected = selection
+      return query
+    },
+    eq(column: string, value: unknown) {
+      filters.push([column, value])
+      return query
+    },
+    then(onfulfilled) {
+      return Promise.resolve(result).then(onfulfilled)
+    },
+  }
+
+  return {
+    client: { from: () => query } as unknown as SupabaseClient,
+    filters,
+    selected: () => selected,
+  }
+}
+
 describe('written question repository', () => {
+  it('groups published written questions into per-round summaries', async () => {
+    const { client, filters, selected } = createSummaryClient({
+      data: [
+        { year: 2021, round: 1, subject: 'software', exams: { slug: 'jeongchogi' } },
+        { year: 2021, round: 1, subject: 'database', exams: { slug: 'jeongchogi' } },
+        { year: 2021, round: 1, subject: 'software', exams: { slug: 'jeongchogi' } },
+        { year: 2021, round: 2, subject: 'network', exams: { slug: 'jeongchogi' } },
+      ],
+      error: null,
+    })
+
+    const repository = createWrittenQuestionRepository(client)
+    const summaries = await repository.listPublishedRoundSummaries()
+
+    expect(summaries).toEqual([
+      { year: 2021, round: 1, questionCount: 3, subjectCount: 2 },
+      { year: 2021, round: 2, questionCount: 1, subjectCount: 1 },
+    ])
+    expect(selected()).toBe('year,round,subject,exams!inner(slug)')
+    expect(filters).toEqual([
+      ['exam_type', 'written'],
+      ['published', true],
+      ['exams.slug', 'jeongchogi'],
+    ])
+  })
+
+  it('reports database failures as content unavailability for round summaries', async () => {
+    const { client } = createSummaryClient({ data: null, error: { message: 'connection failed' } })
+    const repository = createWrittenQuestionRepository(client)
+
+    await expect(repository.listPublishedRoundSummaries()).rejects.toMatchObject({
+      name: 'WrittenContentUnavailableError',
+    })
+  })
+
   it('maps joined rows without exposing correctness publicly', async () => {
     const repository = createWrittenQuestionRepository(createSupabaseClient({
       data: [publicQuestion()],

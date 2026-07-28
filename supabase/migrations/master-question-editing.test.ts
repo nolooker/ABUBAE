@@ -86,6 +86,19 @@ describe('master question editing migration', () => {
     expect(migrationSql).toContain('DROP POLICY IF EXISTS choices_public_read ON public.choices;')
   })
 
+  it('adds a master-only question-create function with the same security model as update', () => {
+    expect(setupSql).toContain('CREATE OR REPLACE FUNCTION public.create_written_question(')
+    expect(setupSql).toMatch(/CREATE OR REPLACE FUNCTION public\.create_written_question\([\s\S]*?SECURITY DEFINER\s+SET search_path = ''/)
+    expect(setupSql).toMatch(/create_written_question[\s\S]*?IF NOT public\.is_master\(\) THEN/)
+    expect(setupSql).toContain("RAISE EXCEPTION 'a question with this year, round, and number already exists'")
+    expect(setupSql).toContain(
+      'REVOKE ALL ON FUNCTION public.create_written_question(pg_catalog.text, pg_catalog.int4, pg_catalog.int4, pg_catalog.text, pg_catalog.int4, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text) FROM PUBLIC, anon, authenticated;',
+    )
+    expect(setupSql).toContain(
+      'GRANT EXECUTE ON FUNCTION public.create_written_question(pg_catalog.text, pg_catalog.int4, pg_catalog.int4, pg_catalog.text, pg_catalog.int4, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text) TO authenticated;',
+    )
+  })
+
   it('does not mistake a SQL line comment for executable users RLS', () => {
     expect(executableSql('-- ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;')).not.toMatch(usersRlsStatement)
   })

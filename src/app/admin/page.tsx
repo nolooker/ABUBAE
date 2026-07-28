@@ -21,6 +21,7 @@ const adminCards = [
     description: '문제, 선택지, 정답, 해설 데이터를 입력하고 검수합니다.',
     icon: FileText,
     status: '최우선',
+    href: '/admin/questions',
   },
   {
     title: '자료/PDF 관리',

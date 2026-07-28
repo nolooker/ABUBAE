@@ -18,6 +18,13 @@ export type PublicWrittenRound = {
   questions: PublicWrittenQuestion[]
 }
 
+export type PublicWrittenRoundSummary = {
+  year: number
+  round: number
+  questionCount: number
+  subjectCount: number
+}
+
 export class WrittenContentUnavailableError extends Error {
   constructor(message = 'written content is unavailable') {
     super(message)
@@ -87,6 +94,14 @@ function rows(value: unknown): RecordValue[] {
   return value
 }
 
+function summaryRow(row: RecordValue) {
+  return {
+    year: positiveIntegerValue(row.year),
+    round: positiveIntegerValue(row.round),
+    subject: stringValue(row.subject),
+  }
+}
+
 function publicQuestion(row: RecordValue) {
   return {
     id: stringValue(row.id),
@@ -114,6 +129,30 @@ function gradeableQuestion(row: RecordValue) {
 
 export function createWrittenQuestionRepository(supabase: SupabaseClient) {
   return {
+    async listPublishedRoundSummaries(): Promise<PublicWrittenRoundSummary[]> {
+      const { data, error } = await supabase
+        .from('questions')
+        .select('year,round,subject,exams!inner(slug)')
+        .eq('exam_type', 'written')
+        .eq('published', true)
+        .eq('exams.slug', 'jeongchogi')
+
+      if (error) throw new WrittenContentUnavailableError(error.message)
+
+      const grouped = new Map<string, { year: number; round: number; subjects: Set<string>; questionCount: number }>()
+      for (const row of rows(data).map(summaryRow)) {
+        const key = `${row.year}-${row.round}`
+        const entry = grouped.get(key) ?? { year: row.year, round: row.round, subjects: new Set<string>(), questionCount: 0 }
+        entry.subjects.add(row.subject)
+        entry.questionCount += 1
+        grouped.set(key, entry)
+      }
+
+      return [...grouped.values()]
+        .map(({ year, round, subjects, questionCount }) => ({ year, round, questionCount, subjectCount: subjects.size }))
+        .sort((a, b) => (a.year - b.year) || (a.round - b.round))
+    },
+
     async getPublicWrittenRound(year: number, round: number): Promise<PublicWrittenRound | undefined> {
       const { data, error } = await supabase
         .from('questions')

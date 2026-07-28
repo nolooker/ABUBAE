@@ -437,11 +437,97 @@ BEGIN
 END;
 $$;
 
+CREATE OR REPLACE FUNCTION public.create_written_question(
+  p_exam_slug pg_catalog.text,
+  p_year pg_catalog.int4,
+  p_round pg_catalog.int4,
+  p_subject pg_catalog.text,
+  p_number pg_catalog.int4,
+  p_content pg_catalog.text,
+  p_choices pg_catalog.text[],
+  p_correct_numbers pg_catalog.int4[],
+  p_explanation pg_catalog.text
+)
+RETURNS public.questions
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = ''
+AS $$
+DECLARE
+  target_exam_id pg_catalog.uuid;
+  new_question public.questions%ROWTYPE;
+  choice_index pg_catalog.int4;
+BEGIN
+  IF NOT public.is_master() THEN
+    RAISE EXCEPTION 'master role required';
+  END IF;
+
+  IF p_year IS NULL OR p_round IS NULL OR p_number IS NULL
+    OR p_year < 2000 OR p_round < 1 OR p_number < 1 THEN
+    RAISE EXCEPTION 'year, round, and number must be valid positive integers';
+  END IF;
+
+  IF COALESCE(pg_catalog.length(pg_catalog.btrim(p_subject)), 0) = 0
+    OR COALESCE(pg_catalog.length(pg_catalog.btrim(p_content)), 0) = 0 THEN
+    RAISE EXCEPTION 'subject and content must not be blank';
+  END IF;
+
+  IF COALESCE(pg_catalog.cardinality(p_choices), 0) <> 4
+    OR EXISTS (
+      SELECT 1
+      FROM pg_catalog.unnest(p_choices) AS choice_text
+      WHERE COALESCE(pg_catalog.length(pg_catalog.btrim(choice_text)), 0) = 0
+    ) THEN
+    RAISE EXCEPTION 'exactly four non-blank choices are required';
+  END IF;
+
+  IF COALESCE(pg_catalog.cardinality(p_correct_numbers), 0) < 1
+    OR EXISTS (
+      SELECT 1
+      FROM pg_catalog.unnest(p_correct_numbers) AS correct_number
+      WHERE correct_number NOT BETWEEN 1 AND 4
+    ) THEN
+    RAISE EXCEPTION 'at least one valid correct choice is required';
+  END IF;
+
+  SELECT id INTO target_exam_id FROM public.exams WHERE slug = p_exam_slug;
+  IF target_exam_id IS NULL THEN
+    RAISE EXCEPTION 'exam not found';
+  END IF;
+
+  INSERT INTO public.questions (
+    exam_id, exam_type, year, round, subject, number, content, explanation,
+    reviewed, published, updated_by
+  ) VALUES (
+    target_exam_id, 'written', p_year, p_round, pg_catalog.btrim(p_subject), p_number,
+    p_content, p_explanation, TRUE, TRUE, auth.uid()
+  )
+  RETURNING * INTO new_question;
+
+  FOR choice_index IN 1..4 LOOP
+    INSERT INTO public.choices (question_id, number, content, is_correct)
+    VALUES (
+      new_question.id,
+      choice_index,
+      p_choices[choice_index],
+      choice_index = ANY (p_correct_numbers)
+    );
+  END LOOP;
+
+  RETURN new_question;
+EXCEPTION
+  WHEN unique_violation THEN
+    RAISE EXCEPTION 'a question with this year, round, and number already exists';
+END;
+$$;
+
 REVOKE ALL ON FUNCTION public.is_master() FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.is_master() TO authenticated;
 REVOKE ALL ON FUNCTION public.get_written_question_for_edit(pg_catalog.uuid) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.get_written_question_for_edit(pg_catalog.uuid) TO authenticated;
 REVOKE ALL ON FUNCTION public.update_written_question(pg_catalog.uuid, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text, pg_catalog.timestamptz) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.update_written_question(pg_catalog.uuid, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text, pg_catalog.timestamptz) TO authenticated;
+REVOKE ALL ON FUNCTION public.create_written_question(pg_catalog.text, pg_catalog.int4, pg_catalog.int4, pg_catalog.text, pg_catalog.int4, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.create_written_question(pg_catalog.text, pg_catalog.int4, pg_catalog.int4, pg_catalog.text, pg_catalog.int4, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text) TO authenticated;
 
 COMMIT;

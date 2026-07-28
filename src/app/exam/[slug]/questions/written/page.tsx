@@ -11,7 +11,7 @@ export const metadata = { title: '정보처리기사 필기 기출문제' }
 export default async function WrittenRoundListPage({ params }: Props) {
   const { slug } = await params
   if (slug !== 'jeongchogi') notFound()
-  const rounds = getWrittenRoundSummaries()
+  const rounds = await getWrittenRoundSummaries()
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-12">
