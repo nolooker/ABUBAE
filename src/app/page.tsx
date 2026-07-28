@@ -1,6 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import { listPublishedNotices } from '@/lib/notice-repository'
+
+function noticeDate(timestamp: string) {
+  return new Intl.DateTimeFormat('ko-KR', { month: 'long', day: 'numeric', timeZone: 'UTC' }).format(new Date(timestamp))
+}
 
 const products = {
   jeongchogi: [
@@ -166,6 +171,7 @@ export default async function HomePage() {
   const supabase = await createClient()
   const { data } = await supabase.auth.getUser()
   const nickname = data.user?.user_metadata?.nickname || data.user?.email?.split('@')[0] || null
+  const notices = await listPublishedNotices(3).catch(() => [])
 
   return (
     <div className="min-h-screen bg-[var(--bg-subtle)]">
@@ -189,7 +195,7 @@ export default async function HomePage() {
 
           <div className="absolute left-1/2 flex -translate-x-1/2 items-center gap-10">
             <Link
-              href="/exam/jeongchogi"
+              href="/notices"
               className="text-[15px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
             >
               공지사항
@@ -295,6 +301,33 @@ export default async function HomePage() {
               <p className="mt-0.5 text-[11px] text-[var(--text-muted)]">{stat.label}</p>
             </div>
           ))}
+        </section>
+
+        {/* [화면] 최신 공지 */}
+        <section className="mb-8">
+          <div className="mb-4 flex items-center gap-2">
+            <span className="text-base">📢</span>
+            <h2 className="text-base font-bold text-[var(--text-primary)]">공지사항</h2>
+            <Link href="/notices" className="ml-auto text-xs text-[var(--text-muted)] hover:text-[var(--text-secondary)]">
+              전체보기
+            </Link>
+          </div>
+          {notices.length > 0 ? (
+            <div className="space-y-2">
+              {notices.map((notice) => (
+                <Link
+                  key={notice.id}
+                  href={`/notices/${notice.slug}`}
+                  className="ab-card flex items-center justify-between gap-4 p-4 transition-colors hover:bg-[var(--bg-subtle)]"
+                >
+                  <span className="truncate text-sm font-semibold text-[var(--text-primary)]">{notice.title}</span>
+                  <span className="shrink-0 text-xs text-[var(--text-muted)]">{noticeDate(notice.createdAt)}</span>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="ab-card p-4 text-center text-sm text-[var(--text-muted)]">등록된 공지가 없습니다.</div>
+          )}
         </section>
 
         {/* [화면] 정처기 자료 */}
