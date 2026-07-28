@@ -13,17 +13,25 @@ type AuthFormProps = {
   nextPath?: string
 }
 
+function hasAsciiControl(value: string) {
+  return /[\u0000-\u001F\u007F]/.test(value)
+}
+
 function getSafeNextPath(nextPath?: string) {
-  if (!nextPath?.startsWith('/') || nextPath.startsWith('//') || nextPath.includes('\\')) {
+  if (!nextPath?.startsWith('/') || nextPath.startsWith('//') || nextPath.includes('\\') || hasAsciiControl(nextPath)) {
     return '/mypage'
   }
 
   try {
     const decodedNextPath = decodeURIComponent(nextPath)
 
-    return decodedNextPath.startsWith('//') || decodedNextPath.includes('\\')
-      ? '/mypage'
-      : nextPath
+    if (hasAsciiControl(decodedNextPath) || decodedNextPath.startsWith('//') || decodedNextPath.includes('\\')) {
+      return '/mypage'
+    }
+
+    return new URL(nextPath, window.location.origin).origin === window.location.origin
+      ? nextPath
+      : '/mypage'
   } catch {
     return '/mypage'
   }

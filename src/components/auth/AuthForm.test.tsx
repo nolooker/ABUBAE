@@ -65,6 +65,12 @@ describe('AuthForm', () => {
     '//attacker.example',
     '\\attacker.example',
     '/%2F%2Fattacker.example',
+    '/\n//attacker.example',
+    '/\r//attacker.example',
+    '/\t//attacker.example',
+    '/%0A//attacker.example',
+    '/%0D//attacker.example',
+    '/%09//attacker.example',
     'javascript:alert(1)',
   ])(
     'falls back to my page for an unsafe next path: %s',
