@@ -1,7 +1,8 @@
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { BarChart3, FileText, Library, MessageSquareText, Settings } from 'lucide-react'
-import { isAdminSession } from '@/lib/admin-auth'
-import { logoutAdmin } from './login/actions'
+import { getCurrentUserRole } from '@/lib/master-auth'
+import { logout } from './actions'
 
 export const metadata = {
   title: 'System Admin',
@@ -32,6 +33,7 @@ const adminCards = [
     description: 'SEO 글, 공지, 합격 후기 콘텐츠를 관리합니다.',
     icon: MessageSquareText,
     status: '준비 중',
+    href: '/admin/notices',
   },
   {
     title: '판매/전환 지표',
@@ -42,8 +44,8 @@ const adminCards = [
 ]
 
 export default async function AdminPage() {
-  if (!(await isAdminSession())) {
-    redirect('/admin/login')
+  if ((await getCurrentUserRole()) !== 'master') {
+    redirect('/login?next=/admin')
   }
 
   return (
@@ -56,7 +58,7 @@ export default async function AdminPage() {
             지금은 운영 화면의 골격입니다. 초반에는 Supabase Studio로 데이터를 관리하고, 반복 업무가 생기는 영역부터 Admin 기능을 붙입니다.
           </p>
         </div>
-        <form action={logoutAdmin}>
+        <form action={logout}>
           <button
             type="submit"
             className="rounded-xl border border-[var(--border)] bg-white px-4 py-2 text-[13px] font-bold text-[var(--text-secondary)] hover:bg-[var(--bg-muted)]"
@@ -70,8 +72,8 @@ export default async function AdminPage() {
         {adminCards.map((card) => {
           const Icon = card.icon
 
-          return (
-            <div key={card.title} className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-white p-5">
+          const content = (
+            <>
               <div className="mb-4 flex items-start justify-between gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--primary-light)] text-[var(--primary)]">
                   <Icon size={18} />
@@ -82,6 +84,16 @@ export default async function AdminPage() {
               </div>
               <h2 className="text-[16px] font-bold text-[var(--text-primary)]">{card.title}</h2>
               <p className="text-[13px] text-[var(--text-secondary)] mt-2 leading-relaxed">{card.description}</p>
+            </>
+          )
+
+          return card.href ? (
+            <Link key={card.title} href={card.href} className="block rounded-[var(--radius-lg)] border border-[var(--border)] bg-white p-5 hover:border-[var(--primary)]">
+              {content}
+            </Link>
+          ) : (
+            <div key={card.title} className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-white p-5">
+              {content}
             </div>
           )
         })}

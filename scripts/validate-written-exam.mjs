@@ -39,10 +39,10 @@ export function auditRound(round) {
       throw new Error(`${label} question ${question.number} has invalid accepted answers`)
     }
     if (answers.length > 1) multipleAnswerCount += 1
-    if (!question.reviewed) pendingReviewCount += 1
-    if (question.published && !question.reviewed) {
-      throw new Error(`${label} question ${question.number} cannot be published before review`)
+    if (typeof question.reviewed !== 'boolean' || typeof question.published !== 'boolean') {
+      throw new Error(`${label} question ${question.number} must have boolean review flags`)
     }
+    if (!question.reviewed) pendingReviewCount += 1
   }
 
   return {

@@ -10,9 +10,41 @@ type AuthMode = 'login' | 'signup'
 
 type AuthFormProps = {
   mode: AuthMode
+  nextPath?: string
 }
 
-export default function AuthForm({ mode }: AuthFormProps) {
+function hasAsciiControl(value: string) {
+  return /[\u0000-\u001F\u007F]/.test(value)
+}
+
+function getSafeNextPath(nextPath?: string) {
+  if (!nextPath?.startsWith('/') || nextPath.startsWith('//') || nextPath.includes('\\') || hasAsciiControl(nextPath)) {
+    return '/mypage'
+  }
+
+  try {
+    const decodedNextPath = decodeURIComponent(nextPath)
+
+    if (hasAsciiControl(decodedNextPath) || decodedNextPath.startsWith('//') || decodedNextPath.includes('\\')) {
+      return '/mypage'
+    }
+
+    return new URL(nextPath, window.location.origin).origin === window.location.origin
+      ? nextPath
+      : '/mypage'
+  } catch {
+    return '/mypage'
+  }
+}
+
+function isLoginSuccess(payload: unknown): payload is { ok: true } {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return false
+
+  const record = payload as Record<string, unknown>
+  return Object.keys(record).length === 1 && record.ok === true
+}
+
+export default function AuthForm({ mode, nextPath }: AuthFormProps) {
   const router = useRouter()
   const supabase = useMemo(() => createClient(), [])
   const isSignup = mode === 'signup'
@@ -67,19 +99,36 @@ export default function AuthForm({ mode }: AuthFormProps) {
       return
     }
 
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: trimmedEmail,
-      password,
-    })
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: trimmedEmail, password }),
+      })
+      const payload: unknown = await response.json().catch(() => undefined)
 
-    if (signInError) {
-      setError(signInError.message)
+      if (!response.ok) {
+        setError(
+          payload && typeof payload === 'object' && 'error' in payload && typeof payload.error === 'string'
+            ? payload.error
+            : 'Unable to sign in. Please try again.',
+        )
+        setIsSubmitting(false)
+        return
+      }
+
+      if (!isLoginSuccess(payload)) {
+        setError('Unable to sign in. Please try again.')
+        setIsSubmitting(false)
+        return
+      }
+
+      router.push(getSafeNextPath(nextPath))
+      router.refresh()
+    } catch {
+      setError('Unable to sign in. Please try again.')
       setIsSubmitting(false)
-      return
     }
-
-    router.push('/mypage')
-    router.refresh()
   }
 
   return (

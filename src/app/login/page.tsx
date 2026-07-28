@@ -6,7 +6,13 @@ export const metadata = {
   description: '아부배에 로그인하고 즐겨찾기와 학습 기록을 이어가세요.',
 }
 
-export default function LoginPage() {
+type PageProps = {
+  searchParams: Promise<{ next?: string | string[] }>
+}
+
+export default async function LoginPage({ searchParams }: PageProps) {
+  const { next } = await searchParams
+
   return (
     <section className="min-h-[calc(100vh-14rem)] bg-[var(--bg-subtle)] border-b border-[var(--border)]">
       <div className="max-w-6xl mx-auto px-4 py-12 md:py-16">
@@ -20,7 +26,7 @@ export default function LoginPage() {
               로그인하면 즐겨찾기, 풀이 기록, 다운로드 자료를 계정에 연결할 수 있습니다.
             </p>
           </div>
-          <AuthForm mode="login" />
+          <AuthForm mode="login" nextPath={typeof next === 'string' ? next : undefined} />
           <div className="text-center mt-5">
             <Link href="/exam" className="text-[13px] font-semibold text-[var(--text-secondary)] hover:text-[var(--primary)]">
               로그인 없이 시험 목록 먼저 보기

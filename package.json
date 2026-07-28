@@ -10,6 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "seed:written": "node scripts/generate-written-seed.mjs",
     "validate:content": "node scripts/validate-written-exam.mjs",
     "check": "npm run lint && npm test && npm run validate:content && npm run build"
   },
@@ -19,7 +20,8 @@
     "lucide-react": "^1.8.0",
     "next": "16.2.4",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",

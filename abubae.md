@@ -51,6 +51,54 @@
 - 비회원 결과는 저장하지 않는다는 안내
 - 개발 서버 상호작용 오류를 피하기 위해 로컬 개발 명령은 Webpack 사용
 
+### Master 문항 편집 — 구현된 코드와 운영 전제
+
+다음 항목은 이 브랜치에 구현되어 있지만, Supabase 설정과 배포는 **아직 적용하거나 완료했다고 주장하지 않는다**. 운영자는 아래의 단일 설정 경로와 전제 조건을 충족한 뒤에만 기능을 사용한다.
+
+- 일반 사용자와 Master는 별도 관리자 로그인이나 쿠키가 아니라 같은 Supabase Auth 로그인과 `public.users.role`을 사용한다. 역할 값은 `user` 또는 `master`이며 기본값은 `user`다.
+- Master는 문제풀이 화면에서 현재 문항의 질문, 네 선택지, 하나 이상의 정답, 해설을 즉시 편집할 수 있다. 저장은 단일 RPC 트랜잭션으로 처리하고 `updated_at` 충돌을 확인하며, 성공한 편집은 해당 문항의 `reviewed`를 `true`로 표시한다. 저장된 내용은 해당 화면의 상태와 다음 새로고침에 반영된다.
+- 공개 문제 조회와 채점은 서버 전용 `SUPABASE_SERVICE_ROLE_KEY`로 수행한다. 브라우저는 `questions`와 `choices`를 직접 조회하지 않으며, 서비스 역할 키를 브라우저 번들·`NEXT_PUBLIC_` 환경 변수·로그에 넣지 않는다.
+- Master 권한 확인은 서버에서 Auth 사용자와 `public.users.role`을 함께 조회한다. 이전의 독립된 Admin 인증 방식은 사용하지 않는다.
+
+#### Supabase 운영자 설정 경로
+
+`supabase-setup.sql`은 fresh 및 기존 ABUBAE 프로젝트를 위한 **sole canonical operator path**다. Supabase SQL Editor에서 이 파일 하나만 실행한다. 이 스크립트는 기본 스키마, Master 편집 보안, 반복 가능한 샘플 시험, 지정된 기존 Master 프로필 승격을 하나의 트랜잭션으로 처리한다.
+
+`supabase/migrations/202607230001_master_question_editing.sql`은 리포지토리 이력과 개발 참조를 위한 파일이며, **superseded for operator use**다. 운영자는 이를 단독 실행하거나 별도의 시드·임의 역할 변경 SQL과 조합하지 않는다.
+
+통합 설정은 기존 문항·선택지·프로필을 덮어쓰거나 삭제하지 않는다. 별도 콘텐츠 적재와 복구는 검토된 전용 절차로 관리하며, 이 운영자 설정 경로의 일부가 아니다.
+
+적용 뒤에는 다음을 확인한다.
+
+```sql
+SELECT role
+FROM public.users
+WHERE pg_catalog.lower(email) = 'seoteang@gmail.com';
+SELECT count(*) FROM public.exams WHERE slug IN ('jeongchogi', 'sqld', 'comhwal');
+```
+
+대상 프로필이 하나 존재하면 첫 결과는 `master`이고, 두 번째 결과는 `3`이다. 대상 프로필이 없으면 새 프로필을 만들지 않으며, 대소문자를 무시한 중복 프로필이 있으면 통합 트랜잭션이 안전하게 중단된다.
+
+#### 환경 변수와 E2E 전제 조건
+
+서버/배포 환경에는 다음 변수가 필요하다.
+
+```text
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+SUPABASE_SERVICE_ROLE_KEY
+```
+
+Master 편집 Playwright E2E를 실행하려면, 시드가 적용된 별도 테스트 프로젝트와 `master` 역할이 부여된 테스트 계정이 필요하다. 테스트 실행 환경에만 다음 값을 설정한다.
+
+```text
+MASTER_TEST_EMAIL
+MASTER_TEST_PASSWORD
+E2E_BASE_URL          # 선택 사항; 없으면 로컬 http://127.0.0.1:3000을 사용
+```
+
+`MASTER_TEST_EMAIL` 또는 `MASTER_TEST_PASSWORD`가 없으면 `npm run test:e2e -- tests/e2e/master-question-edit.spec.ts`는 명시적으로 skip하며 로컬 Playwright `webServer`도 시작하지 않는다. 테스트는 원본 질문·선택지·정답·해설을 읽고, 성공·실패 여부와 관계없이 `finally`에서 원래 데이터로 복원한다. 자격 증명은 기본값으로 대체하거나 출력하지 않는다.
+
 ### 복수 정답 정책
 
 원본 정답표의 복수·전항 정답은 단일 정답으로 임의 변경하지 않는다. 사용자는 객관식 선택지 하나만 고르며, 선택한 번호가 `acceptedAnswerIndexes` 중 하나이면 정답으로 처리한다.
@@ -61,14 +109,15 @@
 
 ### 콘텐츠 공개 상태
 
-300문항은 구조 검사를 통과했지만 사람의 사실 검수와 신규 아부배 해설 작성이 끝나지 않았다. 현재 후보 데이터는 모두 `reviewed: false`, `published: false`이며, 검수 완료 전 Supabase 공개 데이터로 전환하지 않는다.
+원본 후보 300문항은 구조 검사를 통과했지만 사람의 사실 검수와 신규 아부배 해설 작성이 끝나지 않았다. 후보 콘텐츠는 `reviewed: false`, `published: false`다. 이 브랜치의 시드 생성기는 구현상 2021년 문항을 `published: true`, `reviewed: false`로 만들지만, 시드는 아직 어떤 Supabase 프로젝트에도 적용되었다고 가정하지 않는다.
 
 ### 다음 구현 순서
 
 1. 300문항 사실 검수와 아부배식 신규 해설 작성
-2. `supabase-setup.sql` 확장과 2021년 시드 생성
-3. 로그인 회원의 풀이 기록·오답 이력 저장
-4. 2022~2025년 허가된 원본 확보 후 같은 검수 절차로 추가
+2. 운영용 Supabase 프로젝트에 `supabase-setup.sql` 단일 설정 경로 적용
+3. 별도 테스트 프로젝트에서 Master 즉시 편집과 E2E 복원 흐름 검증
+4. 로그인 회원의 풀이 기록·오답 이력 저장
+5. 2022~2025년 허가된 원본 확보 후 같은 검수 절차로 추가
 
 ---
 
@@ -1087,7 +1136,8 @@ npx shadcn-ui@latest init
 
 # .env.local
 NEXT_PUBLIC_SUPABASE_URL=your-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-key
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-key
+SUPABASE_SERVICE_ROLE_KEY=server-only-key
 TOSS_CLIENT_KEY=your-toss-key (나중에)
 
 # 만들 파일 순서
@@ -1100,3 +1150,47 @@ app/blog/[slug]/page.tsx               # 블로그 포스트
 ```
 
 **핵심 원칙**: 완성보다 배포. 완벽보다 일관성. 트래픽 없이 기능 개발 금지.
+
+---
+
+## Repeatable Supabase setup
+
+Run `supabase-setup.sql` in the Supabase SQL Editor for either a fresh project or
+an existing ABUBAE project. The script is repeatable: it preserves existing rows,
+keeps existing sample exams when their slugs already exist, and promotes only the
+existing profile whose email is `seoteang@gmail.com` (case-insensitive) to
+`master`. It never creates a missing profile.
+
+If more than one existing profile matches that email case-insensitively, the
+setup stops and rolls back rather than promote multiple profiles. Zero matches
+remain a no-op.
+
+The script intentionally stops and rolls back if pre-existing duplicate question
+keys or choice keys prevent the required unique indexes from being created. Clean
+up those duplicates explicitly before running it again; the setup does not merge
+or delete existing data automatically.
+
+PostgreSQL index names are intentionally unqualified: each index is created on
+its schema-qualified `public` table, which determines the index schema. Because
+`IF NOT EXISTS` can skip a same-named existing index, the setup then checks the
+PostgreSQL catalog and rolls back unless each index is unique, non-partial, and
+has the exact required ordered columns.
+
+For the Master editing boundary, the setup dynamically removes every existing
+question/choice policy, regardless of its name, and revokes direct `SELECT` on
+those tables from `PUBLIC`, `anon`, and `authenticated`. Browser clients must use
+the granted security-definer RPCs; server-side service-role access remains
+separate.
+
+## Notice management security
+
+The canonical `supabase-setup.sql` path also enables RLS for `public.posts`,
+removes every non-`SELECT` posts policy, and revokes browser-facing `INSERT`,
+`UPDATE`, and `DELETE` privileges from `PUBLIC`, `anon`, and `authenticated`.
+Only published posts remain readable through `posts_public_read`.
+
+`supabase/migrations/202607240001_admin_notices.sql` is retained as a historical
+migration and is superseded for operator use. Admin notice list/create/update
+requests must first confirm the signed-in user is a `master`; only then may the
+server create its service-role client. The service-role key remains server-only
+and is never exposed through a `NEXT_PUBLIC_` environment variable.

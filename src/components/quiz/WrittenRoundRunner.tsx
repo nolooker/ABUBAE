@@ -3,29 +3,48 @@
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
-import type { PublicWrittenQuestion } from '@/lib/written-content'
 import type { WrittenGradeResult } from '@/lib/written-exam'
 import WrittenRoundResult from './WrittenRoundResult'
+import WrittenQuestionEditDialog, { type EditableWrittenQuestion, type EditedWrittenQuestion } from './WrittenQuestionEditDialog'
+
+type WrittenRoundQuestion = {
+  id: string
+  number: number
+  subject: string
+  content: string
+  choices: string[]
+  updatedAt: string
+}
 
 type Props = {
   year: number
   round: number
   title: string
-  questions: PublicWrittenQuestion[]
+  questions: WrittenRoundQuestion[]
+  canEdit?: boolean
+  editableQuestions?: Record<string, EditableWrittenQuestion>
+  loadEditableQuestion?: (questionId: string) => Promise<EditableWrittenQuestion>
 }
 
 const choiceLabels = ['①', '②', '③', '④']
 
-export default function WrittenRoundRunner({ year, round, title, questions }: Props) {
+export default function WrittenRoundRunner({ year, round, title, questions, canEdit = false, editableQuestions, loadEditableQuestion }: Props) {
+  const [roundQuestions, setRoundQuestions] = useState(questions)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, number>>({})
   const [showSubmitDialog, setShowSubmitDialog] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [result, setResult] = useState<WrittenGradeResult | null>(null)
-  const current = questions[currentIndex]
+  const [showEditDialog, setShowEditDialog] = useState(false)
+  const [isLoadingEdit, setIsLoadingEdit] = useState(false)
+  const [editError, setEditError] = useState<string | null>(null)
+  const [editAnnouncement, setEditAnnouncement] = useState<string | null>(null)
+  const [editingQuestion, setEditingQuestion] = useState<EditableWrittenQuestion | null>(null)
+  const [editableQuestionCache, setEditableQuestionCache] = useState<Record<string, EditableWrittenQuestion>>({})
+  const current = roundQuestions[currentIndex]
   const answeredCount = Object.keys(answers).length
-  const unansweredNumbers = questions.filter((question) => answers[question.id] === undefined).map((question) => question.number)
+  const unansweredNumbers = roundQuestions.filter((question) => answers[question.id] === undefined).map((question) => question.number)
 
   const moveTo = (index: number) => {
     setCurrentIndex(index)
@@ -64,12 +83,77 @@ export default function WrittenRoundRunner({ year, round, title, questions }: Pr
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const openEditDialog = async () => {
+    if (!canEdit) return
+
+    setEditAnnouncement(null)
+    setShowEditDialog(true)
+    setEditError(null)
+    const cachedQuestion = editableQuestionCache[current.id] ?? editableQuestions?.[current.id]
+    if (cachedQuestion) {
+      setEditingQuestion(cachedQuestion)
+      return
+    }
+    if (!loadEditableQuestion) {
+      setEditError('Unable to load editing details for this question.')
+      return
+    }
+
+    setIsLoadingEdit(true)
+    try {
+      const editableQuestion = await loadEditableQuestion(current.id)
+      setEditableQuestionCache((previous) => ({ ...previous, [editableQuestion.id]: editableQuestion }))
+      setEditingQuestion(editableQuestion)
+    } catch {
+      setEditError('Unable to load editing details for this question.')
+    } finally {
+      setIsLoadingEdit(false)
+    }
+  }
+
+  const closeEditDialog = () => {
+    if (isLoadingEdit) return
+    setShowEditDialog(false)
+    setEditError(null)
+    setEditingQuestion(null)
+  }
+
+  const refreshEditingQuestion = async () => {
+    if (!canEdit || !loadEditableQuestion || !editingQuestion) {
+      throw new Error('Unable to refresh editing details for this question.')
+    }
+
+    const editableQuestion = await loadEditableQuestion(editingQuestion.id)
+    setEditableQuestionCache((previous) => ({ ...previous, [editableQuestion.id]: editableQuestion }))
+    setEditingQuestion(editableQuestion)
+    return editableQuestion
+  }
+
+  const replaceCurrentQuestion = (updated: EditedWrittenQuestion) => {
+    const publicQuestion: WrittenRoundQuestion = {
+      id: updated.id,
+      number: updated.number,
+      subject: updated.subject,
+      content: updated.content,
+      choices: updated.choices,
+      updatedAt: updated.updatedAt,
+    }
+    setRoundQuestions((previous) => previous.map((question) => question.id === updated.id ? publicQuestion : question))
+    setEditableQuestionCache((previous) => ({ ...previous, [updated.id]: updated }))
+    setEditAnnouncement('문제가 저장되었습니다.')
+    setShowEditDialog(false)
+    setEditingQuestion(null)
+  }
+
   if (result) {
-    return <WrittenRoundResult title={title} questions={questions} result={result} onRetry={resetRound} />
+    return <WrittenRoundResult title={title} questions={roundQuestions} result={result} onRetry={resetRound} />
   }
 
   return (
     <>
+      <p role="status" aria-live="polite" className={editAnnouncement ? 'mb-4 text-sm font-semibold text-blue-700' : 'sr-only'}>
+        {editAnnouncement ?? ''}
+      </p>
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <section className="ab-card p-5 sm:p-8">
           <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[var(--border)] pb-5">
@@ -86,11 +170,13 @@ export default function WrittenRoundRunner({ year, round, title, questions }: Pr
           <p className="mt-7 text-sm font-semibold text-[var(--text-secondary)]">{current.subject}</p>
           <h1 className="mt-2 whitespace-pre-wrap text-xl font-bold leading-8">{current.number}. {current.content}</h1>
 
+          {canEdit && <div className="mt-5"><button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={openEditDialog}>Edit question</button></div>}
+
           <fieldset className="mt-7 space-y-3">
             <legend className="sr-only">{current.number}번 답안 선택</legend>
             {current.choices.map((choice, index) => (
               <label key={`${current.id}-${index}`} className={`flex cursor-pointer items-start gap-3 rounded-xl border p-4 text-[15px] leading-7 transition-colors ${answers[current.id] === index ? 'border-[var(--primary)] bg-[var(--primary-light)] text-blue-900' : 'border-[var(--border)] bg-white hover:border-[var(--primary)]'}`}>
-                <input type="radio" name={current.id} checked={answers[current.id] === index} onChange={() => setAnswers((previous) => ({ ...previous, [current.id]: index }))} aria-label={`${current.number}번 선택지 ${choiceLabels[index]} ${choice}`} className="mt-1 h-5 w-5 accent-[var(--primary)]" />
+                <input type="radio" name={current.id} checked={answers[current.id] === index} onChange={() => setAnswers((previous) => ({ ...previous, [current.id]: index }))} aria-label={`Answer choice ${index + 1}`} className="mt-1 h-5 w-5 accent-[var(--primary)]" />
                 <span><strong className="mr-2">{choiceLabels[index]}</strong>{choice}</span>
               </label>
             ))}
@@ -109,7 +195,7 @@ export default function WrittenRoundRunner({ year, round, title, questions }: Pr
               <button type="button" key={question.id} aria-label={`${question.number}번 문제로 이동`} onClick={() => moveTo(index)} className={`h-10 rounded-lg border text-sm font-semibold ${index === currentIndex ? 'border-[var(--primary)] bg-[var(--primary)] text-white' : answers[question.id] !== undefined ? 'border-blue-200 bg-[var(--primary-light)] text-[var(--primary)]' : 'border-[var(--border)] bg-white'}`}>{question.number}</button>
             ))}
           </div>
-          <button type="button" className="ab-btn ab-btn-orange ab-btn-lg mt-6 w-full" onClick={() => setShowSubmitDialog(true)}>최종 제출</button>
+          <button type="button" aria-label="Submit round" className="ab-btn ab-btn-orange ab-btn-lg mt-6 w-full" onClick={() => setShowSubmitDialog(true)}>최종 제출</button>
         </aside>
       </div>
 
@@ -127,10 +213,22 @@ export default function WrittenRoundRunner({ year, round, title, questions }: Pr
             {submitError && <p role="alert" className="mt-4 text-sm font-semibold text-red-600">{submitError}</p>}
             <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
               <button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={() => setShowSubmitDialog(false)} disabled={isSubmitting}>계속 풀기</button>
-              <button type="button" className="ab-btn ab-btn-orange ab-btn-md" onClick={submitRound} disabled={isSubmitting}>{isSubmitting ? '채점 중...' : unansweredNumbers.length > 0 ? '미응답을 오답 처리하고 제출' : '제출하고 채점하기'}</button>
+              <button type="button" aria-label="Confirm submission" className="ab-btn ab-btn-orange ab-btn-md" onClick={submitRound} disabled={isSubmitting}>{isSubmitting ? '채점 중...' : unansweredNumbers.length > 0 ? '미응답을 오답 처리하고 제출' : '제출하고 채점하기'}</button>
             </div>
           </section>
         </div>
+      )}
+
+      {showEditDialog && (isLoadingEdit || editError || editingQuestion) && (
+        isLoadingEdit || editError || !editingQuestion ? (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4" role="presentation">
+            <section role="dialog" aria-modal="true" aria-labelledby="edit-loading-title" className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+              <h2 id="edit-loading-title" className="text-xl font-bold">Edit question</h2>
+              {isLoadingEdit ? <p className="mt-4 text-sm text-[var(--text-secondary)]">Loading editing details…</p> : <p role="alert" className="mt-4 text-sm font-semibold text-red-600">{editError}</p>}
+              {!isLoadingEdit && <div className="mt-6 flex justify-end"><button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={closeEditDialog}>Close</button></div>}
+            </section>
+          </div>
+        ) : <WrittenQuestionEditDialog question={editingQuestion} onClose={closeEditDialog} onSaved={replaceCurrentQuestion} onRefreshLatest={refreshEditingQuestion} />
       )}
     </>
   )
