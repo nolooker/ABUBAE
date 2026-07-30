@@ -10,7 +10,7 @@ const navItems = [
   { label: '공지사항', href: '/notices' },
   { label: '기출문제', href: '/exam/jeongchogi/questions' },
   { label: '자료실', href: '/resources' },
-  { label: '합격후기', href: '/resources' },
+  { label: '자유게시판', href: '/board' },
 ]
 
 export default function Header() {

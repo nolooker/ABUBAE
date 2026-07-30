@@ -1,0 +1,54 @@
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import BoardComments from '@/components/board/BoardComments'
+import { isValidBoardId } from '@/lib/board'
+import { createBoardRepository } from '@/lib/board-repository'
+import { createClient } from '@/lib/supabase/server'
+
+type Props = {
+  params: Promise<{ postId: string }>
+}
+
+function formattedDate(timestamp: string) {
+  return new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }).format(
+    new Date(timestamp),
+  )
+}
+
+export default async function BoardPostPage({ params }: Props) {
+  const { postId } = await params
+  if (!isValidBoardId(postId)) notFound()
+
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  const result = await createBoardRepository(supabase).getPost(postId).catch(() => undefined)
+  if (!result) notFound()
+
+  const { post, comments } = result
+  const isAuthor = user?.id === post.userId
+
+  return (
+    <section className="mx-auto max-w-3xl px-4 py-12">
+      <Link href="/board" className="text-sm font-semibold text-[var(--primary)]">← 자유게시판으로 돌아가기</Link>
+
+      <div className="mt-6 mb-6 flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-[var(--text-primary)] sm:text-3xl">{post.title}</h1>
+          <p className="mt-3 text-[13px] text-[var(--text-muted)]">{post.authorNickname} · {formattedDate(post.createdAt)}</p>
+        </div>
+        {isAuthor && (
+          <Link
+            href={`/board/${post.id}/edit`}
+            className="shrink-0 rounded-lg border border-[var(--border)] px-3 py-1.5 text-sm font-bold text-[var(--text-primary)]"
+          >
+            수정
+          </Link>
+        )}
+      </div>
+
+      <div className="ab-card whitespace-pre-wrap p-6 text-[15px] leading-7 text-[var(--text-secondary)]">{post.content}</div>
+
+      <BoardComments postId={post.id} initialComments={comments} currentUserId={user?.id ?? null} />
+    </section>
+  )
+}

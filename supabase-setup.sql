@@ -94,6 +94,31 @@ CREATE TABLE IF NOT EXISTS public.download_grants (
   UNIQUE(user_id, resource_id)
 );
 
+-- 자유게시판: 글/댓글 작성자는 자신의 글만 수정·삭제한다.
+CREATE TABLE IF NOT EXISTS public.board_posts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  author_nickname TEXT NOT NULL,
+  title TEXT NOT NULL,
+  content TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS public.board_comments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  post_id UUID NOT NULL REFERENCES public.board_posts(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  author_nickname TEXT NOT NULL,
+  content TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Additive: one level of replies (a reply's parent must itself be a top-level comment).
+-- The single-level rule is enforced in the application layer, not by this column alone.
+ALTER TABLE public.board_comments
+  ADD COLUMN IF NOT EXISTS parent_comment_id UUID REFERENCES public.board_comments(id) ON DELETE CASCADE;
+
 -- Additive Master question editing fields for existing projects.
 ALTER TABLE public.users
   ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'user'
@@ -252,6 +277,24 @@ CREATE POLICY bookmarks_all_own ON public.bookmarks USING (auth.uid() = user_id)
 ALTER TABLE public.download_grants ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS grants_select_own ON public.download_grants;
 CREATE POLICY grants_select_own ON public.download_grants FOR SELECT USING (auth.uid() = user_id);
+
+ALTER TABLE public.board_posts ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS board_posts_public_read ON public.board_posts;
+DROP POLICY IF EXISTS board_posts_insert_own ON public.board_posts;
+DROP POLICY IF EXISTS board_posts_update_own ON public.board_posts;
+DROP POLICY IF EXISTS board_posts_delete_own ON public.board_posts;
+CREATE POLICY board_posts_public_read ON public.board_posts FOR SELECT USING (true);
+CREATE POLICY board_posts_insert_own ON public.board_posts FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY board_posts_update_own ON public.board_posts FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY board_posts_delete_own ON public.board_posts FOR DELETE USING (auth.uid() = user_id);
+
+ALTER TABLE public.board_comments ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS board_comments_public_read ON public.board_comments;
+DROP POLICY IF EXISTS board_comments_insert_own ON public.board_comments;
+DROP POLICY IF EXISTS board_comments_delete_own ON public.board_comments;
+CREATE POLICY board_comments_public_read ON public.board_comments FOR SELECT USING (true);
+CREATE POLICY board_comments_insert_own ON public.board_comments FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY board_comments_delete_own ON public.board_comments FOR DELETE USING (auth.uid() = user_id);
 
 ALTER TABLE public.exams ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS exams_public_read ON public.exams;
