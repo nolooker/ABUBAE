@@ -26,8 +26,6 @@ type Props = {
   loadEditableQuestion?: (questionId: string) => Promise<EditableWrittenQuestion>
 }
 
-const choiceLabels = ['①', '②', '③', '④']
-
 export default function WrittenRoundRunner({ year, round, title, questions, canEdit = false, editableQuestions, loadEditableQuestion }: Props) {
   const [roundQuestions, setRoundQuestions] = useState(questions)
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -177,7 +175,7 @@ export default function WrittenRoundRunner({ year, round, title, questions, canE
             {current.choices.map((choice, index) => (
               <label key={`${current.id}-${index}`} className={`flex cursor-pointer items-start gap-3 rounded-xl border p-4 text-[15px] leading-7 transition-colors ${answers[current.id] === index ? 'border-[var(--primary)] bg-[var(--primary-light)] text-blue-900' : 'border-[var(--border)] bg-white hover:border-[var(--primary)]'}`}>
                 <input type="radio" name={current.id} checked={answers[current.id] === index} onChange={() => setAnswers((previous) => ({ ...previous, [current.id]: index }))} aria-label={`선택지 ${index + 1}`} className="mt-1 h-5 w-5 accent-[var(--primary)]" />
-                <span><strong className="mr-2">{choiceLabels[index]}</strong>{choice}</span>
+                <span>{choice}</span>
               </label>
             ))}
           </fieldset>
