@@ -225,6 +225,19 @@ export function createNoticeRepository(supabase: SupabaseClient) {
       if (await this.getAdminNotice(id)) throw new NoticeStaleUpdateError()
       throw new NoticeNotFoundError()
     },
+
+    async deleteNotice(id: string): Promise<void> {
+      const { data, error } = await supabase
+        .from('posts')
+        .delete()
+        .eq('id', id)
+        .eq('type', 'notice')
+        .eq('is_premium', false)
+        .select('id')
+        .maybeSingle()
+      resultError(error)
+      if (data === null) throw new NoticeNotFoundError()
+    },
   }
 }
 
@@ -255,4 +268,8 @@ export async function createNotice(input: NoticeInput) {
 
 export async function updateNotice(id: string, input: NoticeInput, expectedUpdatedAt: string) {
   return (await serviceRepository()).updateNotice(id, input, expectedUpdatedAt)
+}
+
+export async function deleteNotice(id: string) {
+  return (await serviceRepository()).deleteNotice(id)
 }

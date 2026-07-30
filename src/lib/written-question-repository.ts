@@ -25,6 +25,16 @@ export type PublicWrittenRoundSummary = {
   subjectCount: number
 }
 
+export type AdminWrittenQuestionSummary = {
+  id: string
+  number: number
+  subject: string
+  content: string
+  reviewed: boolean
+  published: boolean
+  updatedAt: string
+}
+
 export class WrittenContentUnavailableError extends Error {
   constructor(message = 'written content is unavailable') {
     super(message)
@@ -50,6 +60,11 @@ function stringValue(value: unknown): string {
 function nullableStringValue(value: unknown): string {
   if (value === null) return ''
   return stringValue(value)
+}
+
+function booleanValue(value: unknown): boolean {
+  if (typeof value !== 'boolean') unavailable()
+  return value
 }
 
 function positiveIntegerValue(value: unknown): number {
@@ -115,6 +130,18 @@ function publicQuestion(row: RecordValue) {
   }
 }
 
+function adminQuestionRow(row: RecordValue): AdminWrittenQuestionSummary {
+  return {
+    id: stringValue(row.id),
+    number: positiveIntegerValue(row.number),
+    subject: stringValue(row.subject),
+    content: stringValue(row.content),
+    reviewed: booleanValue(row.reviewed),
+    published: booleanValue(row.published),
+    updatedAt: stringValue(row.updated_at),
+  }
+}
+
 function gradeableQuestion(row: RecordValue) {
   return {
     id: stringValue(row.id),
@@ -151,6 +178,20 @@ export function createWrittenQuestionRepository(supabase: SupabaseClient) {
       return [...grouped.values()]
         .map(({ year, round, subjects, questionCount }) => ({ year, round, questionCount, subjectCount: subjects.size }))
         .sort((a, b) => (a.year - b.year) || (a.round - b.round))
+    },
+
+    async listQuestionsForRound(year: number, round: number): Promise<AdminWrittenQuestionSummary[]> {
+      const { data, error } = await supabase
+        .from('questions')
+        .select('id,number,subject,content,reviewed,published,updated_at,exams!inner(slug)')
+        .eq('exam_type', 'written')
+        .eq('year', year)
+        .eq('round', round)
+        .eq('exams.slug', 'jeongchogi')
+        .order('number')
+
+      if (error) throw new WrittenContentUnavailableError(error.message)
+      return rows(data).map(adminQuestionRow)
     },
 
     async getPublicWrittenRound(year: number, round: number): Promise<PublicWrittenRound | undefined> {

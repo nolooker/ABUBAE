@@ -88,3 +88,23 @@ export async function PATCH(request: Request, context: Context) {
     return Response.json({ error: 'unable to manage notices' }, { status: 500 })
   }
 }
+
+export async function DELETE(_request: Request, context: Context) {
+  try {
+    const noticeId = await noticeIdFrom(context)
+    await requireAuthenticatedMaster()
+    const repository = createNoticeRepository(createServiceClient())
+    await repository.deleteNotice(noticeId)
+    return new Response(null, { status: 204 })
+  } catch (error) {
+    const authorization = authorizationFailure(error)
+    if (authorization) return authorization
+    if (error instanceof NoticeNotFoundError) {
+      return Response.json({ error: 'notice not found' }, { status: 404 })
+    }
+    if (error instanceof Error && error.message === 'noticeId must be a UUID') {
+      return Response.json({ error: error.message }, { status: 400 })
+    }
+    return Response.json({ error: 'unable to manage notices' }, { status: 500 })
+  }
+}

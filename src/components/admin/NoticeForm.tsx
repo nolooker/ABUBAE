@@ -24,15 +24,21 @@ function initialDraft(initialNotice?: AdminNotice): Draft {
 }
 
 function errorMessage(status: number): string {
-  if (status === 400) return 'Please check the notice details and try again.'
-  if (status === 409) return 'The notice conflicts with an existing or newer notice.'
-  return 'Unable to save the notice. Please try again.'
+  if (status === 400) return '입력값을 다시 확인해 주세요.'
+  if (status === 409) return '다른 공지와 충돌하거나, 그 사이 다른 곳에서 먼저 수정되었습니다.'
+  return '공지를 저장하지 못했습니다. 다시 시도해 주세요.'
+}
+
+function deleteErrorMessage(status: number): string {
+  if (status === 404) return '이미 삭제된 공지입니다.'
+  return '공지를 삭제하지 못했습니다. 다시 시도해 주세요.'
 }
 
 export default function NoticeForm({ mode, initialNotice }: NoticeFormProps) {
   const router = useRouter()
   const [draft, setDraft] = useState<Draft>(() => initialDraft(initialNotice))
   const [isSaving, setIsSaving] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const savingRef = useRef(false)
   const isEdit = mode === 'edit'
@@ -71,36 +77,71 @@ export default function NoticeForm({ mode, initialNotice }: NoticeFormProps) {
       if (!isEdit) setDraft(emptyDraft)
       router.push('/admin/notices?status=saved')
     } catch {
-      setError('Unable to save the notice. Please try again.')
+      setError('공지를 저장하지 못했습니다. 다시 시도해 주세요.')
       savingRef.current = false
       setIsSaving(false)
     }
   }
 
+  const deleteNotice = async () => {
+    if (!initialNotice || isDeleting || isSaving) return
+    if (!window.confirm('이 공지를 삭제할까요? 되돌릴 수 없습니다.')) return
+
+    setIsDeleting(true)
+    setError(null)
+
+    try {
+      const response = await fetch(`/api/admin/notices/${initialNotice.id}`, { method: 'DELETE' })
+
+      if (!response.ok) {
+        setError(deleteErrorMessage(response.status))
+        setIsDeleting(false)
+        return
+      }
+
+      router.push('/admin/notices?status=deleted')
+    } catch {
+      setError('공지를 삭제하지 못했습니다. 다시 시도해 주세요.')
+      setIsDeleting(false)
+    }
+  }
+
   return (
     <form onSubmit={submit} className="space-y-5" noValidate>
-      <fieldset disabled={isSaving} className="space-y-5">
+      <fieldset disabled={isSaving || isDeleting} className="space-y-5">
         <label className="block text-sm font-semibold text-[var(--text-primary)]">
-          Title
-          <input aria-label="Title" value={draft.title} onChange={(event) => updateDraft('title', event.target.value)} className="mt-2 w-full rounded-lg border border-[var(--border)] p-3 font-normal" />
+          제목
+          <input aria-label="제목" value={draft.title} onChange={(event) => updateDraft('title', event.target.value)} className="mt-2 w-full rounded-lg border border-[var(--border)] p-3 font-normal" />
         </label>
         <label className="block text-sm font-semibold text-[var(--text-primary)]">
-          Slug
-          <input aria-label="Slug" value={draft.slug} onChange={(event) => updateDraft('slug', event.target.value)} className="mt-2 w-full rounded-lg border border-[var(--border)] p-3 font-normal" />
+          슬러그
+          <input aria-label="슬러그" value={draft.slug} onChange={(event) => updateDraft('slug', event.target.value)} className="mt-2 w-full rounded-lg border border-[var(--border)] p-3 font-normal" />
         </label>
         <label className="block text-sm font-semibold text-[var(--text-primary)]">
-          Content
-          <textarea aria-label="Content" value={draft.content} onChange={(event) => updateDraft('content', event.target.value)} rows={12} className="mt-2 w-full rounded-lg border border-[var(--border)] p-3 font-normal" />
+          내용
+          <textarea aria-label="내용" value={draft.content} onChange={(event) => updateDraft('content', event.target.value)} rows={12} className="mt-2 w-full rounded-lg border border-[var(--border)] p-3 font-normal" />
         </label>
         <label className="flex items-center gap-2 text-sm font-semibold text-[var(--text-primary)]">
-          <input aria-label="Published" type="checkbox" checked={draft.isPublished} onChange={(event) => updateDraft('isPublished', event.target.checked)} />
-          Published
+          <input aria-label="공개" type="checkbox" checked={draft.isPublished} onChange={(event) => updateDraft('isPublished', event.target.checked)} />
+          공개
         </label>
       </fieldset>
       {error && <p role="alert" className="text-sm font-semibold text-red-600">{error}</p>}
-      <button type="submit" disabled={isSaving} className="rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-60">
-        {isSaving ? 'Saving...' : isEdit ? 'Save changes' : 'Create notice'}
-      </button>
+      <div className="flex items-center gap-3">
+        <button type="submit" disabled={isSaving || isDeleting} className="rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-60">
+          {isSaving ? '저장 중...' : isEdit ? '변경사항 저장' : '공지 생성'}
+        </button>
+        {isEdit && (
+          <button
+            type="button"
+            onClick={deleteNotice}
+            disabled={isSaving || isDeleting}
+            className="rounded-xl border border-red-200 px-4 py-2 text-sm font-bold text-red-600 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isDeleting ? '삭제 중...' : '공지 삭제'}
+          </button>
+        )}
+      </div>
     </form>
   )
 }

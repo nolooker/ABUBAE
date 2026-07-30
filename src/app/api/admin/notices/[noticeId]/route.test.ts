@@ -35,7 +35,7 @@ vi.mock('@/lib/notice-repository', () => ({
   NoticeNotFoundError: mocks.NoticeNotFoundError,
 }))
 
-import { GET, PATCH } from './route'
+import { DELETE, GET, PATCH } from './route'
 
 const noticeId = 'd7d68087-a5a8-4b6e-a0aa-550a4f5937a1'
 const notice = {
@@ -164,5 +164,54 @@ describe('/api/admin/notices/[noticeId]', () => {
 
     expect(response.status).toBe(409)
     await expect(response.json()).resolves.toEqual({ error: 'notice slug already exists' })
+  })
+
+  it('rejects a malformed id before deleting', async () => {
+    const response = await DELETE(new Request('http://localhost', { method: 'DELETE' }), context('not-a-uuid'))
+
+    expect(response.status).toBe(400)
+    expect(mocks.createServiceClient).not.toHaveBeenCalled()
+  })
+
+  it('authorizes DELETE before it creates the service-role repository', async () => {
+    mocks.requireMaster.mockRejectedValueOnce(new mocks.MasterAuthorizationError('anonymous'))
+    const anonymous = await DELETE(new Request('http://localhost', { method: 'DELETE' }), context())
+    mocks.requireMaster.mockRejectedValueOnce(new mocks.MasterAuthorizationError('user'))
+    const nonMaster = await DELETE(new Request('http://localhost', { method: 'DELETE' }), context())
+
+    expect([anonymous.status, nonMaster.status]).toEqual([401, 403])
+    expect(mocks.createNoticeRepository).not.toHaveBeenCalled()
+  })
+
+  it('deletes an existing notice and returns 204 with no body', async () => {
+    const repository = { deleteNotice: vi.fn().mockResolvedValue(undefined) }
+    mocks.createNoticeRepository.mockReturnValue(repository)
+
+    const response = await DELETE(new Request('http://localhost', { method: 'DELETE' }), context())
+
+    expect(response.status).toBe(204)
+    expect(repository.deleteNotice).toHaveBeenCalledWith(noticeId)
+  })
+
+  it('returns 404 when deleting a missing notice', async () => {
+    mocks.createNoticeRepository.mockReturnValue({
+      deleteNotice: vi.fn().mockRejectedValue(new mocks.NoticeNotFoundError()),
+    })
+
+    const response = await DELETE(new Request('http://localhost', { method: 'DELETE' }), context())
+
+    expect(response.status).toBe(404)
+    await expect(response.json()).resolves.toEqual({ error: 'notice not found' })
+  })
+
+  it('returns a redacted 500 when deletion fails unexpectedly', async () => {
+    mocks.createNoticeRepository.mockReturnValue({
+      deleteNotice: vi.fn().mockRejectedValue(new Error('connection password=secret')),
+    })
+
+    const response = await DELETE(new Request('http://localhost', { method: 'DELETE' }), context())
+
+    expect(response.status).toBe(500)
+    await expect(response.json()).resolves.toEqual({ error: 'unable to manage notices' })
   })
 })

@@ -19,6 +19,7 @@ function client(results: Result[]) {
     limit: vi.fn((...args: unknown[]) => { calls.push(['limit', args]); return query }),
     insert: vi.fn((...args: unknown[]) => { calls.push(['insert', args]); return query }),
     update: vi.fn((...args: unknown[]) => { calls.push(['update', args]); return query }),
+    delete: vi.fn((...args: unknown[]) => { calls.push(['delete', args]); return query }),
     single: vi.fn(() => { calls.push(['single', []]); return Promise.resolve(results[resultIndex++]) }),
     maybeSingle: vi.fn(() => { calls.push(['maybeSingle', []]); return Promise.resolve(results[resultIndex++]) }),
     then: (resolve: (value: Result) => unknown) => resolve(results[resultIndex++]),
@@ -160,6 +161,23 @@ describe('notice repository', () => {
       { title: 'Updated', slug: row.slug, content: 'Updated content', isPublished: false },
       row.updated_at,
     )).rejects.toBeInstanceOf(NoticeNotFoundError)
+  })
+
+  it('deletes an existing notice scoped to type and premium flag', async () => {
+    const { supabase, calls } = client([{ data: { id: row.id }, error: null }])
+
+    await expect(createNoticeRepository(supabase as never).deleteNotice(row.id)).resolves.toBeUndefined()
+    expect(calls).toContainEqual(['delete', []])
+    expect(calls).toContainEqual(['eq', ['id', row.id]])
+    expect(calls).toContainEqual(['eq', ['type', 'notice']])
+    expect(calls).toContainEqual(['eq', ['is_premium', false]])
+  })
+
+  it('reports deleting a missing notice as not found', async () => {
+    const { supabase } = client([{ data: null, error: null }])
+
+    await expect(createNoticeRepository(supabase as never).deleteNotice(row.id))
+      .rejects.toBeInstanceOf(NoticeNotFoundError)
   })
 
   it.each([

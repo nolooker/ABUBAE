@@ -1,6 +1,7 @@
 import { createServiceClient } from './supabase/service'
 import {
   createWrittenQuestionRepository,
+  type AdminWrittenQuestionSummary,
   type PublicWrittenQuestion,
   type PublicWrittenRound,
   type PublicWrittenRoundSummary,
@@ -8,7 +9,7 @@ import {
 } from './written-question-repository'
 import type { WrittenAnswers, WrittenGradeResult } from './written-exam'
 
-export type { PublicWrittenQuestion, PublicWrittenRound, PublicWrittenRoundSummary }
+export type { AdminWrittenQuestionSummary, PublicWrittenQuestion, PublicWrittenRound, PublicWrittenRoundSummary }
 export { WrittenContentUnavailableError }
 
 function repository() {
@@ -22,6 +23,13 @@ function repository() {
 
 export async function getWrittenRoundSummaries(): Promise<PublicWrittenRoundSummary[]> {
   return repository().listPublishedRoundSummaries()
+}
+
+export async function listQuestionsForRound(
+  year: number,
+  round: number,
+): Promise<AdminWrittenQuestionSummary[]> {
+  return repository().listQuestionsForRound(year, round)
 }
 
 export async function getPublicWrittenRound(

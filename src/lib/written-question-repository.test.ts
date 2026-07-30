@@ -28,6 +28,17 @@ const gradingQuery: QueryExpectation = {
   order: 'number',
 }
 
+const adminListQuery: QueryExpectation = {
+  select: 'id,number,subject,content,reviewed,published,updated_at,exams!inner(slug)',
+  filters: [
+    ['exam_type', 'written'],
+    ['year', 2021],
+    ['round', 1],
+    ['exams.slug', 'jeongchogi'],
+  ],
+  order: 'number',
+}
+
 function createSupabaseClient(result: QueryResult, expected: QueryExpectation) {
   let selected: string | undefined
   const filters: Array<[string, unknown]> = []
@@ -148,6 +159,45 @@ describe('written question repository', () => {
     const repository = createWrittenQuestionRepository(client)
 
     await expect(repository.listPublishedRoundSummaries()).rejects.toMatchObject({
+      name: 'WrittenContentUnavailableError',
+    })
+  })
+
+  it('lists every question in a round with its review and publish status for admins', async () => {
+    const repository = createWrittenQuestionRepository(createSupabaseClient({
+      data: [
+        {
+          id: 'q1',
+          number: 1,
+          subject: 'software',
+          content: 'Question 1',
+          reviewed: false,
+          published: true,
+          updated_at: '2026-07-23T00:00:00Z',
+          exams: { slug: 'jeongchogi' },
+        },
+      ],
+      error: null,
+    }, adminListQuery))
+
+    await expect(repository.listQuestionsForRound(2021, 1)).resolves.toEqual([{
+      id: 'q1',
+      number: 1,
+      subject: 'software',
+      content: 'Question 1',
+      reviewed: false,
+      published: true,
+      updatedAt: '2026-07-23T00:00:00Z',
+    }])
+  })
+
+  it('reports database failures as content unavailability for the admin question list', async () => {
+    const repository = createWrittenQuestionRepository(createSupabaseClient({
+      data: null,
+      error: { message: 'connection failed' },
+    }, adminListQuery))
+
+    await expect(repository.listQuestionsForRound(2021, 1)).rejects.toMatchObject({
       name: 'WrittenContentUnavailableError',
     })
   })
