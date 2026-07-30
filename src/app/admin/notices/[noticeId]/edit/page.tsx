@@ -14,7 +14,7 @@ export default async function EditNoticePage({ params }: EditNoticePageProps) {
   return (
     <section className="mx-auto max-w-3xl px-4 py-12">
       <p className="mb-2 text-[13px] font-bold text-[var(--primary)]">SYSTEM ADMIN</p>
-      <h1 className="text-3xl font-bold text-[var(--text-primary)]">Edit notice</h1>
+      <h1 className="text-3xl font-bold text-[var(--text-primary)]">공지 수정</h1>
       <div className="mt-8 rounded-[var(--radius-lg)] border border-[var(--border)] bg-white p-6"><NoticeForm mode="edit" initialNotice={notice} /></div>
     </section>
   )

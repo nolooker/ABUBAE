@@ -174,31 +174,31 @@ export default function WrittenQuestionEditDialog({ question, onClose, onSaved, 
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-sm font-semibold text-[var(--primary)]">{question.subject}</p>
-            <h2 id="edit-question-title" className="mt-1 text-xl font-bold">Edit question {question.number}</h2>
+            <h2 id="edit-question-title" className="mt-1 text-xl font-bold">{question.number}번 문제 수정</h2>
           </div>
-          <button type="button" aria-label="Close edit dialog" className="ab-btn ab-btn-secondary ab-btn-md" onClick={requestClose} disabled={isSaving}>Close</button>
+          <button type="button" aria-label="편집 닫기" className="ab-btn ab-btn-secondary ab-btn-md" onClick={requestClose} disabled={isSaving}>닫기</button>
         </div>
 
         <div className="mt-6 space-y-5">
-          <label className="block text-sm font-semibold">Question
-            <textarea ref={questionFieldRef} aria-label="Question" value={content} onChange={(event) => setContent(event.target.value)} disabled={isSaving} rows={4} className="mt-2 w-full rounded-lg border border-[var(--border)] p-3 font-normal" />
+          <label className="block text-sm font-semibold">문제
+            <textarea ref={questionFieldRef} aria-label="문제" value={content} onChange={(event) => setContent(event.target.value)} disabled={isSaving} rows={4} className="mt-2 w-full rounded-lg border border-[var(--border)] p-3 font-normal" />
           </label>
 
           <fieldset>
-            <legend className="text-sm font-semibold">Choices and correct answers</legend>
+            <legend className="text-sm font-semibold">선택지와 정답</legend>
             <div className="mt-2 space-y-3">
               {choices.map((choice, index) => (
                 <div key={index} className="flex items-center gap-3">
-                  <input id={`correct-choice-${index}`} aria-label={`Correct choice ${index + 1}`} type="checkbox" checked={acceptedAnswerIndexes.includes(index)} onChange={() => toggleAcceptedAnswer(index)} disabled={isSaving} className="h-4 w-4" />
+                  <input id={`correct-choice-${index}`} aria-label={`정답 ${index + 1}`} type="checkbox" checked={acceptedAnswerIndexes.includes(index)} onChange={() => toggleAcceptedAnswer(index)} disabled={isSaving} className="h-4 w-4" />
                   <label htmlFor={`correct-choice-${index}`} className="font-semibold">{choiceLabels[index]}</label>
-                  <input aria-label={`Choice ${index + 1}`} value={choice} onChange={(event) => changeChoice(index, event.target.value)} disabled={isSaving} className="min-w-0 flex-1 rounded-lg border border-[var(--border)] p-3 font-normal" />
+                  <input aria-label={`선택지 ${index + 1}`} value={choice} onChange={(event) => changeChoice(index, event.target.value)} disabled={isSaving} className="min-w-0 flex-1 rounded-lg border border-[var(--border)] p-3 font-normal" />
                 </div>
               ))}
             </div>
           </fieldset>
 
-          <label className="block text-sm font-semibold">Explanation
-            <textarea aria-label="Explanation" value={explanation} onChange={(event) => setExplanation(event.target.value)} disabled={isSaving} rows={4} className="mt-2 w-full rounded-lg border border-[var(--border)] p-3 font-normal" />
+          <label className="block text-sm font-semibold">해설
+            <textarea aria-label="해설" value={explanation} onChange={(event) => setExplanation(event.target.value)} disabled={isSaving} rows={4} className="mt-2 w-full rounded-lg border border-[var(--border)] p-3 font-normal" />
           </label>
         </div>
 
@@ -212,19 +212,19 @@ export default function WrittenQuestionEditDialog({ question, onClose, onSaved, 
           </div>
         )}
         <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          <button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={requestClose} disabled={isSaving || isRefreshing}>Cancel</button>
-          <button type="button" className="ab-btn ab-btn-primary ab-btn-md" onClick={save} disabled={isSaving || isRefreshing}>{isSaving ? 'Saving…' : 'Save'}</button>
+          <button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={requestClose} disabled={isSaving || isRefreshing}>취소</button>
+          <button type="button" className="ab-btn ab-btn-primary ab-btn-md" onClick={save} disabled={isSaving || isRefreshing}>{isSaving ? '저장 중…' : '저장'}</button>
         </div>
       </section>
 
       {showDiscardConfirmation && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/50 p-4">
           <section ref={discardDialogRef} role="alertdialog" aria-modal="true" aria-labelledby="discard-title" className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
-            <h3 id="discard-title" className="text-lg font-bold">Discard changes?</h3>
-            <p className="mt-2 text-sm text-[var(--text-secondary)]">Your unsaved edits will be lost.</p>
+            <h3 id="discard-title" className="text-lg font-bold">변경사항을 버릴까요?</h3>
+            <p className="mt-2 text-sm text-[var(--text-secondary)]">저장하지 않은 수정 내용이 사라집니다.</p>
             <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-              <button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={() => setShowDiscardConfirmation(false)}>Keep editing</button>
-              <button type="button" className="ab-btn ab-btn-primary ab-btn-md" onClick={onClose}>Discard changes</button>
+              <button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={() => setShowDiscardConfirmation(false)}>계속 편집</button>
+              <button type="button" className="ab-btn ab-btn-primary ab-btn-md" onClick={onClose}>변경사항 버리기</button>
             </div>
           </section>
         </div>

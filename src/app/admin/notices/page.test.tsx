@@ -49,15 +49,15 @@ describe('admin notice pages', () => {
   it('lists notices with explicit published status badges and edit affordances', async () => {
     render(await NoticesPage())
 
-    expect(screen.getByRole('heading', { name: 'Notices' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: '공지 관리' })).toBeInTheDocument()
     expect(screen.getByText('Published notice')).toBeInTheDocument()
-    expect(screen.getByText('Published')).toBeInTheDocument()
-    expect(screen.getByText('Draft')).toBeInTheDocument()
+    expect(screen.getByText('공개')).toBeInTheDocument()
+    expect(screen.getByText('임시저장')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: '새 공지 작성' })).toHaveAttribute('href', '/admin/notices/new')
     expect(screen.getByRole('link', { name: '수정: Published notice' })).toHaveAttribute('href', `/admin/notices/${notice.id}/edit`)
     expect(screen.getByRole('link', { name: '수정: Draft notice' })).toHaveAttribute('href', '/admin/notices/a7d68087-a5a8-4b6e-a0aa-550a4f5937a1/edit')
     expect(screen.getAllByText('수정')).toHaveLength(2)
-    expect(screen.getAllByText('Updated Jul 24, 2026')).toHaveLength(2)
+    expect(screen.getAllByText('2026년 7월 24일 수정')).toHaveLength(2)
   })
 
   it('announces a saved notice on the destination list page', async () => {

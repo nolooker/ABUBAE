@@ -23,8 +23,8 @@ describe('WrittenRoundResult', () => {
       />,
     )
 
-    expect(screen.getByRole('listitem', { name: 'Graded choice 1: your incorrect answer' })).toBeInTheDocument()
-    expect(screen.getByRole('listitem', { name: 'Graded choice 2: correct answer' })).toBeInTheDocument()
+    expect(screen.getByRole('listitem', { name: '채점된 선택지 1: 내 오답' })).toBeInTheDocument()
+    expect(screen.getByRole('listitem', { name: '채점된 선택지 2: 정답' })).toBeInTheDocument()
     expect(screen.getByText('Edited explanation')).toBeInTheDocument()
     expect(screen.queryByText('해설 준비 중')).not.toBeInTheDocument()
   })

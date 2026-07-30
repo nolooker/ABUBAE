@@ -38,14 +38,14 @@ describe('WrittenQuestionEditDialog', () => {
     const onClose = vi.fn()
     render(<WrittenQuestionEditDialog question={question} onClose={onClose} onSaved={vi.fn()} onRefreshLatest={vi.fn()} />)
 
-    await user.clear(screen.getByLabelText('Question'))
-    await user.type(screen.getByLabelText('Question'), 'Changed question')
-    await user.click(screen.getByRole('button', { name: 'Cancel' }))
+    await user.clear(screen.getByLabelText('문제'))
+    await user.type(screen.getByLabelText('문제'), 'Changed question')
+    await user.click(screen.getByRole('button', { name: '취소' }))
 
-    expect(screen.getByRole('alertdialog')).toHaveTextContent('Discard changes?')
+    expect(screen.getByRole('alertdialog')).toHaveTextContent('변경사항을 버릴까요?')
     expect(onClose).not.toHaveBeenCalled()
 
-    await user.click(screen.getByRole('button', { name: 'Discard changes' }))
+    await user.click(screen.getByRole('button', { name: '변경사항 버리기' }))
     expect(onClose).toHaveBeenCalledOnce()
   })
 
@@ -54,25 +54,25 @@ describe('WrittenQuestionEditDialog', () => {
     render(<DialogHarness />)
 
     await user.click(screen.getByRole('button', { name: 'Open edit' }))
-    expect(screen.getByLabelText('Question')).toHaveFocus()
+    expect(screen.getByLabelText('문제')).toHaveFocus()
 
-    screen.getByRole('button', { name: 'Save' }).focus()
+    screen.getByRole('button', { name: '저장' }).focus()
     await user.tab()
-    expect(screen.getByRole('button', { name: 'Close edit dialog' })).toHaveFocus()
+    expect(screen.getByRole('button', { name: '편집 닫기' })).toHaveFocus()
     await user.tab({ shift: true })
-    expect(screen.getByRole('button', { name: 'Save' })).toHaveFocus()
+    expect(screen.getByRole('button', { name: '저장' })).toHaveFocus()
 
-    await user.clear(screen.getByLabelText('Question'))
-    await user.type(screen.getByLabelText('Question'), 'Changed question')
+    await user.clear(screen.getByLabelText('문제'))
+    await user.type(screen.getByLabelText('문제'), 'Changed question')
     await user.keyboard('{Escape}')
-    expect(screen.getByRole('alertdialog')).toHaveTextContent('Discard changes?')
+    expect(screen.getByRole('alertdialog')).toHaveTextContent('변경사항을 버릴까요?')
 
     await user.keyboard('{Escape}')
     expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument()
-    expect(screen.getByLabelText('Question')).toHaveFocus()
+    expect(screen.getByLabelText('문제')).toHaveFocus()
 
-    await user.click(screen.getByRole('button', { name: 'Cancel' }))
-    await user.click(screen.getByRole('button', { name: 'Discard changes' }))
+    await user.click(screen.getByRole('button', { name: '취소' }))
+    await user.click(screen.getByRole('button', { name: '변경사항 버리기' }))
     expect(screen.getByRole('button', { name: 'Open edit' })).toHaveFocus()
   })
 
@@ -91,12 +91,12 @@ describe('WrittenQuestionEditDialog', () => {
     const user = userEvent.setup()
     render(<WrittenQuestionEditDialog question={question} onClose={vi.fn()} onSaved={onSaved} onRefreshLatest={vi.fn()} />)
 
-    await user.clear(screen.getByLabelText('Question'))
-    await user.type(screen.getByLabelText('Question'), 'Updated question')
-    await user.clear(screen.getByLabelText('Choice 1'))
-    await user.type(screen.getByLabelText('Choice 1'), 'A1')
-    await user.click(screen.getByLabelText('Correct choice 1'))
-    await user.click(screen.getByRole('button', { name: 'Save' }))
+    await user.clear(screen.getByLabelText('문제'))
+    await user.type(screen.getByLabelText('문제'), 'Updated question')
+    await user.clear(screen.getByLabelText('선택지 1'))
+    await user.type(screen.getByLabelText('선택지 1'), 'A1')
+    await user.click(screen.getByLabelText('정답 1'))
+    await user.click(screen.getByRole('button', { name: '저장' }))
 
     expect(fetchMock).toHaveBeenCalledWith(
       '/api/admin/written-questions/q1',
@@ -137,20 +137,20 @@ describe('WrittenQuestionEditDialog', () => {
     const user = userEvent.setup()
     render(<WrittenQuestionEditDialog question={question} onClose={vi.fn()} onSaved={vi.fn()} onRefreshLatest={onRefreshLatest} />)
 
-    await user.clear(screen.getByLabelText('Question'))
-    await user.type(screen.getByLabelText('Question'), 'My draft')
-    await user.click(screen.getByRole('button', { name: 'Save' }))
+    await user.clear(screen.getByLabelText('문제'))
+    await user.type(screen.getByLabelText('문제'), 'My draft')
+    await user.click(screen.getByRole('button', { name: '저장' }))
 
     expect(await screen.findByRole('alert')).toHaveTextContent('다른 수정 사항이 먼저 저장되었습니다.')
-    expect(screen.getByLabelText('Question')).toHaveValue('My draft')
+    expect(screen.getByLabelText('문제')).toHaveValue('My draft')
 
     await user.click(screen.getByRole('button', { name: '최신 내용 불러오기' }))
 
     expect(onRefreshLatest).toHaveBeenCalledOnce()
-    expect(screen.getByLabelText('Question')).toHaveValue('My draft')
+    expect(screen.getByLabelText('문제')).toHaveValue('My draft')
     expect(screen.getByRole('status')).toHaveTextContent('최신 저장 기준을 불러왔습니다. 작성 중인 내용은 유지했습니다.')
 
-    await user.click(screen.getByRole('button', { name: 'Save' }))
+    await user.click(screen.getByRole('button', { name: '저장' }))
     const retryBody = JSON.parse(fetchMock.mock.calls[1][1].body as string)
     expect(retryBody.expectedUpdatedAt).toBe(latestQuestion.updatedAt)
     expect(retryBody.content).toBe('My draft')
@@ -173,7 +173,7 @@ describe('WrittenQuestionEditDialog', () => {
     const user = userEvent.setup()
     render(<WrittenQuestionEditDialog question={question} onClose={vi.fn()} onSaved={vi.fn()} onRefreshLatest={vi.fn()} />)
 
-    await user.click(screen.getByRole('button', { name: 'Save' }))
+    await user.click(screen.getByRole('button', { name: '저장' }))
 
     expect(await screen.findByRole('alert')).toHaveTextContent(expectedMessage)
   })
@@ -184,8 +184,8 @@ describe('WrittenQuestionEditDialog', () => {
     const user = userEvent.setup()
     render(<WrittenQuestionEditDialog question={question} onClose={vi.fn()} onSaved={vi.fn()} onRefreshLatest={vi.fn()} />)
 
-    await user.clear(screen.getByLabelText('Question'))
-    await user.click(screen.getByRole('button', { name: 'Save' }))
+    await user.clear(screen.getByLabelText('문제'))
+    await user.click(screen.getByRole('button', { name: '저장' }))
 
     expect(screen.getByRole('alert')).toHaveTextContent('문제, 보기 4개, 정답을 모두 입력해 주세요.')
     expect(fetchMock).not.toHaveBeenCalled()
@@ -202,7 +202,7 @@ describe('WrittenQuestionEditDialog', () => {
     const user = userEvent.setup()
     render(<WrittenQuestionEditDialog question={question} onClose={vi.fn()} onSaved={onSaved} onRefreshLatest={vi.fn()} />)
 
-    await user.click(screen.getByRole('button', { name: 'Save' }))
+    await user.click(screen.getByRole('button', { name: '저장' }))
 
     expect(await screen.findByRole('alert')).toHaveTextContent('문제를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.')
     expect(onSaved).not.toHaveBeenCalled()
@@ -214,12 +214,12 @@ describe('WrittenQuestionEditDialog', () => {
     const user = userEvent.setup()
     render(<WrittenQuestionEditDialog question={question} onClose={vi.fn()} onSaved={vi.fn()} onRefreshLatest={vi.fn()} />)
 
-    await user.click(screen.getByRole('button', { name: 'Save' }))
-    expect(screen.getByRole('button', { name: 'Saving…' })).toBeDisabled()
-    expect(screen.getByRole('button', { name: 'Cancel' })).toBeDisabled()
+    await user.click(screen.getByRole('button', { name: '저장' }))
+    expect(screen.getByRole('button', { name: '저장 중…' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: '취소' })).toBeDisabled()
 
     resolveResponse?.({ ok: false })
     expect(await screen.findByRole('alert')).toHaveTextContent('문제를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.')
-    expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled()
+    expect(screen.getByRole('button', { name: '저장' })).toBeEnabled()
   })
 })

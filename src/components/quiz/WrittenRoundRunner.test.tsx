@@ -51,20 +51,20 @@ describe('WrittenRoundRunner', () => {
       />,
     )
 
-    await user.click(screen.getByRole('button', { name: 'Edit question' }))
-    await user.clear(screen.getByLabelText('Question'))
-    await user.type(screen.getByLabelText('Question'), 'Updated question')
-    await user.click(screen.getByRole('button', { name: 'Save' }))
+    await user.click(screen.getByRole('button', { name: '문제 수정' }))
+    await user.clear(screen.getByLabelText('문제'))
+    await user.type(screen.getByLabelText('문제'), 'Updated question')
+    await user.click(screen.getByRole('button', { name: '저장' }))
 
     expect(await screen.findByRole('heading', { name: '1. Updated question' })).toBeInTheDocument()
-    expect(screen.queryByRole('dialog', { name: 'Edit question 1' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('dialog', { name: '1번 문제 수정' })).not.toBeInTheDocument()
     expect(screen.getByRole('status')).toHaveTextContent('문제가 저장되었습니다.')
   })
 
   it('does not render editing for normal users', () => {
     render(<WrittenRoundRunner canEdit={false} year={2021} round={1} title="2021 round 1" questions={questions} />)
 
-    expect(screen.queryByRole('button', { name: 'Edit question' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: '문제 수정' })).not.toBeInTheDocument()
   })
 
   it('lazily loads editable details only after a master opens the current question editor', async () => {
@@ -91,9 +91,9 @@ describe('WrittenRoundRunner', () => {
     )
 
     expect(loadEditableQuestion).not.toHaveBeenCalled()
-    await user.click(screen.getByRole('button', { name: 'Edit question' }))
+    await user.click(screen.getByRole('button', { name: '문제 수정' }))
 
-    expect(await screen.findByLabelText('Explanation')).toHaveValue('Explanation')
+    expect(await screen.findByLabelText('해설')).toHaveValue('Explanation')
     expect(loadEditableQuestion).toHaveBeenCalledOnce()
     expect(loadEditableQuestion).toHaveBeenCalledWith('q1')
   })
@@ -134,20 +134,20 @@ describe('WrittenRoundRunner', () => {
       />,
     )
 
-    await user.click(screen.getByRole('button', { name: 'Edit question' }))
-    await user.clear(await screen.findByLabelText('Question'))
-    await user.type(screen.getByLabelText('Question'), 'My preserved draft')
-    await user.click(screen.getByRole('button', { name: 'Save' }))
+    await user.click(screen.getByRole('button', { name: '문제 수정' }))
+    await user.clear(await screen.findByLabelText('문제'))
+    await user.type(screen.getByLabelText('문제'), 'My preserved draft')
+    await user.click(screen.getByRole('button', { name: '저장' }))
     await user.click(await screen.findByRole('button', { name: '최신 내용 불러오기' }))
 
-    expect(screen.getByLabelText('Question')).toHaveValue('My preserved draft')
+    expect(screen.getByLabelText('문제')).toHaveValue('My preserved draft')
     expect(loadEditableQuestion).toHaveBeenCalledTimes(2)
 
-    await user.click(screen.getByRole('button', { name: 'Cancel' }))
-    await user.click(screen.getByRole('button', { name: 'Discard changes' }))
-    await user.click(screen.getByRole('button', { name: 'Edit question' }))
+    await user.click(screen.getByRole('button', { name: '취소' }))
+    await user.click(screen.getByRole('button', { name: '변경사항 버리기' }))
+    await user.click(screen.getByRole('button', { name: '문제 수정' }))
 
-    expect(screen.getByLabelText('Question')).toHaveValue('Latest server question')
+    expect(screen.getByLabelText('문제')).toHaveValue('Latest server question')
     expect(loadEditableQuestion).toHaveBeenCalledTimes(2)
   })
 
@@ -156,12 +156,12 @@ describe('WrittenRoundRunner', () => {
     const user = userEvent.setup()
     render(<WrittenRoundRunner year={2021} round={1} title="2021년 1회" questions={questions} />)
 
-    await user.click(screen.getByRole('radio', { name: 'Answer choice 2' }))
+    await user.click(screen.getByRole('radio', { name: '선택지 2' }))
     await user.click(screen.getByRole('button', { name: '다음 문제' }))
     expect(screen.getByText('응답 1')).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: '1번 문제로 이동' }))
-    expect(screen.getByRole('radio', { name: 'Answer choice 2' })).toBeChecked()
+    expect(screen.getByRole('radio', { name: '선택지 2' })).toBeChecked()
     expect(screen.queryByText(/정답/)).not.toBeInTheDocument()
   })
 
@@ -196,14 +196,14 @@ describe('WrittenRoundRunner', () => {
     const user = userEvent.setup()
     render(<WrittenRoundRunner year={2021} round={1} title="2021년 1회" questions={questions} />)
 
-    await user.click(screen.getByRole('radio', { name: 'Answer choice 2' }))
-    await user.click(screen.getByRole('button', { name: 'Submit round' }))
+    await user.click(screen.getByRole('radio', { name: '선택지 2' }))
+    await user.click(screen.getByRole('button', { name: '회차 제출' }))
 
     expect(screen.getByRole('dialog')).toHaveTextContent('미응답 1문제')
     expect(screen.getByRole('dialog')).toHaveTextContent('2번')
     expect(fetchMock).not.toHaveBeenCalled()
 
-    await user.click(screen.getByRole('button', { name: 'Confirm submission' }))
+    await user.click(screen.getByRole('button', { name: '제출 확정' }))
 
     await waitFor(() => expect(screen.getByRole('heading', { name: '50점' })).toBeInTheDocument())
     expect(screen.getByText('이 결과는 저장되지 않습니다.')).toBeInTheDocument()
@@ -218,9 +218,9 @@ describe('WrittenRoundRunner', () => {
     const user = userEvent.setup()
     render(<WrittenRoundRunner year={2021} round={1} title="2021년 1회" questions={questions} />)
 
-    await user.click(screen.getByRole('radio', { name: 'Answer choice 2' }))
-    await user.click(screen.getByRole('button', { name: 'Submit round' }))
+    await user.click(screen.getByRole('radio', { name: '선택지 2' }))
+    await user.click(screen.getByRole('button', { name: '회차 제출' }))
 
-    expect(screen.getByRole('button', { name: 'Confirm submission' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '제출 확정' })).toBeInTheDocument()
   })
 })
