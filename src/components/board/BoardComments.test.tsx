@@ -12,6 +12,7 @@ const ownComment = {
   authorNickname: '아부배러너',
   content: '내 댓글',
   createdAt: '2026-07-24T00:00:00Z',
+  updatedAt: null,
   parentCommentId: null,
 }
 const othersComment = {
@@ -42,10 +43,18 @@ describe('BoardComments', () => {
     expect(screen.getByRole('link', { name: '로그인' })).toHaveAttribute('href', '/login')
   })
 
-  it('shows a delete button only on the current user\'s own comments', () => {
+  it('shows edit and delete only on the current user\'s own comments', () => {
     render(<BoardComments postId={postId} initialComments={[ownComment, othersComment]} currentUserId={ownComment.userId} />)
 
+    expect(screen.getAllByRole('button', { name: '수정' })).toHaveLength(1)
     expect(screen.getAllByRole('button', { name: '삭제' })).toHaveLength(1)
+  })
+
+  it('lets a moderator delete but not edit someone else\'s comment', () => {
+    render(<BoardComments postId={postId} initialComments={[othersComment]} currentUserId={ownComment.userId} canModerate />)
+
+    expect(screen.queryByRole('button', { name: '수정' })).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '삭제' })).toBeInTheDocument()
   })
 
   it('posts a new top-level comment and appends it to the list', async () => {
@@ -75,6 +84,40 @@ describe('BoardComments', () => {
     await user.click(screen.getByRole('button', { name: '댓글 등록' }))
 
     expect(await screen.findByRole('alert')).toHaveTextContent('댓글을 등록하지 못했습니다.')
+  })
+
+  it('edits its own comment, showing the "edited" tag', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ ...ownComment, content: '고친 댓글', updatedAt: '2026-07-24T01:00:00Z' }),
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    const user = userEvent.setup()
+    render(<BoardComments postId={postId} initialComments={[ownComment]} currentUserId={ownComment.userId} />)
+
+    await user.click(screen.getByRole('button', { name: '수정' }))
+    await user.clear(screen.getByLabelText('댓글 수정'))
+    await user.type(screen.getByLabelText('댓글 수정'), '고친 댓글')
+    await user.click(screen.getByRole('button', { name: '저장' }))
+
+    expect(fetchMock).toHaveBeenCalledWith(`/api/board/comments/${ownComment.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: '고친 댓글' }),
+    })
+    expect(await screen.findByText('고친 댓글')).toBeInTheDocument()
+    expect(screen.getByText(/\(수정됨\)/)).toBeInTheDocument()
+  })
+
+  it('shows a safe error when editing a comment fails', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 500 }))
+    const user = userEvent.setup()
+    render(<BoardComments postId={postId} initialComments={[ownComment]} currentUserId={ownComment.userId} />)
+
+    await user.click(screen.getByRole('button', { name: '수정' }))
+    await user.click(screen.getByRole('button', { name: '저장' }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('댓글을 수정하지 못했습니다.')
   })
 
   it('deletes a comment after confirmation', async () => {
@@ -114,6 +157,12 @@ describe('BoardComments', () => {
 
     expect(screen.getByText('내 답글')).toBeInTheDocument()
     expect(screen.getAllByRole('button', { name: '삭제' })).toHaveLength(2)
+  })
+
+  it('does not offer a reply toggle on a reply itself', () => {
+    render(<BoardComments postId={postId} initialComments={[ownComment, ownReply]} currentUserId={ownComment.userId} />)
+
+    expect(screen.getAllByRole('button', { name: '답글' })).toHaveLength(1)
   })
 
   it('posts a reply scoped to its parent comment and renders it nested', async () => {

@@ -21,7 +21,9 @@ describe('admin notices migration', () => {
       expect(executable).toMatch(/FROM pg_catalog\.pg_policies[\s\S]*?tablename = 'posts'[\s\S]*?DROP POLICY IF EXISTS %I ON %I\.%I/)
       expect(executable).not.toMatch(/tablename = 'posts'[\s\S]*?cmd <> 'SELECT'/)
       expect(executable).toContain('REVOKE INSERT, UPDATE, DELETE ON TABLE public.posts FROM PUBLIC, anon, authenticated;')
-      expect(executable).not.toMatch(/CREATE\s+POLICY\s+[^;]+\s+ON\s+public\.posts[\s\S]*?\sFOR\s+(?:INSERT|UPDATE|DELETE|ALL)\b/i)
+      // Scoped to a single statement ([^;]) so an unrelated later CREATE POLICY
+      // (e.g. on public.board_posts) can't be mistaken for a posts mutation policy.
+      expect(executable).not.toMatch(/CREATE\s+POLICY\s+[^;]+\s+ON\s+public\.posts[^;]*?\sFOR\s+(?:INSERT|UPDATE|DELETE|ALL)\b/i)
     }
   })
 

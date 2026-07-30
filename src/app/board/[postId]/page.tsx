@@ -1,8 +1,11 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import BoardComments from '@/components/board/BoardComments'
+import BoardPostDeleteButton from '@/components/board/BoardPostDeleteButton'
+import BoardReportButton from '@/components/board/BoardReportButton'
 import { isValidBoardId } from '@/lib/board'
 import { createBoardRepository } from '@/lib/board-repository'
+import { getCurrentUserRole } from '@/lib/master-auth'
 import { createClient } from '@/lib/supabase/server'
 
 type Props = {
@@ -21,11 +24,13 @@ export default async function BoardPostPage({ params }: Props) {
 
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  const role = await getCurrentUserRole(supabase)
   const result = await createBoardRepository(supabase).getPost(postId).catch(() => undefined)
   if (!result) notFound()
 
   const { post, comments } = result
   const isAuthor = user?.id === post.userId
+  const isModerator = role === 'master'
 
   return (
     <section className="mx-auto max-w-3xl px-4 py-12">
@@ -36,19 +41,33 @@ export default async function BoardPostPage({ params }: Props) {
           <h1 className="text-2xl font-bold text-[var(--text-primary)] sm:text-3xl">{post.title}</h1>
           <p className="mt-3 text-[13px] text-[var(--text-muted)]">{post.authorNickname} · {formattedDate(post.createdAt)}</p>
         </div>
-        {isAuthor && (
-          <Link
-            href={`/board/${post.id}/edit`}
-            className="shrink-0 rounded-lg border border-[var(--border)] px-3 py-1.5 text-sm font-bold text-[var(--text-primary)]"
-          >
-            수정
-          </Link>
-        )}
+        <div className="flex shrink-0 items-center gap-2">
+          {isAuthor && (
+            <Link
+              href={`/board/${post.id}/edit`}
+              className="rounded-lg border border-[var(--border)] px-3 py-1.5 text-sm font-bold text-[var(--text-primary)]"
+            >
+              수정
+            </Link>
+          )}
+          {isAuthor && (
+            <BoardPostDeleteButton postId={post.id} label="삭제" confirmMessage="이 글을 삭제할까요? 되돌릴 수 없습니다." />
+          )}
+          {isModerator && !isAuthor && (
+            <BoardPostDeleteButton postId={post.id} label="관리자 삭제" confirmMessage="관리자 권한으로 이 글을 삭제할까요? 되돌릴 수 없습니다." />
+          )}
+        </div>
       </div>
 
       <div className="ab-card whitespace-pre-wrap p-6 text-[15px] leading-7 text-[var(--text-secondary)]">{post.content}</div>
 
-      <BoardComments postId={post.id} initialComments={comments} currentUserId={user?.id ?? null} />
+      {user && !isAuthor && (
+        <div className="mt-3">
+          <BoardReportButton targetType="post" targetId={post.id} />
+        </div>
+      )}
+
+      <BoardComments postId={post.id} initialComments={comments} currentUserId={user?.id ?? null} canModerate={isModerator} />
     </section>
   )
 }

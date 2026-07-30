@@ -119,6 +119,25 @@ CREATE TABLE IF NOT EXISTS public.board_comments (
 ALTER TABLE public.board_comments
   ADD COLUMN IF NOT EXISTS parent_comment_id UUID REFERENCES public.board_comments(id) ON DELETE CASCADE;
 
+-- Additive: track edits to a comment's content.
+ALTER TABLE public.board_comments
+  ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ;
+
+-- Reports: any member can report a post or comment; only masters can review them.
+-- post_id lets a reported comment still be traced/cleaned up even if reviewed later,
+-- and cascades away if the underlying post is removed.
+CREATE TABLE IF NOT EXISTS public.board_reports (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  target_type TEXT NOT NULL CHECK (target_type IN ('post', 'comment')),
+  target_id UUID NOT NULL,
+  post_id UUID NOT NULL REFERENCES public.board_posts(id) ON DELETE CASCADE,
+  reporter_user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  reporter_nickname TEXT NOT NULL,
+  reason TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'resolved')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 -- Additive Master question editing fields for existing projects.
 ALTER TABLE public.users
   ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'user'
@@ -291,10 +310,18 @@ CREATE POLICY board_posts_delete_own ON public.board_posts FOR DELETE USING (aut
 ALTER TABLE public.board_comments ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS board_comments_public_read ON public.board_comments;
 DROP POLICY IF EXISTS board_comments_insert_own ON public.board_comments;
+DROP POLICY IF EXISTS board_comments_update_own ON public.board_comments;
 DROP POLICY IF EXISTS board_comments_delete_own ON public.board_comments;
 CREATE POLICY board_comments_public_read ON public.board_comments FOR SELECT USING (true);
+CREATE POLICY board_comments_update_own ON public.board_comments FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
 CREATE POLICY board_comments_insert_own ON public.board_comments FOR INSERT WITH CHECK (auth.uid() = user_id);
 CREATE POLICY board_comments_delete_own ON public.board_comments FOR DELETE USING (auth.uid() = user_id);
+
+-- Reporters can only ever insert their own report; only masters may read or
+-- resolve reports (policies added after is_master() is defined, below).
+ALTER TABLE public.board_reports ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS board_reports_insert_own ON public.board_reports;
+CREATE POLICY board_reports_insert_own ON public.board_reports FOR INSERT WITH CHECK (auth.uid() = reporter_user_id);
 
 ALTER TABLE public.exams ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS exams_public_read ON public.exams;
@@ -365,6 +392,18 @@ RETURNS pg_catalog.bool LANGUAGE sql STABLE SECURITY DEFINER SET search_path = '
     WHERE id = auth.uid() AND role = 'master'
   );
 $$;
+
+-- Masters can moderate (force-delete) any board post or comment,
+-- in addition to each author's own-row delete policy above.
+DROP POLICY IF EXISTS board_posts_delete_master ON public.board_posts;
+CREATE POLICY board_posts_delete_master ON public.board_posts FOR DELETE USING (public.is_master());
+DROP POLICY IF EXISTS board_comments_delete_master ON public.board_comments;
+CREATE POLICY board_comments_delete_master ON public.board_comments FOR DELETE USING (public.is_master());
+
+DROP POLICY IF EXISTS board_reports_master_read ON public.board_reports;
+CREATE POLICY board_reports_master_read ON public.board_reports FOR SELECT USING (public.is_master());
+DROP POLICY IF EXISTS board_reports_master_resolve ON public.board_reports;
+CREATE POLICY board_reports_master_resolve ON public.board_reports FOR UPDATE USING (public.is_master()) WITH CHECK (public.is_master());
 
 CREATE OR REPLACE FUNCTION public.get_written_question_for_edit(
   p_question_id pg_catalog.uuid

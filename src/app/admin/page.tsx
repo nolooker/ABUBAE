@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { BarChart3, FileText, Library, MessageSquareText, Settings } from 'lucide-react'
+import { BarChart3, FileText, Flag, Library, MessageSquareText, Settings } from 'lucide-react'
 import { getCurrentUserRole } from '@/lib/master-auth'
 
 export const metadata = {
@@ -34,6 +34,13 @@ const adminCards = [
     icon: MessageSquareText,
     status: '준비 중',
     href: '/admin/notices',
+  },
+  {
+    title: '신고 관리',
+    description: '자유게시판 글·댓글 신고를 확인하고 처리합니다.',
+    icon: Flag,
+    status: '신규',
+    href: '/admin/reports',
   },
   {
     title: '판매/전환 지표',

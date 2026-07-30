@@ -2,9 +2,11 @@ import { describe, expect, it } from 'vitest'
 
 import {
   BoardValidationError,
+  validateBoardCommentEditInput,
   validateBoardCommentInput,
   validateBoardId,
   validateBoardPostInput,
+  validateBoardReportInput,
 } from './board'
 
 describe('validateBoardPostInput', () => {
@@ -56,6 +58,53 @@ describe('validateBoardCommentInput', () => {
   ])('rejects invalid comment payloads: %o', (input, message) => {
     expect(() => validateBoardCommentInput(input)).toThrow(BoardValidationError)
     expect(() => validateBoardCommentInput(input)).toThrow(message)
+  })
+})
+
+describe('validateBoardCommentEditInput', () => {
+  it('trims a valid edit', () => {
+    expect(validateBoardCommentEditInput({ content: ' 수정된 댓글 ' })).toEqual({ content: '수정된 댓글' })
+  })
+
+  it.each([
+    [{ content: '' }, 'content'],
+    [{ content: 'x'.repeat(2_001) }, 'content'],
+    [{ content: 'content', parentCommentId: null }, 'unknown'],
+    [{ content: 'content', extra: 'nope' }, 'unknown'],
+  ])('rejects invalid edit payloads: %o', (input, message) => {
+    expect(() => validateBoardCommentEditInput(input)).toThrow(BoardValidationError)
+    expect(() => validateBoardCommentEditInput(input)).toThrow(message)
+  })
+})
+
+describe('validateBoardReportInput', () => {
+  const targetId = 'd7d68087-a5a8-4b6e-a0aa-550a4f5937a1'
+
+  it('trims a valid post report', () => {
+    expect(validateBoardReportInput({ targetType: 'post', targetId, reason: ' 스팸입니다 ' })).toEqual({
+      targetType: 'post',
+      targetId,
+      reason: '스팸입니다',
+    })
+  })
+
+  it('accepts a comment report', () => {
+    expect(validateBoardReportInput({ targetType: 'comment', targetId, reason: '욕설' })).toEqual({
+      targetType: 'comment',
+      targetId,
+      reason: '욕설',
+    })
+  })
+
+  it.each([
+    [{ targetType: 'other', targetId, reason: 'reason' }, 'targetType must be "post" or "comment"'],
+    [{ targetType: 'post', targetId: 'not-a-uuid', reason: 'reason' }, 'targetId must be a UUID'],
+    [{ targetType: 'post', targetId, reason: '' }, 'reason'],
+    [{ targetType: 'post', targetId, reason: 'x'.repeat(1_001) }, 'reason'],
+    [{ targetType: 'post', targetId, reason: 'reason', extra: 'nope' }, 'unknown'],
+  ])('rejects invalid report payloads: %o', (input, message) => {
+    expect(() => validateBoardReportInput(input)).toThrow(BoardValidationError)
+    expect(() => validateBoardReportInput(input)).toThrow(message)
   })
 })
 

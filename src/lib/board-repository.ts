@@ -2,10 +2,13 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 
 import type {
   BoardComment,
+  BoardCommentEditInput,
   BoardCommentInput,
   BoardPost,
   BoardPostInput,
   BoardPostSummary,
+  BoardReport,
+  BoardReportInput,
 } from './board'
 
 export class BoardRepositoryError extends Error {
@@ -69,6 +72,7 @@ function commentRow(row: RecordValue): BoardComment {
     authorNickname: stringValue(row.author_nickname),
     content: stringValue(row.content),
     createdAt: stringValue(row.created_at),
+    updatedAt: nullableStringValue(row.updated_at),
     parentCommentId: nullableStringValue(row.parent_comment_id),
   }
 }
@@ -84,8 +88,28 @@ function summaryRow(row: RecordValue, commentCounts: Map<string, number>): Board
   }
 }
 
+function reportRow(row: RecordValue): BoardReport {
+  const targetType = row.target_type
+  if (targetType !== 'post' && targetType !== 'comment') throw new BoardRepositoryError()
+  const status = row.status
+  if (status !== 'pending' && status !== 'resolved') throw new BoardRepositoryError()
+
+  return {
+    id: stringValue(row.id),
+    targetType,
+    targetId: stringValue(row.target_id),
+    postId: stringValue(row.post_id),
+    reporterUserId: stringValue(row.reporter_user_id),
+    reporterNickname: stringValue(row.reporter_nickname),
+    reason: stringValue(row.reason),
+    status,
+    createdAt: stringValue(row.created_at),
+  }
+}
+
 const postFields = 'id,user_id,title,content,author_nickname,created_at,updated_at'
-const commentFields = 'id,post_id,user_id,author_nickname,content,created_at,parent_comment_id'
+const commentFields = 'id,post_id,user_id,author_nickname,content,created_at,updated_at,parent_comment_id'
+const reportFields = 'id,target_type,target_id,post_id,reporter_user_id,reporter_nickname,reason,status,created_at'
 
 export function createBoardRepository(supabase: SupabaseClient) {
   return {
@@ -202,6 +226,18 @@ export function createBoardRepository(supabase: SupabaseClient) {
       return commentRow(recordValue(data))
     },
 
+    async updateComment(id: string, input: BoardCommentEditInput): Promise<BoardComment> {
+      const { data, error } = await supabase
+        .from('board_comments')
+        .update({ content: input.content, updated_at: new Date().toISOString() })
+        .eq('id', id)
+        .select(commentFields)
+        .maybeSingle()
+      if (error) throw new BoardRepositoryError(error.message)
+      if (data === null) throw new BoardNotFoundError()
+      return commentRow(recordValue(data))
+    },
+
     async deleteComment(id: string): Promise<void> {
       const { data, error } = await supabase
         .from('board_comments')
@@ -211,6 +247,64 @@ export function createBoardRepository(supabase: SupabaseClient) {
         .maybeSingle()
       if (error) throw new BoardRepositoryError(error.message)
       if (data === null) throw new BoardNotFoundError()
+    },
+
+    async createReport(
+      reporterUserId: string,
+      reporterNickname: string,
+      input: BoardReportInput,
+    ): Promise<BoardReport> {
+      let postId = input.targetId
+      if (input.targetType === 'comment') {
+        const { data: comment, error: commentError } = await supabase
+          .from('board_comments')
+          .select('post_id')
+          .eq('id', input.targetId)
+          .maybeSingle()
+        if (commentError) throw new BoardRepositoryError(commentError.message)
+        if (comment === null) throw new BoardNotFoundError()
+        postId = stringValue(recordValue(comment).post_id)
+      }
+
+      const { data, error } = await supabase
+        .from('board_reports')
+        .insert({
+          target_type: input.targetType,
+          target_id: input.targetId,
+          post_id: postId,
+          reporter_user_id: reporterUserId,
+          reporter_nickname: reporterNickname,
+          reason: input.reason,
+        })
+        .select(reportFields)
+        .single()
+      if (error) {
+        if (error.code === '23503') throw new BoardNotFoundError()
+        throw new BoardRepositoryError(error.message)
+      }
+      return reportRow(recordValue(data))
+    },
+
+    async listPendingReports(): Promise<BoardReport[]> {
+      const { data, error } = await supabase
+        .from('board_reports')
+        .select(reportFields)
+        .eq('status', 'pending')
+        .order('created_at', { ascending: true })
+      if (error) throw new BoardRepositoryError(error.message)
+      return rows(data).map(reportRow)
+    },
+
+    async resolveReport(id: string): Promise<BoardReport> {
+      const { data, error } = await supabase
+        .from('board_reports')
+        .update({ status: 'resolved' })
+        .eq('id', id)
+        .select(reportFields)
+        .maybeSingle()
+      if (error) throw new BoardRepositoryError(error.message)
+      if (data === null) throw new BoardNotFoundError()
+      return reportRow(recordValue(data))
     },
   }
 }

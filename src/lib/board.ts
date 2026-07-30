@@ -23,6 +23,7 @@ export type BoardComment = {
   authorNickname: string
   content: string
   createdAt: string
+  updatedAt: string | null
   parentCommentId: string | null
 }
 
@@ -36,6 +37,30 @@ export type BoardCommentInput = {
   parentCommentId: string | null
 }
 
+export type BoardCommentEditInput = {
+  content: string
+}
+
+export type BoardReportTargetType = 'post' | 'comment'
+
+export type BoardReportInput = {
+  targetType: BoardReportTargetType
+  targetId: string
+  reason: string
+}
+
+export type BoardReport = {
+  id: string
+  targetType: BoardReportTargetType
+  targetId: string
+  postId: string
+  reporterUserId: string
+  reporterNickname: string
+  reason: string
+  status: 'pending' | 'resolved'
+  createdAt: string
+}
+
 export class BoardValidationError extends Error {
   readonly name = 'BoardValidationError'
 }
@@ -47,6 +72,7 @@ const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 const MAX_TITLE_LENGTH = 200
 const MAX_POST_CONTENT_LENGTH = 5_000
 const MAX_COMMENT_LENGTH = 2_000
+const MAX_REPORT_REASON_LENGTH = 1_000
 
 export function isValidBoardId(value: unknown): value is string {
   return typeof value === 'string' && uuid.test(value)
@@ -108,5 +134,40 @@ export function validateBoardCommentInput(value: unknown): BoardCommentInput {
   return {
     content: stringField(input.content, 'content', MAX_COMMENT_LENGTH),
     parentCommentId,
+  }
+}
+
+export function validateBoardCommentEditInput(value: unknown): BoardCommentEditInput {
+  const input = recordValue(value)
+  const expectedKeys = ['content']
+
+  for (const key of Object.keys(input)) {
+    if (!expectedKeys.includes(key)) throw new BoardValidationError(`unknown field: ${key}`)
+  }
+
+  return {
+    content: stringField(input.content, 'content', MAX_COMMENT_LENGTH),
+  }
+}
+
+export function validateBoardReportInput(value: unknown): BoardReportInput {
+  const input = recordValue(value)
+  const expectedKeys = ['targetType', 'targetId', 'reason']
+
+  for (const key of Object.keys(input)) {
+    if (!expectedKeys.includes(key)) throw new BoardValidationError(`unknown field: ${key}`)
+  }
+
+  if (input.targetType !== 'post' && input.targetType !== 'comment') {
+    throw new BoardValidationError('targetType must be "post" or "comment"')
+  }
+  if (!isValidBoardId(input.targetId)) {
+    throw new BoardValidationError('targetId must be a UUID')
+  }
+
+  return {
+    targetType: input.targetType,
+    targetId: input.targetId,
+    reason: stringField(input.reason, 'reason', MAX_REPORT_REASON_LENGTH),
   }
 }

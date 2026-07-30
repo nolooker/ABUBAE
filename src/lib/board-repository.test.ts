@@ -41,7 +41,20 @@ const comment = {
   author_nickname: '아부배러너',
   content: 'Comment',
   created_at: '2026-07-24T00:01:00Z',
+  updated_at: null,
   parent_comment_id: null,
+}
+
+const report = {
+  id: 'f1111111-a5a8-4b6e-a0aa-550a4f5937a1',
+  target_type: 'post',
+  target_id: post.id,
+  post_id: post.id,
+  reporter_user_id: 'b2222222-a5a8-4b6e-a0aa-550a4f5937a1',
+  reporter_nickname: '신고자',
+  reason: '스팸입니다',
+  status: 'pending',
+  created_at: '2026-07-24T00:02:00Z',
 }
 
 describe('board repository', () => {
@@ -86,6 +99,7 @@ describe('board repository', () => {
         authorNickname: comment.author_nickname,
         content: comment.content,
         createdAt: comment.created_at,
+        updatedAt: null,
         parentCommentId: null,
       }],
     })
@@ -204,11 +218,108 @@ describe('board repository', () => {
     })).rejects.toBeInstanceOf(BoardNotFoundError)
   })
 
+  it('updates a comment and reports RLS-filtered writes as not found', async () => {
+    const found = client([{ data: { ...comment, content: 'Edited', updated_at: '2026-07-24T00:05:00Z' }, error: null }])
+    await expect(createBoardRepository(found.supabase as never).updateComment(comment.id, { content: 'Edited' }))
+      .resolves.toMatchObject({ content: 'Edited', updatedAt: '2026-07-24T00:05:00Z' })
+
+    const notOwned = client([{ data: null, error: null }])
+    await expect(createBoardRepository(notOwned.supabase as never).updateComment(comment.id, { content: 'Edited' }))
+      .rejects.toBeInstanceOf(BoardNotFoundError)
+  })
+
   it('deletes a comment and reports RLS-filtered deletes as not found', async () => {
     const found = client([{ data: { id: comment.id }, error: null }])
     await expect(createBoardRepository(found.supabase as never).deleteComment(comment.id)).resolves.toBeUndefined()
 
     const notOwned = client([{ data: null, error: null }])
     await expect(createBoardRepository(notOwned.supabase as never).deleteComment(comment.id)).rejects.toBeInstanceOf(BoardNotFoundError)
+  })
+
+  it('reports a post, using the target id directly as the post id', async () => {
+    const { supabase, calls } = client([{ data: report, error: null }])
+
+    await expect(createBoardRepository(supabase as never).createReport(report.reporter_user_id, report.reporter_nickname, {
+      targetType: 'post',
+      targetId: post.id,
+      reason: report.reason,
+    })).resolves.toMatchObject({ id: report.id, targetType: 'post', postId: post.id, status: 'pending' })
+    expect(calls).toContainEqual(['insert', [{
+      target_type: 'post',
+      target_id: post.id,
+      post_id: post.id,
+      reporter_user_id: report.reporter_user_id,
+      reporter_nickname: report.reporter_nickname,
+      reason: report.reason,
+    }]])
+  })
+
+  it('reports a comment, resolving its post id first', async () => {
+    const commentReport = { ...report, target_type: 'comment', target_id: comment.id }
+    const { supabase, calls } = client([
+      { data: { post_id: post.id }, error: null },
+      { data: commentReport, error: null },
+    ])
+
+    await expect(createBoardRepository(supabase as never).createReport(report.reporter_user_id, report.reporter_nickname, {
+      targetType: 'comment',
+      targetId: comment.id,
+      reason: report.reason,
+    })).resolves.toMatchObject({ targetType: 'comment', targetId: comment.id, postId: post.id })
+    expect(calls).toContainEqual(['eq', ['id', comment.id]])
+    expect(calls).toContainEqual(['insert', [{
+      target_type: 'comment',
+      target_id: comment.id,
+      post_id: post.id,
+      reporter_user_id: report.reporter_user_id,
+      reporter_nickname: report.reporter_nickname,
+      reason: report.reason,
+    }]])
+  })
+
+  it('rejects reporting a nonexistent comment', async () => {
+    const { supabase } = client([{ data: null, error: null }])
+
+    await expect(createBoardRepository(supabase as never).createReport(report.reporter_user_id, report.reporter_nickname, {
+      targetType: 'comment',
+      targetId: comment.id,
+      reason: report.reason,
+    })).rejects.toBeInstanceOf(BoardNotFoundError)
+  })
+
+  it('rejects reporting a nonexistent post via the foreign key', async () => {
+    const { supabase } = client([{ data: null, error: { code: '23503', message: 'violates foreign key constraint' } }])
+
+    await expect(createBoardRepository(supabase as never).createReport(report.reporter_user_id, report.reporter_nickname, {
+      targetType: 'post',
+      targetId: post.id,
+      reason: report.reason,
+    })).rejects.toBeInstanceOf(BoardNotFoundError)
+  })
+
+  it('lists only pending reports, oldest first', async () => {
+    const { supabase, calls } = client([{ data: [report], error: null }])
+
+    await expect(createBoardRepository(supabase as never).listPendingReports()).resolves.toEqual([{
+      id: report.id,
+      targetType: 'post',
+      targetId: report.target_id,
+      postId: report.post_id,
+      reporterUserId: report.reporter_user_id,
+      reporterNickname: report.reporter_nickname,
+      reason: report.reason,
+      status: 'pending',
+      createdAt: report.created_at,
+    }])
+    expect(calls).toContainEqual(['eq', ['status', 'pending']])
+    expect(calls).toContainEqual(['order', ['created_at', { ascending: true }]])
+  })
+
+  it('resolves a report and reports a missing one as not found', async () => {
+    const found = client([{ data: { ...report, status: 'resolved' }, error: null }])
+    await expect(createBoardRepository(found.supabase as never).resolveReport(report.id)).resolves.toMatchObject({ status: 'resolved' })
+
+    const missing = client([{ data: null, error: null }])
+    await expect(createBoardRepository(missing.supabase as never).resolveReport(report.id)).rejects.toBeInstanceOf(BoardNotFoundError)
   })
 })

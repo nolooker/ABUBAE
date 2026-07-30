@@ -6,6 +6,7 @@ const navItems = [
   { label: '관리자 홈', href: '/admin' },
   { label: '공지 관리', href: '/admin/notices' },
   { label: '기출문제 관리', href: '/admin/questions' },
+  { label: '신고 관리', href: '/admin/reports' },
 ]
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
