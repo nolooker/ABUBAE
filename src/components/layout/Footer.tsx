@@ -2,10 +2,37 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useEffect, useMemo, useState } from 'react'
 import { BookOpen } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 
 export default function Footer() {
   const pathname = usePathname()
+  const [isMaster, setIsMaster] = useState(false)
+  const supabase = useMemo(() => createClient(), [])
+
+  useEffect(() => {
+    let active = true
+
+    async function checkRole() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        if (active) setIsMaster(false)
+        return
+      }
+
+      const { data } = await supabase.from('users').select('role').eq('id', user.id).single()
+      if (active) setIsMaster(data?.role === 'master')
+    }
+
+    checkRole()
+
+    const { data: subscription } = supabase.auth.onAuthStateChange(() => checkRole())
+    return () => {
+      active = false
+      subscription.subscription.unsubscribe()
+    }
+  }, [supabase])
 
   if (pathname === '/') {
     return null
@@ -56,9 +83,11 @@ export default function Footer() {
                 <Link href="/mypage" className="hover:text-[var(--primary)]">
                   마이페이지
                 </Link>
-                <Link href="/admin" className="hover:text-[var(--primary)]">
-                  관리자
-                </Link>
+                {isMaster && (
+                  <Link href="/admin" className="hover:text-[var(--primary)]">
+                    관리자
+                  </Link>
+                )}
               </div>
             </div>
           </div>

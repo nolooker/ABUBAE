@@ -7,6 +7,7 @@ const push = vi.fn()
 const refresh = vi.fn()
 const signInWithPassword = vi.fn()
 const signUp = vi.fn()
+const signInWithOAuth = vi.fn()
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push, refresh }),
@@ -14,7 +15,7 @@ vi.mock('next/navigation', () => ({
 
 vi.mock('@/lib/supabase/client', () => ({
   createClient: () => ({
-    auth: { signInWithPassword, signUp },
+    auth: { signInWithPassword, signUp, signInWithOAuth },
   }),
 }))
 
@@ -29,6 +30,7 @@ describe('AuthForm', () => {
     refresh.mockReset()
     signInWithPassword.mockReset().mockResolvedValue({ error: null })
     signUp.mockReset().mockResolvedValue({ error: null })
+    signInWithOAuth.mockReset().mockResolvedValue({ error: null })
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
       ok: true,
       json: async () => ({ ok: true }),

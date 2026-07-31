@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { FormEvent, useMemo, useState } from 'react'
 import { ArrowRight, Loader2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import SocialLoginButtons from './SocialLoginButtons'
 
 type AuthMode = 'login' | 'signup'
 
@@ -200,6 +201,8 @@ export default function AuthForm({ mode, nextPath }: AuthFormProps) {
           {isSignup ? '로그인' : '회원가입'}
         </Link>
       </p>
+
+      <SocialLoginButtons nextPath={nextPath} />
     </form>
   )
 }
