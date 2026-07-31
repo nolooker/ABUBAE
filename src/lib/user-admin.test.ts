@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import {
   UserValidationError,
+  validateCreateUserInput,
   validateMembershipInput,
   validateSuspensionInput,
   validateUserId,
@@ -47,5 +48,62 @@ describe('validateSuspensionInput', () => {
   ])('rejects invalid suspension payloads: %o', (input, message) => {
     expect(() => validateSuspensionInput(input)).toThrow(UserValidationError)
     expect(() => validateSuspensionInput(input)).toThrow(message)
+  })
+})
+
+describe('validateCreateUserInput', () => {
+  it('accepts a valid payload and trims email/nickname', () => {
+    expect(validateCreateUserInput({
+      email: '  runner@example.com  ',
+      password: 'password123',
+      nickname: '  아부배러너  ',
+      role: 'user',
+    })).toEqual({
+      email: 'runner@example.com',
+      password: 'password123',
+      nickname: '아부배러너',
+      role: 'user',
+    })
+  })
+
+  it('accepts a master role and a null nickname', () => {
+    expect(validateCreateUserInput({
+      email: 'master@example.com',
+      password: 'password123',
+      nickname: null,
+      role: 'master',
+    })).toEqual({
+      email: 'master@example.com',
+      password: 'password123',
+      nickname: null,
+      role: 'master',
+    })
+  })
+
+  it('defaults a missing nickname to null', () => {
+    expect(validateCreateUserInput({
+      email: 'runner@example.com',
+      password: 'password123',
+      role: 'user',
+    })).toEqual({
+      email: 'runner@example.com',
+      password: 'password123',
+      nickname: null,
+      role: 'user',
+    })
+  })
+
+  it.each([
+    [{ password: 'password123', role: 'user' }, 'email is required'],
+    [{ email: '  ', password: 'password123', role: 'user' }, 'email is required'],
+    [{ email: 'runner@example.com', password: '123', role: 'user' }, 'password must be at least 6 characters'],
+    [{ email: 'runner@example.com', role: 'user' }, 'password must be at least 6 characters'],
+    [{ email: 'runner@example.com', password: 'password123', nickname: 42, role: 'user' }, 'nickname must be a string'],
+    [{ email: 'runner@example.com', password: 'password123', role: 'owner' }, 'role must be'],
+    [{ email: 'runner@example.com', password: 'password123' }, 'role must be'],
+    [{ email: 'runner@example.com', password: 'password123', role: 'user', extra: 'nope' }, 'unknown field'],
+  ])('rejects invalid create-user payloads: %o', (input, message) => {
+    expect(() => validateCreateUserInput(input)).toThrow(UserValidationError)
+    expect(() => validateCreateUserInput(input)).toThrow(message)
   })
 })

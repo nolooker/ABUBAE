@@ -2,8 +2,10 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 
 import {
   UserAdminError,
+  UserAlreadyExistsError,
   UserNotFoundError,
   type AdminUserSummary,
+  type CreateUserInput,
   type MembershipType,
 } from './user-admin'
 
@@ -11,6 +13,11 @@ type RecordValue = Record<string, unknown>
 
 function isRecord(value: unknown): value is RecordValue {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function recordValue(value: unknown): RecordValue {
+  if (!isRecord(value)) throw new UserAdminError()
+  return value
 }
 
 function stringValue(value: unknown): string {
@@ -101,6 +108,44 @@ export function createUserRepository(supabase: SupabaseClient) {
       })
       if (error) throw new UserAdminError(error.message)
       if (!data.user) throw new UserNotFoundError()
+    },
+
+    async createUser(input: CreateUserInput): Promise<AdminUserSummary> {
+      const { data, error } = await supabase.auth.admin.createUser({
+        email: input.email,
+        password: input.password,
+        email_confirm: true,
+        user_metadata: input.nickname ? { nickname: input.nickname } : undefined,
+      })
+      if (error) {
+        if (error.code === 'email_exists') throw new UserAlreadyExistsError()
+        throw new UserAdminError(error.message)
+      }
+
+      const userId = data.user.id
+
+      if (input.role === 'master') {
+        const { error: roleError } = await supabase.from('users').update({ role: 'master' }).eq('id', userId)
+        if (roleError) throw new UserAdminError(roleError.message)
+      }
+
+      const { data: profile, error: profileError } = await supabase
+        .from('users')
+        .select(profileFields)
+        .eq('id', userId)
+        .single()
+      if (profileError) throw new UserAdminError(profileError.message)
+
+      const row = recordValue(profile)
+      return {
+        id: userId,
+        email: stringValue(row.email),
+        nickname: nullableStringValue(row.nickname),
+        membershipType: membershipTypeValue(row.membership_type),
+        role: roleValue(row.role),
+        createdAt: stringValue(row.created_at),
+        suspended: false,
+      }
     },
   }
 }

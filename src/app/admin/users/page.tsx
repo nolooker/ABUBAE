@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import UserCreateForm from '@/components/admin/UserCreateForm'
 import UserMembershipSelect from '@/components/admin/UserMembershipSelect'
 import UserSuspendButton from '@/components/admin/UserSuspendButton'
 import { getCurrentUserRole } from '@/lib/master-auth'
@@ -39,15 +40,20 @@ export default async function AdminUsersPage({
         </p>
       </div>
 
-      <form className="mb-6" action="/admin/users">
-        <input
-          type="search"
-          name="q"
-          defaultValue={q ?? ''}
-          placeholder="이메일 또는 닉네임으로 검색"
-          className="w-full max-w-sm rounded-xl border border-[var(--border)] px-4 py-2.5 text-sm focus:border-[var(--primary)] focus:outline-none"
-        />
-      </form>
+      <div className="mb-6 space-y-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <form action="/admin/users">
+            <input
+              type="search"
+              name="q"
+              defaultValue={q ?? ''}
+              placeholder="이메일 또는 닉네임으로 검색"
+              className="w-full max-w-sm rounded-xl border border-[var(--border)] px-4 py-2.5 text-sm focus:border-[var(--primary)] focus:outline-none"
+            />
+          </form>
+        </div>
+        <UserCreateForm />
+      </div>
 
       <div className="overflow-x-auto rounded-[var(--radius-lg)] border border-[var(--border)] bg-white">
         <table className="w-full min-w-[720px] text-left text-sm">

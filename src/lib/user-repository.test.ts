@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { UserAdminError, UserNotFoundError } from './user-admin'
+import { UserAdminError, UserAlreadyExistsError, UserNotFoundError } from './user-admin'
 import { createUserRepository } from './user-repository'
 
 type Result = { data: unknown; error: { message?: string } | null }
@@ -10,10 +10,15 @@ function client(options: {
   authUsers?: { data: { users: unknown[] }; error: { message?: string } | null }
   updateResult?: Result
   banResult?: { data: { user: unknown | null }; error: { message?: string } | null }
+  createUserResult?: { data: { user: { id: string } | null }; error: { message?: string; code?: string } | null }
+  roleUpdateResult?: { error: { message?: string } | null }
+  singleResult?: Result
 } = {}) {
   const calls: Array<[string, unknown[]]> = []
   const profiles = options.profiles ?? { data: [], error: null }
   const updateResult = options.updateResult ?? { data: null, error: null }
+  const roleUpdateResult = options.roleUpdateResult ?? { error: null }
+  const singleResult = options.singleResult ?? { data: null, error: null }
 
   const query = {
     select: vi.fn((...args: unknown[]) => { calls.push(['select', args]); return query }),
@@ -21,19 +26,23 @@ function client(options: {
     order: vi.fn((...args: unknown[]) => { calls.push(['order', args]); return Promise.resolve(profiles) }),
     update: vi.fn((...args: unknown[]) => { calls.push(['update', args]); return query }),
     maybeSingle: vi.fn(() => { calls.push(['maybeSingle', []]); return Promise.resolve(updateResult) }),
+    single: vi.fn(() => { calls.push(['single', []]); return Promise.resolve(singleResult) }),
+    then: (resolve: (value: unknown) => unknown) => Promise.resolve(roleUpdateResult).then(resolve),
   }
 
   const listUsers = vi.fn().mockResolvedValue(options.authUsers ?? { data: { users: [] }, error: null })
   const updateUserById = vi.fn().mockResolvedValue(options.banResult ?? { data: { user: {} }, error: null })
+  const createUser = vi.fn().mockResolvedValue(options.createUserResult ?? { data: { user: { id: 'new-user-id' } }, error: null })
 
   return {
     supabase: {
       from: vi.fn(() => query),
-      auth: { admin: { listUsers, updateUserById } },
+      auth: { admin: { listUsers, updateUserById, createUser } },
     },
     calls,
     listUsers,
     updateUserById,
+    createUser,
   }
 }
 
@@ -145,5 +154,107 @@ describe('user repository', () => {
     const failed = client({ banResult: { data: { user: null }, error: { message: 'admin api unavailable' } } })
     await expect(createUserRepository(failed.supabase as never).setSuspended(profile.id, true))
       .rejects.toBeInstanceOf(UserAdminError)
+  })
+
+  it('creates a regular user without touching the role and returns the profile', async () => {
+    const { supabase, calls, createUser } = client({
+      createUserResult: { data: { user: { id: profile.id } }, error: null },
+      singleResult: { data: profile, error: null },
+    })
+
+    await expect(createUserRepository(supabase as never).createUser({
+      email: 'runner@example.com',
+      password: 'password123',
+      nickname: '아부배러너',
+      role: 'user',
+    })).resolves.toEqual({
+      id: profile.id,
+      email: profile.email,
+      nickname: profile.nickname,
+      membershipType: 'free',
+      role: 'user',
+      createdAt: profile.created_at,
+      suspended: false,
+    })
+
+    expect(createUser).toHaveBeenCalledWith({
+      email: 'runner@example.com',
+      password: 'password123',
+      email_confirm: true,
+      user_metadata: { nickname: '아부배러너' },
+    })
+    expect(calls).not.toContainEqual(['update', [{ role: 'master' }]])
+  })
+
+  it('creates a master user and promotes the profile role', async () => {
+    const masterProfile = { ...profile, role: 'master' }
+    const { supabase, calls } = client({
+      createUserResult: { data: { user: { id: profile.id } }, error: null },
+      singleResult: { data: masterProfile, error: null },
+    })
+
+    await expect(createUserRepository(supabase as never).createUser({
+      email: 'master@example.com',
+      password: 'password123',
+      nickname: null,
+      role: 'master',
+    })).resolves.toEqual(expect.objectContaining({ role: 'master' }))
+
+    expect(calls).toContainEqual(['update', [{ role: 'master' }]])
+    expect(calls).toContainEqual(['eq', ['id', profile.id]])
+  })
+
+  it('reports a duplicate email as already existing', async () => {
+    const { supabase } = client({
+      createUserResult: { data: { user: null }, error: { message: 'already registered', code: 'email_exists' } },
+    })
+
+    await expect(createUserRepository(supabase as never).createUser({
+      email: 'runner@example.com',
+      password: 'password123',
+      nickname: null,
+      role: 'user',
+    })).rejects.toBeInstanceOf(UserAlreadyExistsError)
+  })
+
+  it('reports other create-user failures as unavailable', async () => {
+    const { supabase } = client({
+      createUserResult: { data: { user: null }, error: { message: 'admin api unavailable' } },
+    })
+
+    await expect(createUserRepository(supabase as never).createUser({
+      email: 'runner@example.com',
+      password: 'password123',
+      nickname: null,
+      role: 'user',
+    })).rejects.toBeInstanceOf(UserAdminError)
+  })
+
+  it('reports a failed role promotion as unavailable', async () => {
+    const { supabase } = client({
+      createUserResult: { data: { user: { id: profile.id } }, error: null },
+      roleUpdateResult: { error: { message: 'connection failed' } },
+    })
+
+    await expect(createUserRepository(supabase as never).createUser({
+      email: 'master@example.com',
+      password: 'password123',
+      nickname: null,
+      role: 'master',
+    })).rejects.toBeInstanceOf(UserAdminError)
+  })
+
+  it('reports a failed profile fetch after creation as unavailable', async () => {
+    const { supabase } = client({
+      createUserResult: { data: { user: { id: profile.id } }, error: null },
+      singleResult: { data: null, error: { message: 'connection failed' } },
+    })
+
+    await expect(createUserRepository(supabase as never).createUser({
+      email: 'runner@example.com',
+      password: 'password123',
+      nickname: null,
+      role: 'user',
+    })).rejects.toBeInstanceOf(UserAdminError)
   })
 })
