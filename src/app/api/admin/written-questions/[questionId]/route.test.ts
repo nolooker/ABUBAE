@@ -18,7 +18,7 @@ const { createClient, requireMaster, MasterAuthorizationError } = vi.hoisted(() 
 vi.mock('@/lib/supabase/server', () => ({ createClient }))
 vi.mock('@/lib/master-auth', () => ({ requireMaster, MasterAuthorizationError }))
 
-import { PATCH } from './route'
+import { DELETE, PATCH } from './route'
 
 const questionId = 'd7d68087-a5a8-4b6e-a0aa-550a4f5937a1'
 const valid = {
@@ -180,5 +180,89 @@ describe('PATCH /api/admin/written-questions/[questionId]', () => {
 
     expect(response.status).toBe(500)
     await expect(response.json()).resolves.toEqual({ error: 'unable to update question' })
+  })
+})
+
+function deleteRequest() {
+  return new Request(`http://localhost/api/admin/written-questions/${questionId}`, { method: 'DELETE' })
+}
+
+describe('DELETE /api/admin/written-questions/[questionId]', () => {
+  beforeEach(() => {
+    createClient.mockReset()
+    requireMaster.mockReset()
+    requireMaster.mockResolvedValue(undefined)
+  })
+
+  it('returns 401 for an anonymous request', async () => {
+    const supabase = client()
+    createClient.mockResolvedValue(supabase)
+    requireMaster.mockRejectedValue(new MasterAuthorizationError('anonymous'))
+
+    const response = await DELETE(deleteRequest(), context())
+
+    expect(response.status).toBe(401)
+    await expect(response.json()).resolves.toEqual({ error: 'authentication required' })
+    expect(supabase.rpc).not.toHaveBeenCalled()
+  })
+
+  it('returns 403 for a signed-in non-master', async () => {
+    const supabase = client()
+    createClient.mockResolvedValue(supabase)
+    requireMaster.mockRejectedValue(new MasterAuthorizationError('user'))
+
+    const response = await DELETE(deleteRequest(), context())
+
+    expect(response.status).toBe(403)
+    await expect(response.json()).resolves.toEqual({ error: 'master access is required' })
+    expect(supabase.rpc).not.toHaveBeenCalled()
+  })
+
+  it('returns 400 for an invalid question id', async () => {
+    const supabase = client()
+    createClient.mockResolvedValue(supabase)
+
+    const response = await DELETE(deleteRequest(), context('not-a-uuid'))
+
+    expect(response.status).toBe(400)
+    expect(supabase.rpc).not.toHaveBeenCalled()
+  })
+
+  it('deletes the question and returns 204', async () => {
+    const supabase = client({ data: undefined, error: null })
+    createClient.mockResolvedValue(supabase)
+
+    const response = await DELETE(deleteRequest(), context())
+
+    expect(response.status).toBe(204)
+    expect(requireMaster).toHaveBeenCalledWith(supabase)
+    expect(supabase.rpc).toHaveBeenCalledWith('delete_written_question', { p_question_id: questionId })
+  })
+
+  it.each([
+    [{ code: 'PGRST116', message: 'no rows returned' }, 404],
+    [{ code: 'P0001', message: 'database exception', details: 'written question not found' }, 404],
+    [{ code: 'XX000', message: 'database failed' }, 500],
+  ])('maps RPC errors safely: %o', async (error, status) => {
+    const supabase = client({ data: null, error })
+    createClient.mockResolvedValue(supabase)
+
+    const response = await DELETE(deleteRequest(), context())
+
+    expect(response.status).toBe(status)
+    await expect(response.json()).resolves.toHaveProperty('error')
+  })
+
+  it('does not expose database error details', async () => {
+    const supabase = client({
+      data: null,
+      error: { code: 'XX000', message: 'connection password=secret', details: 'internal host name' },
+    })
+    createClient.mockResolvedValue(supabase)
+
+    const response = await DELETE(deleteRequest(), context())
+
+    expect(response.status).toBe(500)
+    await expect(response.json()).resolves.toEqual({ error: 'unable to delete question' })
   })
 })

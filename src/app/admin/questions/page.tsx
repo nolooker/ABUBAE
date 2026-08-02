@@ -35,6 +35,11 @@ export default async function AdminQuestionsPage(props: Props) {
           문제가 생성되었습니다.
         </p>
       )}
+      {status === 'round-deleted' && (
+        <p role="status" aria-live="polite" className="mb-6 rounded-lg bg-emerald-50 p-4 text-sm font-semibold text-emerald-700">
+          회차가 삭제되었습니다.
+        </p>
+      )}
 
       <div className="space-y-3">
         {rounds.map((round) => (

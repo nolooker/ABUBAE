@@ -77,6 +77,42 @@ function editedQuestion(
   }
 }
 
+function deleteRpcFailure(error: RpcError): Response {
+  const code = typeof error.code === 'string' ? error.code : ''
+  const details = errorText(error)
+
+  if (code === 'PGRST116' || details.includes('written question not found')) {
+    return Response.json({ error: 'question not found' }, { status: 404 })
+  }
+  return Response.json({ error: 'unable to delete question' }, { status: 500 })
+}
+
+export async function DELETE(_request: Request, { params }: Context) {
+  try {
+    const { questionId } = await params
+    if (!uuid.test(questionId)) {
+      return Response.json({ error: 'questionId must be a UUID' }, { status: 400 })
+    }
+
+    const supabase = await createClient() as unknown as AuthenticatedSupabaseClient
+    try {
+      await requireMaster(supabase)
+    } catch (error) {
+      if (error instanceof MasterAuthorizationError) {
+        return Response.json({ error: error.role === 'anonymous' ? 'authentication required' : 'master access is required' }, { status: error.role === 'anonymous' ? 401 : 403 })
+      }
+      throw error
+    }
+
+    const { error } = await supabase.rpc('delete_written_question', { p_question_id: questionId })
+    if (error) return deleteRpcFailure(error)
+
+    return new Response(null, { status: 204 })
+  } catch {
+    return Response.json({ error: 'unable to delete question' }, { status: 500 })
+  }
+}
+
 export async function PATCH(request: Request, { params }: Context) {
   try {
     const { questionId } = await params

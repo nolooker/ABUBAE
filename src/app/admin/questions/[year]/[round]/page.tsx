@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
+import QuestionDeleteButton from '@/components/admin/QuestionDeleteButton'
+import RoundDeleteButton from '@/components/admin/RoundDeleteButton'
 import { getCurrentUserRole } from '@/lib/master-auth'
 import { listQuestionsForRound } from '@/lib/written-content'
 
@@ -29,12 +31,15 @@ export default async function AdminRoundQuestionsPage({ params }: Props) {
             총 {questions.length}문항 중 {reviewedCount}문항 검수 완료. 개별 문항 수정은 실제 문제풀이 화면에서 합니다.
           </p>
         </div>
-        <Link
-          href={`/exam/jeongchogi/questions/written/${yearNumber}/${roundNumber}`}
-          className="rounded-xl border border-[var(--border)] bg-white px-4 py-2 text-center text-sm font-bold text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
-        >
-          문제풀이 화면에서 수정하기
-        </Link>
+        <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-start">
+          <Link
+            href={`/exam/jeongchogi/questions/written/${yearNumber}/${roundNumber}`}
+            className="rounded-xl border border-[var(--border)] bg-white px-4 py-2 text-center text-sm font-bold text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
+          >
+            문제풀이 화면에서 수정하기
+          </Link>
+          <RoundDeleteButton year={yearNumber} round={roundNumber} />
+        </div>
       </div>
 
       {questions.length === 0 && (
@@ -60,6 +65,7 @@ export default async function AdminRoundQuestionsPage({ params }: Props) {
               <span className={question.reviewed ? 'rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-blue-700' : 'rounded-full bg-orange-100 px-2.5 py-1 text-xs font-bold text-orange-700'}>
                 {question.reviewed ? '검수 완료' : '검수 대기'}
               </span>
+              <QuestionDeleteButton questionId={question.id} />
             </div>
           </div>
         ))}

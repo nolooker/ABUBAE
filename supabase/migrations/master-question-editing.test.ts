@@ -179,12 +179,16 @@ describe('master question editing migration', () => {
     expect(setupSql).toMatch(/DO \$\$[\s\S]*RAISE EXCEPTION 'questions_round_number_unique has an unexpected definition';[\s\S]*RAISE EXCEPTION 'choices_question_number_unique has an unexpected definition';[\s\S]*END;\s*\$\$;/)
   })
 
-  it('never deletes data or grants direct question and choice reads', () => {
+  it('never deletes data outside the sanctioned master-only delete RPCs, and grants no direct question or choice reads', () => {
     const sql = executableSql(setupSql)
+    const sqlWithoutSanctionedDeletes = sql
+      .replace(/DELETE FROM public\.questions\s+WHERE id = p_question_id\s+AND exam_type = 'written';/, '')
+      .replace(/DELETE FROM public\.questions\s+WHERE exam_id = target_exam_id\s+AND exam_type = 'written'\s+AND year = p_year\s+AND round = p_round;/, '')
 
     expect(sql).not.toMatch(destructiveDropTable)
     expect(sql).not.toMatch(/\bTRUNCATE\b/i)
-    expect(sql).not.toMatch(destructiveDelete)
+    expect(sql).toMatch(destructiveDelete)
+    expect(sqlWithoutSanctionedDeletes).not.toMatch(destructiveDelete)
     expect('DELETE /* preserve rows */\n FROM public.questions;').toMatch(destructiveDelete)
     expect(sql).not.toMatch(/INSERT INTO public\.exams[\s\S]*ON CONFLICT[\s\S]*DO UPDATE/i)
     expect(sql).toContain('DROP POLICY IF EXISTS questions_public_read ON public.questions;')
