@@ -102,11 +102,18 @@ function gradingQuestion(overrides: Record<string, unknown> = {}) {
   }
 }
 
-function createSummaryClient(result: QueryResult) {
+function createSummaryClient(results: QueryResult | QueryResult[]) {
+  const pages = Array.isArray(results) ? results : [results]
   const filters: Array<[string, unknown]> = []
+  const ranges: Array<[number, number]> = []
   let selected: string | undefined
+  let callIndex = 0
 
-  const query: PromiseLike<QueryResult> & { select: (s: string) => typeof query; eq: (c: string, v: unknown) => typeof query } = {
+  const query: PromiseLike<QueryResult> & {
+    select: (s: string) => typeof query
+    eq: (c: string, v: unknown) => typeof query
+    range: (from: number, to: number) => typeof query
+  } = {
     select(selection: string) {
       selected = selection
       return query
@@ -115,7 +122,13 @@ function createSummaryClient(result: QueryResult) {
       filters.push([column, value])
       return query
     },
+    range(from: number, to: number) {
+      ranges.push([from, to])
+      return query
+    },
     then(onfulfilled) {
+      const result = pages[Math.min(callIndex, pages.length - 1)]
+      callIndex += 1
       return Promise.resolve(result).then(onfulfilled)
     },
   }
@@ -123,6 +136,7 @@ function createSummaryClient(result: QueryResult) {
   return {
     client: { from: () => query } as unknown as SupabaseClient,
     filters,
+    ranges,
     selected: () => selected,
   }
 }
@@ -152,6 +166,30 @@ describe('written question repository', () => {
       ['published', true],
       ['exams.slug', 'jeongchogi'],
     ])
+  })
+
+  it('pages past the 1000-row default limit so later rounds are not undercounted', async () => {
+    const page1 = Array.from({ length: 999 }, () => (
+      { year: 2024, round: 1, subject: 'software', exams: { slug: 'jeongchogi' } }
+    ))
+    page1.push({ year: 2024, round: 2, subject: 'database', exams: { slug: 'jeongchogi' } })
+    const page2 = Array.from({ length: 5 }, () => (
+      { year: 2024, round: 2, subject: 'database', exams: { slug: 'jeongchogi' } }
+    ))
+
+    const { client, ranges } = createSummaryClient([
+      { data: page1, error: null },
+      { data: page2, error: null },
+    ])
+
+    const repository = createWrittenQuestionRepository(client)
+    const summaries = await repository.listPublishedRoundSummaries()
+
+    expect(summaries).toEqual([
+      { year: 2024, round: 1, questionCount: 999, subjectCount: 1 },
+      { year: 2024, round: 2, questionCount: 6, subjectCount: 1 },
+    ])
+    expect(ranges).toEqual([[0, 999], [1000, 1999]])
   })
 
   it('reports database failures as content unavailability for round summaries', async () => {

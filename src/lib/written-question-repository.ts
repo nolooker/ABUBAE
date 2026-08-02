@@ -157,22 +157,30 @@ function gradeableQuestion(row: RecordValue) {
 export function createWrittenQuestionRepository(supabase: SupabaseClient) {
   return {
     async listPublishedRoundSummaries(): Promise<PublicWrittenRoundSummary[]> {
-      const { data, error } = await supabase
-        .from('questions')
-        .select('year,round,subject,exams!inner(slug)')
-        .eq('exam_type', 'written')
-        .eq('published', true)
-        .eq('exams.slug', 'jeongchogi')
-
-      if (error) throw new WrittenContentUnavailableError(error.message)
-
+      const pageSize = 1000
       const grouped = new Map<string, { year: number; round: number; subjects: Set<string>; questionCount: number }>()
-      for (const row of rows(data).map(summaryRow)) {
-        const key = `${row.year}-${row.round}`
-        const entry = grouped.get(key) ?? { year: row.year, round: row.round, subjects: new Set<string>(), questionCount: 0 }
-        entry.subjects.add(row.subject)
-        entry.questionCount += 1
-        grouped.set(key, entry)
+
+      for (let from = 0; ; from += pageSize) {
+        const { data, error } = await supabase
+          .from('questions')
+          .select('year,round,subject,exams!inner(slug)')
+          .eq('exam_type', 'written')
+          .eq('published', true)
+          .eq('exams.slug', 'jeongchogi')
+          .range(from, from + pageSize - 1)
+
+        if (error) throw new WrittenContentUnavailableError(error.message)
+
+        const page = rows(data).map(summaryRow)
+        for (const row of page) {
+          const key = `${row.year}-${row.round}`
+          const entry = grouped.get(key) ?? { year: row.year, round: row.round, subjects: new Set<string>(), questionCount: 0 }
+          entry.subjects.add(row.subject)
+          entry.questionCount += 1
+          grouped.set(key, entry)
+        }
+
+        if (page.length < pageSize) break
       }
 
       return [...grouped.values()]

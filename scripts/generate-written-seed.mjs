@@ -52,11 +52,15 @@ export function renderWrittenSeed(round) {
   ].join('\n\n')
 }
 
-export function load2021Rounds() {
+export function loadRoundsMatching(pattern) {
   return readdirSync(contentDirectory)
-    .filter((file) => /^2021-\d+\.candidates\.json$/.test(file))
+    .filter((file) => pattern.test(file))
     .sort()
     .map((file) => JSON.parse(readFileSync(join(contentDirectory, file), 'utf8')))
+}
+
+export function load2021Rounds() {
+  return loadRoundsMatching(/^2021-\d+\.candidates\.json$/)
 }
 
 export function renderSeedSql(rounds) {
