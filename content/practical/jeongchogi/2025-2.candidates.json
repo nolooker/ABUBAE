@@ -1,0 +1,454 @@
+{
+  "examSlug": "jeongchogi",
+  "examType": "practical",
+  "year": 2025,
+  "round": 2,
+  "title": "2025년 2회 정보처리기사 실기",
+  "sourceLabel": "licensed-pdf-2025-2",
+  "pageCount": 39,
+  "extractedQuestionCount": 20,
+  "missingNumbers": [],
+  "missingAnswerNumbers": [],
+  "questions": [
+    {
+      "id": "jeongchogi-practical-2025-2-001",
+      "subject": "실기",
+      "number": 1,
+      "points": 5,
+      "content": "다음 설명에서 괄호에 공통으로 들어갈 알맞은 답을 쓰시오. (5점)\n파일의 구조는 파일을 구성하는 레코드들이 보조기억장치에 편성되는 방식을 의미하는 것으로, 크게 순\n차, ( ), 해싱으로 구분한다. ( ) 파일 구조는 <값, 주소> 쌍으로 구성되는 데이터 구조를 활용하\n여 데이터에 접근하는 방식으로, 자기 디스크에서 주로 활용된다.",
+      "rawAnswerText": "색인, Index",
+      "answerNote": "다음 중 하나를 쓰면 됩니다.",
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "색인",
+            "Index"
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-002",
+      "subject": "실기",
+      "number": 2,
+      "points": 5,
+      "content": "다음 설명에 해당하는 알맞은 용어를 영문 3글자로 쓰시오. (5점)\nㆍ다른 컴퓨터에 로그인, 원격 명령 실행, 파일 복사 등을 수행할 수 있도록 다양한 기능을 지원하는 프\n로토콜 또는 이를 이용한 응용 프로그램이다.\nㆍ데이터 암호화와 강력한 인증 방법으로 보안성이 낮은 네트워크에서도 안전하게 통신할 수 있다.\nㆍ키(key)를 통한 인증 방법을 사용하려면 사전에 클라이언트의 공개키를 서버에 등록해야 한다.\nㆍ기본적으로는 22번 포트를 사용한다.",
+      "rawAnswerText": "SSH",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "SSH"
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-003",
+      "subject": "실기",
+      "number": 3,
+      "points": 5,
+      "content": "다음 설명에 해당하는 용어를 <보기>에서 찾아 기호(㉠~㉧)로 쓰시오. (5점)\nㆍ데이터베이스를 구성하는 가장 작은 논리적 단위로, 릴레이션에서 열(Column)에 해당한다.\nㆍ파일 구조상의 데이터 항목 또는 데이터 필드에 해당된다.\nㆍ개체의 특성을 기술한다.\n<보기>\n㉠ Domain ㉡ Tuple ㉢ Attribute ㉣ Integrity\n㉤ Degree ㉥ Relationship ㉦ Cardinality ㉧ Entity",
+      "rawAnswerText": "㉢",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "㉢"
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-004",
+      "subject": "실기",
+      "number": 4,
+      "points": 5,
+      "content": "다음 Java로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력\n서식을 준수하시오.) (5점)\npublic class Main {\npublic static void change(String[] data, String s){\ndata[0] = s;\ns = \"Z\";\n}\npublic static void main(String[] args) {\nString data[] = { \"A\" };\nString s = \"B\";\nchange(data, s);\nSystem.out.print(data[0] + s);\n}\n}",
+      "rawAnswerText": "BB",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "BB"
+          ]
+        }
+      ],
+      "explanation": "public class Main {\n❹ public static void change(String[] data, String s){\n❺ data[0] = s;\n❻ s = \"Z\";\n}\npublic static void main(String[] args) {\n❶ String data[] = { \"A\" };\n❷ String s = \"B\";\n❸ change(data, s);\n❼ System.out.print(data[0] + s);\n}\n}\n모든 Java 프로그램은 반드시 main( ) 메소드에서 시작한다.\n❶ 문자열 배열 data를 선언하고 “A”로 초기화한다.\n※ 다음 그림에서 “A”가 저장된 주소는 임의로 정한 것이며, 이해를 돕기 위해 10진수로 표현했습니다.\n주소 메모리\n1Byte\n1000 ‘A’\ndata[0]\n❷ 문자열 변수 s를 선언하고 “B”로 초기화한다.\n❸ data와 s를 인수로 change( ) 메소드를 호출한다.\n※ 인수로 배열의 이름을 지정하면 배열의 시작 주소가 인수로 전달됩니다.\n❹ 반환값이 없는 change( ) 메소드의 시작점이다. ❸번에서 전달한 data 배열의 주소와 s를 data와 s가 받\n는다.\n❺ data[0], 즉 data 배열의 첫 번째 값에 s의 값 “B”를 저장한다.\n주소 메모리\n1Byte\n1000 ‘B’\ndata[0]\n❻ s에 “Z”를 저장한다. 메소드가 종료되었으므로 메소드를 호출했던 ❸번의 다음 줄인 ❼번으로 이동한다.\n※ change( ) 메소드의 문자열 변수 s는 지역 변수로, change( ) 메소드 안에서만 사용되므로 main( ) 메\n소드의 문자열 변수 s에는 영향을 주지 않습니다.\n❼ data[0]의 값 “B”에 s의 값 “B”를 덧붙여 출력한다.\n결과 BB",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-005",
+      "subject": "실기",
+      "number": 5,
+      "points": 5,
+      "content": "다음 C 언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력\n서식을 준수하시오.) (5점)\n#include <stdio.h>\n#include <stdlib.h>\nstruct node {\nint p;\nstruct node* n;\n};\nint main( ) {\nstruct node a = {1, NULL};\nstruct node b = {2, NULL};\nstruct node c = {3, NULL};\na.n = &b; b.n = &c; c.n = NULL;\nc.n = &a; a.n = &b; b.n = NULL;\nstruct node* head = &c;\nprintf(\"%d %d %d\", head -> p, head -> n -> p, head -> n -> n -> p);\nreturn 0;\n}",
+      "rawAnswerText": "3 1 2",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "3 1 2"
+          ]
+        }
+      ],
+      "explanation": "#include <stdio.h>\nstruct node { // node 구조체를 정의한다.\nint p; // 정수형 변수 p를 선언한다.\nstruct node *n; // node 구조체의 포인터 변수 n을 선언한다.\nstruct node\nint p (4Byte) struct node *n (4Byte)\n데이터를 저장할 멤버 다음 노드의 주소를 저장할 멤버\n};\nint main( ) {\n❶ struct node a = {1, NULL};\n❷ struct node b = {2, NULL};\n❸ struct node c = {3, NULL};\n❹ a.n = &b; b.n = &c; c.n = NULL;\n❺ c.n = &a; a.n = &b; b.n = NULL;\n❻ struct node* head = &c;\n❼ printf(\"%d %d %d\", head -> p, head -> n -> p, head -> n -> n -> p);\n❽ return 0;\n}\n모든 C 언어 프로그램은 반드시 main( ) 함수에서 시작한다.\n❶ node 자료형 변수 a을 선언하고, node의 p에 1을 node의 n에 NULL을 저장한다. a가 가리키고 있는 1008\n번지는 node 구조체의 크기만큼 할당된 공간이므로 a는 1008번지 이후의 8Byte를 의미한다.\n(이후 그림에서 지정한 주소는 임의로 정한 것이며, 이해를 돕기 위해 10진수로 표현했음)\n※ NULL은 값이 없음을 의미하며, n에 NULL이 저장되어 있는 것은 어떤 곳도 가리키지 않고 있음을 의미합니\n다.\n메모리\n주소\n0000 a 1008\nㆍㆍㆍ\n8Byte\n1000 1004 1008 1012 1016 1020 1024 1028 ㆍㆍㆍ\n1000 p n\n1 NULL\nㆍㆍㆍ\n9999\n❷ node 자료형 변수 b를 선언하고, 2와 NULL을 저장한다.\n메모리\n주소\na 1008\n0000\nㆍㆍㆍ\n8Byte\nb 1024\n1000 1004 1008 1012 1016 1020 1024 1028 ㆍㆍㆍ\n1000 p n p n\n1 NULL 2 NULL\nㆍㆍㆍ\n9999\n❸ node 자료형 변수 c를 선언하고, 3과 NULL을 저장한다.\n메모리\n주소\n0000 a 1008\nㆍㆍㆍ\nb 1024\n1000 1004 1008 1012 1016 1020 1024 1028\n1000 p n p n\n1 NULL 2 NULL\nㆍㆍㆍ ㆍㆍㆍ c 2024\n2000 2004 2008 2012 2016 2020 2024 2028\n2000 p n\n3 NULL\nㆍㆍㆍ\n9999\n❹ a의 n에 b의 주소를, b의 n에 c의 주소를, c의 n에 NULL을 저장한다. n은 다음 노드의 주소를 가리키는\n것이므로, a의 다음 노드는 b이고, b의 다음 노드는 c이다. 즉, 노드의 순서는 ‘a → b → c’가 된다.\n메모리\n주소\na 1008\n0000\nㆍㆍㆍ\nb 1024\n1000 1004 1008 1012 1016 1020 1024 1028\n1000 p n p n\n1 1024 2 2024\nㆍㆍㆍ ㆍㆍㆍ c 2024\n2000 2004 2008 2012 2016 2020 2024 2028\n2000 p n\n3 NULL\nㆍㆍㆍ\n9999\n❺ c의 n에 a의 주소를, a의 n에 b의 주소를, b의 n에 NULL을 저장한다. 이제 노드의 순서는 ‘c → a → b’가\n된다.\n메모리\n주소\na 1008\n0000\nㆍㆍㆍ\nb 1024\n1000 1004 1008 1012 1016 1020 1024 1028\n1000 p n p n\n1 1024 2 NULL\nㆍㆍㆍ ㆍㆍㆍ c 2024\n2000 2004 2008 2012 2016 2020 2024 2028\n2000 p n\n3 1008\nㆍㆍㆍ\n9999\n❻ node 자료형 포인터 변수 head를 선언하고 c의 주소로 초기화한다. 포인터 변수의 크기는 4Byte이므로 메\n모리의 어딘가에 4Byte 크기의 공간이 할당된다. 포인터 변수 head의 용도는 리스트 구조에서 첫 번째 노드\n의 주소를 저장하는 것이다.\nhead 2024\n❼ head가 가리키는 곳의 p의 값 3을 정수형으로 출력한 후 공백을 한 칸 띄운다. 이어서 head가 가리키는 곳\n의 n이 가리키는 곳의 p의 값 1을 정수형으로 출력한 후 공백을 한 칸 띄운다. 이어서 head가 가리키는 곳\n의 n이 가리키는 곳의 n의 가리키는 곳의 p의 값 2를 정수형으로 출력한다.\n결과 3 1 2\n❽ main( ) 함수에서의 ‘return 0’은 프로그램의 종료를 의미한다.",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-006",
+      "subject": "실기",
+      "number": 6,
+      "points": 5,
+      "content": "스케줄링에 대한 다음 설명에서 괄호(①, ②)에 들어갈 알맞은 용어를 쓰시오. (5점)\nㆍ( ① )는 준비상태 큐에서 기다리고 있는 프로세스들 중에서 실행 시간이 가장 짧은 프로세스에게 먼\n저 CPU를 할당하는 기법이다. 가장 적은 평균 대기 시간을 제공하는 최적 알고리즘이지만, 실행 시간\n이 긴 프로세스는 실행 시간이 짧은 프로세스에게 할당 순위가 밀려 무한 연기 상태가 발생될 수 있다.\nㆍ( ② )는 현재 실행중인 프로세스의 남은 시간과 준비상태 큐에 새로 도착한 프로세스의 실행 시간을\n비교하여 가장 짧은 실행 시간을 요구하는 프로세스에게 CPU를 할당하는 기법으로, 시분할 시스템에\n유용하다. 준비상태 큐에 있는 각 프로세스의 실행 시간을 추적하여 보유하고 있어야 하므로 오버헤드\n가 증가한다.",
+      "rawAnswerText": "① SJF, Shortest Job First\n② SRT, Shortest Remaining Time",
+      "answerNote": "문항별로 다음 중 하나를 쓰면 됩니다.",
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "SJF",
+            "Shortest Job First"
+          ]
+        },
+        {
+          "blank": 2,
+          "accepted": [
+            "SRT",
+            "Shortest Remaining Time"
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-007",
+      "subject": "실기",
+      "number": 7,
+      "points": 5,
+      "content": "다음은 <EMPLOYEE> 릴레이션에 대해 <관계 대수식>을 수행했을 때 출력되는 <결과>\n이다. <결과>의 각 괄호(①~⑤)에 들어갈 알맞은 답을 쓰시오. (5점)\n<관계 대수식>\nπ\n(EMPLOYEE)\nTTL\n<EMPLOYEE> <결과>\nINDEX AGE TTL ①\n1 48 부장 ②\n2 25 대리 ③\n3 41 과장 ⇨ ④\n4 36 차장 ⑤",
+      "rawAnswerText": "① TTL ② 부장 ③ 대리 ④ 과장 ⑤ 차장",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "TTL"
+          ]
+        },
+        {
+          "blank": 2,
+          "accepted": [
+            "부장"
+          ]
+        },
+        {
+          "blank": 3,
+          "accepted": [
+            "대리"
+          ]
+        },
+        {
+          "blank": 4,
+          "accepted": [
+            "과장"
+          ]
+        },
+        {
+          "blank": 5,
+          "accepted": [
+            "차장"
+          ]
+        }
+      ],
+      "explanation": "문제의 <관계 대수식>에서 사용된 π는 주어진 릴레이션에서 속성 리스트(Attribute List)에 제시된 속성 값만\n을 추출하여 새로운 릴레이션을 만드는 PROJECT 연산이므로, <EMPLOYEE> 릴레이션에서 ‘TTL’ 속성이 추\n출되어 속성명인 ‘TTL’부터 모든 속성값이 <결과>로 나타납니다.",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-008",
+      "subject": "실기",
+      "number": 8,
+      "points": 5,
+      "content": "다음 IP 주소와 서브넷 마스크에 대한 내용에서 괄호(①, ②)에 들어갈 알맞은 답을\n쓰시오. (5점)\n호스트의 IP 주소가 223.13.234.132이고, 서브넷 마스크가 255.255.255.192일 때, 호스트가 속한 네트\n워크 주소는 223.13.234.( ① )이고, 해당 네트워크에서 사용할 수 있는 호스트 수는 ( ② )개이다.",
+      "rawAnswerText": "① 128 ② 62",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "128"
+          ]
+        },
+        {
+          "blank": 2,
+          "accepted": [
+            "62"
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-009",
+      "subject": "실기",
+      "number": 9,
+      "points": 5,
+      "content": "다음 Java로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력\n서식을 준수하시오.) (5점)\npublic class Main {\nstatic interface F {\nint apply(int x) throws Exception;\n}\npublic static int run(F f) {\ntry {\nreturn f.apply(3);\n} catch (Exception e) {\nreturn 7;\n}\n}\npublic static void main(String[] args) {\nF f = (x) -> {\nif (x > 2) {\nthrow new Exception( );\n}\nreturn x * 2;\n};\nSystem.out.print(run(f) + run((int n) -> n + 9));\n}\n}",
+      "rawAnswerText": "19",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "19"
+          ]
+        }
+      ],
+      "explanation": "public class Main {\nⒶ static interface F {\nint apply(int x) throws Exception;\n}\n❷❾ public static int run(F f) {\n❸❿ try {\n❹⓫ return f.apply(3);\n❻ } catch (Exception e) {\n❼ return 7;\n}\n}\npublic static void main(String[] args) {\nⒷ❺ F f = (x) -> {\nif (x > 2) {\nthrow new Exception( );\n}\nreturn x * 2;\n};\n❶❽⓬ System.out.print(run(f) + run((int n) -> n + 9));\n}\n}\nⒶ 함수형 인터페이스 F를 정의한다. F는 정수를 받아 정수를 반환하고, 예외(Exception)를 발생시킬 수 있\n다.\nⒷ 인터페이스 F 타입의 객체 f를 선언한다. f는 인터페이스 F에 속한 apply(int x) 메소드가 호출되었을 때,\nx가 2보다 크면 예외를 발생시키고 그렇지 않으면 x * 2를 반환한다.\n※ Java의 람다식\nㆍ형식 : 인수 -> 실행코드\nㆍ메소드 이름, 반환 타입, 인수 타입 없이 간단하게 미리 선언된 함수형 인터페이스를 구현할 수 있는\n것으로, 코드를 더 짧고 읽기 쉽게 만들어주는 형식입니다.\n모든 Java 프로그램은 반드시 main( ) 메소드에서 시작한다.\n❶ 인터페이스 F의 객체 f를 인수로 run( ) 메소드를 호출한 후 반환받은 값과 정수 n을 인수로 run( ) 메소\n드를 호출한 후 돌려받은 값을 더한 값을 출력한다. 먼저 객체 f를 인수로 run( ) 메소드를 호출한다. ❷번\n으로 이동한다.\n❷ 정수를 반환하는 run( ) 메소드의 시작점이다. ❶번에서 전달한 객체 f를 f가 받는다.\n❸ 예외 구문의 시작이다.\n❹ 3을 인수로 f의 apply( ) 메소드를 호출한다. ❶번에서 전달한 f에 Ⓑ 람다식이 적용되었으므로, ❺번으로\n이동한다.\n❺ ❹번에서 전달한 값 3은 2보다 크므로 예외를 발생시킨다. 예외가 발생되었으므로 try 블록이 종료되고\ncatch 블록으로 제어가 이동된다. ❻번으로 이동한다.\n※ throw : 강제로 예외를 발생시키는 키워드\n❻ 예외가 발생한 경우 예외를 다루는 catch 문의 시작이다.\n❼ 7을 메소드를 호출했던 ❽번으로 반환한다.\n❽ 이어서 정수 n을 인수로 run( ) 메소드를 호출한다. ❾번으로 이동한다.\n❾ 정수를 반환하는 run( ) 메소드의 시작점이다.\n❿ 예외 구문의 시작이다.\n⓫ 3을 인수로 f의 apply( ) 메소드를 호출한다. ‘(int n) -> n + 9’, 즉 메소드에 전달되는 인수에 9를 더하\n는 람다식이 적용된 결과인 12를 메소드를 호출했던 ⓬번으로 반환한다.\n⓬ ❼번에서 반환받은 7과 ⓫번에서 반환받은 12를 더한 값 19를 출력한다.\n결과 19",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-010",
+      "subject": "실기",
+      "number": 10,
+      "points": 5,
+      "content": "다음 C 언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력\n서식을 준수하시오.) (5점)\n#include <stdio.h>\n#define SIZE 3\ntypedef struct {\nint a[SIZE];\nint front;\nint rear;\n} Queue;\nvoid enq(Queue* q, int val) {\nq -> a[q -> rear] = val;\nq -> rear = (q -> rear + 1) % SIZE;\n}\nint deq(Queue* q) {\nint val = q -> a[q -> front];\nq -> front = (q -> front + 1) % SIZE;\nreturn val;\n}\nint main( ) {\nQueue q = {{0}, 0, 0};\nenq(&q, 1);\nenq(&q, 2);\ndeq(&q);\nenq(&q, 3);\nprintf(\"%d 그리고 %d\", deq(&q), deq(&q));\nreturn 0;\n}",
+      "rawAnswerText": "3 그리고 2",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "3 그리고 2"
+          ]
+        }
+      ],
+      "explanation": "#include <stdio.h>\n#define SIZE 3 // 3을 SIZE로 정의한다. 프로그램 안에서 SIZE는 숫자 3과 동일하다.\ntypedef struct { // 구조체를 정의한다.\nint a[SIZE]; // 크기가 3인 정수형 배열 a를 선언한다.\nint front; // 정수형 변수 front를 선언한다.\nint rear; // 정수형 변수 rear을 선언한다.\nstruct Queue\nint a[3] (12Byte) int front (4Byte) int rear (4Byte)\n} Queue; // 구조체의 이름은 Queue이다.\nint main( ) {\n❶ Queue q = {{0}, 0, 0};\n❷ enq(&q, 1);\nenq(&q, 2);\ndeq(&q);\nenq(&q, 3);\nprintf(\"%d 그리고 %d\", deq(&q), deq(&q));\nreturn 0;\n}\n모든 C 언어 프로그램은 반드시 main( ) 함수에서 시작한다.\n❶ Queue 자료형 변수 q를 선언하고, Queue의 배열 a, front, rear을 각각 0으로 초기화한다. q가 가리키고\n있는 1004 번지는 Queue 구조체의 크기만큼 할당된 공간이므로 q는 1004번지 이후의 20Byte를 의미한다.\n(이후 그림에서 지정한 주소는 임의로 정한 것이며, 이해를 돕기 위해 10진수로 표현했다.)\n메모리\n주소\n0000 q 1004\nㆍㆍㆍ\n20Byte\n1000 1004 1008 1012 1016 1020 1024 1028 ㆍㆍㆍ\n배열 a\n1000 front rear\na[0] a[1] a[2]\n0 0 0 0 0\nㆍㆍㆍ\n9999\n❷ q의 주소와 1을 인수로 enq( ) 함수를 호출한다.\n❸ void enq(Queue* q, int val) {\n❹ q -> a[q -> rear] = val;\n❺ q -> rear = (q -> rear + 1) % SIZE;\n}\n❸ 반환값이 없는 enq( ) 함수의 시작점이다. ❷번에서 전달한 배열 a의 주소를 q가, 1을 val이 받는다.\n❹ q가 가리키는 rear은 0이므로 q가 가리키는 a[0]에 val의 값 1을 저장한다.\n❺ q가 가리키는 rear에 ‘(q -> rear + 1) % SIZE’, 즉 (0 + 1) % 3이므로 1을 저장한 후 제어를 enq( ) 함수\n를 호출했던 ❷번의 다음 줄인 ❻번으로 옮긴다.\n메모리\n주소\n0000 q 1004\nㆍㆍㆍ\n20Byte\n1000 1004 1008 1012 1016 1020 1024 1028 ㆍㆍㆍ\n배열 a\n1000 front rear\na[0] a[1] a[2]\n1 0 0 0 1\nㆍㆍㆍ\n9999\nint main( ) {\n❶ Queue q = {{0}, 0, 0};\n❷ enq(&q, 1);\n❻ enq(&q, 2);\ndeq(&q);\nenq(&q, 3);\nprintf(\"%d 그리고 %d\", deq(&q), deq(&q));\nreturn 0;\n}\n❻ q의 주소와 2를 인수로 enq( ) 함수를 호출한다.\n❼ void enq(Queue* q, int val) {\n❽ q -> a[q -> rear] = val;\n❾ q -> rear = (q -> rear + 1) % SIZE;\n}\n❼ 반환값이 없는 enq( ) 함수의 시작점이다. ❻번에서 전달한 배열 a의 주소를 q가, 2를 val이 받는다.\n❽ q가 가리키는 rear은 1이므로 q가 가리키는 a[1]에 val의 값 2를 저장한다.\n❾ q가 가리키는 rear에 ‘(q -> rear + 1) % SIZE’, 즉 (1 + 1) % 3이므로 2를 저장한 후 제어를 enq( ) 함수\n를 호출했던 ❻번의 다음 줄인 ❿번으로 옮긴다.\n메모리\n주소\n0000 q 1004\nㆍㆍㆍ\n20Byte\n1000 1004 1008 1012 1016 1020 1024 1028 ㆍㆍㆍ\n배열 a\n1000 front rear\na[0] a[1] a[2]\n1 2 0 0 2\nㆍㆍㆍ\n9999\nint main( ) {\n❶ Queue q = {{0}, 0, 0};\n❷ enq(&q, 1);\n❻ enq(&q, 2);\n❿ deq(&q);\nenq(&q, 3);\nprintf(\"%d 그리고 %d\", deq(&q), deq(&q));\nreturn 0;\n}\n❿ q의 주소를 인수로 deq( ) 함수를 호출한다.\n⓫ int deq(Queue* q) {\n⓬ int val = q -> a[q -> front];\n⓭ q -> front = (q -> front + 1) % SIZE;\n⓮ return val;\n}\n⓫ 정수를 반환하는 deq( ) 함수의 시작점이다. ❿번에서 전달한 배열 a의 주소를 q가 받는다.\n⓬ 정수형 변수 val을 선언하고, q가 가리키는 front가 0이므로 q가 가리키는 a[0]의 값 1로 초기화한다.\n⓭ q가 가리키는 front에 ‘(q -> front + 1) % SIZE’, 즉 (0 + 1) % 3이므로 1을 저장한다.\n⓮ deq( ) 함수를 호출했던 곳으로 val을 반환하면서 제어를 ❿번의 다음 줄인 ⓯번으로 옮긴다.\n메모리\n주소\n0000 q 1004\nㆍㆍㆍ\n20Byte\nval 1\n1000 1004 1008 1012 1016 1020 1024 1028 ㆍㆍㆍ\n배열 a\n1000 front rear\na[0] a[1] a[2]\n1 2 0 1 2\nㆍㆍㆍ\n9999\nint main( ) {\n❶ Queue q = {{0}, 0, 0};\n❷ enq(&q, 1);\n❻ enq(&q, 2);\n❿ deq(&q);\n⓯ enq(&q, 3);\nprintf(\"%d 그리고 %d\", deq(&q), deq(&q));\nreturn 0;\n}\n⓯ q의 주소와 3을 인수로 enq( ) 함수를 호출한다.\n⓰ void enq(Queue* q, int val) {\n⓱ q -> a[q -> rear] = val;\n⓲ q -> rear = (q -> rear + 1) % SIZE;\n}\n⓰ 반환값이 없는 enq( ) 함수의 시작점이다. ⓯번에서 전달한 배열 a의 주소를 q가, 3을 val이 받는다.\n⓱ q가 가리키는 rear은 2이므로 q가 가리키는 a[2]에 val의 값 3을 저장한다.\n⓲ q가 가리키는 rear에 ‘(q -> rear + 1) % SIZE’, 즉 (2 + 1) % 3이므로 0을 저장한 후 제어를 enq( ) 함수\n를 호출했던 ⓯번의 다음 줄인 ⓳번으로 옮긴다.\n메모리\n주소\nq 1004\n0000\nㆍㆍㆍ\n20Byte\n1000 1004 1008 1012 1016 1020 1024 1028 ㆍㆍㆍ\n배열 a\n1000 front rear\na[0] a[1] a[2]\n1 2 3 1 0\nㆍㆍㆍ\n9999\nint main( ) {\n❶ Queue q = {{0}, 0, 0};\n❷ enq(&q, 1);\n❻ enq(&q, 2);\n❿ deq(&q);\n⓯ enq(&q, 3);\n⓳ printf(\"%d 그리고 %d\", deq(&q), deq(&q));\nreturn 0;\n}\n⓳ q의 주소를 인수로 deq( ) 함수를 두 번 호출한 후 반환받은 값을 “%d 그리고 %d” 출력 서식에 적용하여\n출력한다. 먼저 q의 주소를 인수로 deq( ) 함수를 호출한다.\n⓴ int deq(Queue* q) {\n㉑ int val = q -> a[q -> front];\n㉒ q -> front = (q -> front + 1) % SIZE;\n㉓ return val;\n}\n⓴ 정수를 반환하는 deq( ) 함수의 시작점이다. ⓳번에서 전달한 배열 a의 주소를 q가 받는다.\n㉑ 정수형 변수 val을 선언하고, q가 가리키는 front가 1이므로 q가 가리키는 a[1]의 값 2로 초기화한다.\n㉒ q가 가리키는 front에 ‘(q -> front + 1) % SIZE’, 즉 (1 + 1) % 3이므로 2를 저장한다.\n㉓ deq( ) 함수를 호출했던 ㉔번으로 val의 값 2를 반환한다.\n메모리\n주소\nq 1004\n0000\nㆍㆍㆍ\n20Byte\nval 2\n1000 1004 1008 1012 1016 1020 1024 1028 ㆍㆍㆍ\n배열 a\n1000 front rear\na[0] a[1] a[2]\n1 2 3 2 0\nㆍㆍㆍ\n9999\nint main( ) {\n❶ Queue q = {{0}, 0, 0};\n❷ enq(&q, 1);\n❻ enq(&q, 2);\n❿ deq(&q);\n⓯ enq(&q, 3);\n⓳㉔ printf(\"%d 그리고 %d\", deq(&q), deq(&q));\nreturn 0;\n}\n㉔ 이어서 q의 주소를 인수로 deq( ) 함수를 다시 한 번 호출한다.\n㉕ int deq(Queue* q) {\n㉖ int val = q -> a[q -> front];\n㉗ q -> front = (q -> front + 1) % SIZE;\n㉘ return val;\n}\n㉕ 정수를 반환하는 deq( ) 함수의 시작점이다. ㉔번에서 전달한 배열 a의 주소를 q가 받는다.\n㉖ 정수형 변수 val을 선언하고, q가 가리키는 front가 2이므로 q가 가리키는 a[2]의 값 3으로 초기화한다.\n㉗ q가 가리키는 front에 ‘(q -> front + 1) % SIZE’, 즉 (2 + 1) % 3이므로 0을 저장한다.\n㉘ deq( ) 함수를 호출했던 ㉙번으로 val의 값 3을 반환한다.\n메모리\n주소\nq 1004\n0000\nㆍㆍㆍ\n20Byte\nval 3\n1000 1004 1008 1012 1016 1020 1024 1028 ㆍㆍㆍ\n배열 a\n1000 front rear\na[0] a[1] a[2]\n1 2 3 0 0\nㆍㆍㆍ\n9999\nint main( ) {\n❶ Queue q = {{0}, 0, 0};\n❷ enq(&q, 1);\n❻ enq(&q, 2);\n❿ deq(&q);\n⓯ enq(&q, 3);\n⓳㉔㉙ printf(\"%d 그리고 %d\", deq(&q), deq(&q));\n㉚ return 0;\n}\n㉙ ㉓번으로부터 반환받은 2와 공백 한 칸을 출력하고 그리고를 출력한 후 공백 한 칸과 ㉘번으로부터 반환받은\n3을 출력한다.\n결과 2 그리고 3\n㉚ main( ) 함수에서의 ‘return 0’은 프로그램의 종료를 의미한다.",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-011",
+      "subject": "실기",
+      "number": 11,
+      "points": 5,
+      "content": "클라이언트와 서버 간 자바 스크립트 및 XML을 비동기 방식으로 처리하며, 전체 페이지를\n새로 고치지 않고도 웹 페이지 일부 영역만을 업데이트할 수 있도록 하는 기술을 의미하는 용어를 쓰시오. (5점)",
+      "rawAnswerText": "AJAX, Asynchronous JavaScript and XML\n※ 답안 작성 시 주의 사항 : 한글 또는 영문을 Full-name이나 약어로 쓰라는 지시사항이 없으면 한글이나\n영문 약어로 쓰는 것이 유리합니다. 영문을 Full-name으로 풀어쓰다가 스펠링을 틀리면 오답으로 처리되\n니까요.",
+      "answerNote": "다음 중 하나를 쓰면 됩니다.",
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "AJAX",
+            "Asynchronous JavaScript and XML ※ 답안 작성 시 주의 사항 : 한글 또는 영문을 Full-name이나 약어로 쓰라는 지시사항이 없으면 한글이나 영문 약어로 쓰는 것이 유리합니다. 영문을 Full-name으로 풀어쓰다가 스펠링을 틀리면 오답으로 처리되 니까요."
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-012",
+      "subject": "실기",
+      "number": 12,
+      "points": 5,
+      "content": "다음 설명에서 괄호에 들어갈 알맞은 디자인 패턴을 아래에서 찾아 쓰시오. (5점)\n생성 패턴 구조 패턴 행위 패턴\nAbstract Factory Adapter Chain of Responsibility\nBuilder Bridge Command\nFactory Method Composite Interpreter\nPrototype Decorator Iterator\nSingleton Facade Mediator\nProxy Memento\nObserver\nStrategy\nTemplate Method\n( )은/는 복잡한 시스템을 개발하기 쉽도록 클래스나 객체들을 조합하는 패턴에 속하며, 대리자라는\n이름으로도 불린다. 내부에서는 객체 간의 복잡한 관계를 단순하게 정리해 주고, 외부에서는 객체의 세부\n적인 내용을 숨기는 역할을 한다.",
+      "rawAnswerText": "Proxy",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "Proxy"
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-013",
+      "subject": "실기",
+      "number": 13,
+      "points": 5,
+      "content": "서비스 거부(DoS) 공격 기법 중 TCP가 신뢰성 있는 전송을 위해 사용하는 3-way-handshake\n과정을 의도적으로 중단시킴으로써 공격 대상지인 서버가 대기 상태에 놓여 정상적인 서비스를 수행하지 못\n하게 하는 공격 방법을 가리키는 용어를 쓰시오. (5점)",
+      "rawAnswerText": "SYN Flooding",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "SYN Flooding"
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-014",
+      "subject": "실기",
+      "number": 14,
+      "points": 5,
+      "content": "다음은 화이트박스 테스트의 프로그램 제어흐름이다. 다음의 순서도를 참고하여 분기\n커버리지로 구성할 테스트 케이스를 작성하시오. (5점)\n<순서도>\n<작성예시>\n( 1 ) → ( 2 ) → ( 4 )",
+      "rawAnswerText": "( 1 ) → ( 2 ) → ( 3 ) → ( 4 ) → ( 5 ) → ( 6 ) → ( 7 )\n( 1 ) → ( 2 ) → ( 4 ) → ( 5 ) → ( 6 ) → ( 1 )\n또는\n( 1 ) → ( 2 ) → ( 3 ) → ( 4 ) → ( 5 ) → ( 6 ) → ( 1 )\n( 1 ) → ( 2 ) → ( 4 ) → ( 5 ) → ( 6 ) → ( 7 )",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "( 1 ) → ( 2 ) → ( 3 ) → ( 4 ) → ( 5 ) → ( 6 ) → ( 7 ) ( 1 ) → ( 2 ) → ( 4 ) → ( 5 ) → ( 6 ) → ( 1 ) 또는 ( 1 ) → ( 2 ) → ( 3 ) → ( 4 ) → ( 5 ) → ( 6 ) → ( 1 ) ( 1 ) → ( 2 ) → ( 4 ) → ( 5 ) → ( 6 ) → ( 7 )"
+          ]
+        }
+      ],
+      "explanation": "• 화이트박스 테스트의 검증 기준(Coverage) 중 분기 검증 기준(Branch Coverage)은 소스 코드의 모든 조건\n문이 한 번 이상 수행되도 록 테스트 케이스를 설계하는 방법입니다.\n• 위의 순서도를 기반으로 한 테스트 케이스는 ①번에서 시작한 프로세스가 조건문인 ②번과 ⑥번에 도달했\n을 때 반드시 한 번은 Yes로 한 번은 No로 진행되도록 설계되어야 합니다. 또한 문제지의 답란에 7칸의\n괄호와 6칸의 괄호가 제시되어 있으므로, 두 번의 프로세스로 모든 코드가 수행되도록 설계해야 합니다.\n[첫 번째 테스트 케이스 설계 방안]\n• 7칸 괄호 : ①②③④⑤⑥⑦\n• 6칸 괄호 : ①②④⑤⑥①\n※ 7칸 괄호에 맞는 테스트 케이스를 설계할 때 ②번 조건문에서 Yes로, ⑥번 조건문에서 No로 진행되도록\n설계했으므로, 6칸 괄호에 맞는 테스트 케이스는 ②번 조건문에서 No로, ⑥번 조건문에서 Yes로 진행되\n도록 설계해야 합니다.\n[두 번째 테스트 케이스 설계 방안]\n• 7칸 괄호 : ①②③④⑤⑥①\n• 6칸 괄호 : ①②④⑤⑥⑦\n※ 7칸 괄호에 맞는 테스트 케이스를 설계할 때 ②번 조건문에서 Yes로, ⑥번 조건문에서도 Yes로 진행되도\n록 설계했으므로, 6칸 괄호에 맞는 테스트 케이스는 ②번 조건문에서 No로, ⑥번 조건문에서도 No로 진\n행되도록 설계해야 합니다.",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-015",
+      "subject": "실기",
+      "number": 15,
+      "points": 5,
+      "content": "준비상태 큐에 각 프로세스의 도착 시간과 실행 시간이 다음과 같을 때 RR(Round Robin)로\n스케줄링 할 때 평균 대기 시간을 쓰시오. (단, Time Slice는 4초이다.) (5점)\n프로세스 도착 시간 실행 시간\nA 0 8\nB 1 4\nC 2 9\nD 3 5",
+      "rawAnswerText": "11.75",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "11.75"
+          ]
+        }
+      ],
+      "explanation": "ㆍRR(Round Robin)은 주어진 시간 할당량(Time Slice) 동안 실행되지 못할 경우 준비상태 큐의 가장 마지막\n으로 재배치하여 차례를 기다리므로 다음과 같이 표시할 수 있다.\n진행 시간 0 4 ❽ 12 16 ⓴ 24 ● ●\n프로세스 A B C D A C D C\n실행 시간 4 4 4 4 4 4 1 1\n※ 색 동그라미는 프로세스가 완료됨을 표시한 것입니다(A → 20초, B → 8초, C → 26초, D → 25초).\nㆍ대기 시간은 ‘종료 시간 – 도착 시간 – 실행 시간’으로 구할 수 있으므로 다음과 같다.\n프로세스 종료 시간 도착 시간 실행 시간 대기 시간\nA 20 0 8 12\nB 8 1 4 3\nC 26 2 9 15\nD 25 3 5 17\n∴ 평균 대기 시간은 (12+3+15+17) / 4 = 11.75",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-016",
+      "subject": "실기",
+      "number": 16,
+      "points": 5,
+      "content": "다음 C 언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력\n서식을 준수하시오.) (5점)\n#include <stdio.h>\nstruct dat {\nint x;\nint y;\n};\nint main( ) {\nstruct dat a[] = {{1, 2}, {3, 4}, {5, 6}};\nstruct dat* ptr = a;\nstruct dat** pptr = &ptr;\n(*pptr)[1] = (*pptr)[2];\nprintf(\"%d 그리고 %d\", a[1].x, a[1].y);\nreturn 0;\n}",
+      "rawAnswerText": "5 그리고 6",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "5 그리고 6"
+          ]
+        }
+      ],
+      "explanation": "#include <stdio.h>\nstruct dat { // 구조체 dat를 정의한다.\nint x; // 정수형 변수 x를 선언한다.\nint y; // 정수형 변수 y를 선언한다.\n};\nint main( ) {\n❶ struct dat a[] = {{1, 2}, {3, 4}, {5, 6}};\n❷ struct dat* ptr = a;\n❸ struct dat** pptr = &ptr;\n❹ (*pptr)[1] = (*pptr)[2];\n❺ printf(\"%d 그리고 %d\", a[1].x, a[1].y);\n❻ return 0;\n}\n모든 C 프로그램은 반드시 main( ) 함수에서 시작한다.\n❶ 3개의 요소를 갖는 dat 구조체 형태의 배열 a를 선언하고, 초기화한다. (이후 그림에서 지정한 주소는 임\n의로 정한 것이며, 이해를 돕기 위해 10진수로 표현했음)\n메모리\n주소\n0000\n... 첫 번째 두 번째 세 번째\nx y x y x y\na 0500 1 2 3 4 5 6\na[0] a[1] a[2]\n...\n1000\n...\n2000\n...\n9999\n❷ dat 구조체 형태의 포인터 변수 ptr을 선언하고, a의 주소로 초기화한다. ptr은 a의 시작 주소를 가리킨다.\n메모리\n주소\n0000\n... 첫 번째 두 번째 세 번째\nx y x y x y\na 0500 1 2 3 4 5 6\na[0] a[1] a[2]\n...\nptr 1000 500\n...\n2000\n...\n9999\n❸ dat 구조체 형태의 이중 포인터 변수 pptr을 선언하고, ptr의 주소로 초기화한다. ptr이 a의 시작 주소를\n가리키고 있으므로, 주소의 주소를 가리키는 pptr도 a의 시작 주소를 가리킨다.\n메모리\n주소\n0000\n... 첫 번째 두 번째 세 번째\nx y x y x y\na 0500 1 2 3 4 5 6\na[0] a[1] a[2]\n...\nptr 1000 500\n...\npptr 2000 1000\n...\n9999\n❹ (*pptr)[1]은 pptr이 가지고 있는 값 500이 가리키는 곳의 두 번째인 a[1]을 의미한다. 즉 a[1] = a[2]이\n므로 a 배열의 세 번째 값을 a 배열의 두 번째 값에 저장한다.\n메모리\n주소\n0000\n... 첫 번째 두 번째 세 번째\nx y x y x y\na 0500 1 2 5 6 5 6\na[0] a[1] a[2]\n...\nptr 1000 500\n...\npptr 2000 1000\n...\n9999\n❺ a[1]의 x인 5와 공백 한 칸을 출력하고 그리고를 출력한 후 공백 한 칸과 a[1]의 y인 6을 출력한다.\n결과 5 그리고 6\n❻ main( ) 함수에서의 ‘return 0’은 프로그램의 종료를 의미한다.",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-017",
+      "subject": "실기",
+      "number": 17,
+      "points": 5,
+      "content": "다음 Python으로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의\n출력 서식을 준수하시오.) (5점)\nlst = [1,2,3]\ndst = {i : i* 2 for i in lst}\ns = set(dst.values( ))\nlst[0] = 99\ndst[2] = 7\ns.add(99)\nprint(len(s & set(dst.values( ))))",
+      "rawAnswerText": "2",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "2"
+          ]
+        }
+      ],
+      "explanation": "❶ lst = [1,2,3]\n❷ dst = {i : i * 2 for i in lst}\n❸ s = set(dst.values( ))\n❹ lst[0] = 99\n❺ dst[2] = 7\n❻ s.add(99)\n❼ print(len(s & set(dst.values( ))))\n❶ 리스트 lst를 선언하면서 초기값을 지정한다. 초기값으로 지정된 수만큼 리스트의 요소가 만들어진다.\n[0] [1] [2]\n리스트 lst 1 2 3\n❷ 딕셔너리 dst를 선언하고, 컴프리헨션을 적용한 for문에 의해 반환되는 i는 키로, i*2는 값으로 초기화한다.\n‘1’ ‘2’ ‘3’\n딕셔너리 dst 2 4 6\nㆍ for i in lst : 리스트 lst의 각 요소를 반복 변수 i에 저장하면서 리스트 lst의 요소 수만큼 반복한다.\n※ 컴프리헨션(Comprehension) : for 문의 반복 변수를 for 문 앞에 기술하여, 반복 변수의 값을 리스트나\n딕셔너리의 형태로 반환함\n❸ 세트 s를 선언하고, 딕셔너리 dst에서 값만 추출한 후 세트로 변환한 값으로 초기화한다.\n[0] [1] [2]\n세트 s 2 4 6\nㆍvalues( ) : 딕셔너리의 모든 값을 반환함\nㆍset( ) : 리스트, 딕셔너리, 문자열 등을 세트로 변환함\n❹ lst[0]에 99를 저장한다.\n[0] [1] [2]\n리스트 lst 99 2 3\n❺ 딕셔너리 dst에서 키가 2인 요소의 값을 7로 변경한다.\n‘1’ ‘2’ ‘3’\n딕셔너리 dst 2 7 6\n❻ 세트 s에 99를 추가한다.\n[0] [1] [2] [3]\n세트 s 2 4 6 99\nㆍadd( ) : 세트에 값을 추가함\n❼ ‘len(s & set(dst.values( )))’의 결과인 2를 출력한다.\nlen( s & set(dst.values( )) )\n㉠\n㉡\n㉢\nㆍ㉠ : 딕셔너리 dst에서 값만 추출한 후 세트로 변환한 값을 반환함 → {2, 7, 6}\nㆍ㉡ : 세트 s와 세트 ㉠의 공통 요소(교집합(&))를 반환함 → {2, 4, 6, 99} & {2, 7, 6} → {2, 6}\nㆍ㉢ : ㉡의 길이인 2를 반환함\n결과 2",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-018",
+      "subject": "실기",
+      "number": 18,
+      "points": 5,
+      "content": "다음 Java로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력\n서식을 준수하시오.) (5점)\npublic class Main {\npublic static class Parent {\npublic int x(int i) { return i + 2; }\npublic static String id( ) { return \"P\"; }\n}\npublic static class Child extends Parent {\npublic int x(int i) { return i + 3; }\npublic String x(String s) { return s + \"R\"; }\npublic static String id( ) { return \"C\"; }\n}\npublic static void main(String[] args) {\nParent ref = new Child( );\nSystem.out.println(ref.x(2) + ref.id( ));\n}\n}",
+      "rawAnswerText": "5P",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "5P"
+          ]
+        }
+      ],
+      "explanation": "public class Main {\npublic static class Parent {\npublic int x(int i) { return i + 2; }\n❺ public static String id( ) { return \"P\"; }\n}\npublic static class Child extends Parent {\n❸ public int x(int i) { return i + 3; }\npublic String x(String s) { return s + \"R\"; }\npublic static String id( ) { return \"C\"; }\n}\npublic static void main(String[] args) {\n❶ Parent ref = new Child( );\n❷❹❻ System.out.println(ref.x(2) + ref.id( ));\n}\n}\n모든 Java 프로그램은 반드시 main( ) 메소드에서 시작한다.\n❶ Child 클래스의 생성자를 이용하여 Parent 클래스의 객체 변수 ref를 선언한다.\n• [부모클래스명] [객체변수명] = new [자식클래스생성자( )] : 부모 클래스의 객체 변수를 선언하면서\n자식 클래스의 생성자를 사용하면 형 변환이 발생한다.\n• 이렇게 형 변환이 발생했을 때 부모 클래스와 자식 클래스에 동일한 속성이나 메소드가 있으면 자식 클\n래스의 속성이나 메소드로 재정의된다.\n❷ ref.x(2) 메소드를 호출한 후 반환받은 값과 ref.id( ) 메소드를 호출한 후 반환받은 값의 합을 출력한다.\n먼저 ref의 x(2) 메소드를 호출한다. 2를 인수로 하여 ❸번으로 이동한다.\n※ ❶번에서 형 변환이 발생했으므로 부모 클래스와 자식 클래스에 동일한 속성이나 메소드가 있으면 자\n식 클래스의 속성이나 메소드로 재정의되는데, 인수가 정수이므로 자식 클래스의 x(int i) 메소드가 호출\n됩니다.\n❸ 정수를 반환하는 x( ) 메소드의 시작점이다. ❷번에서 전달한 2를 i가 받아 ‘i+3’의 결과인 5를 메소드를\n호출했던 ❹번으로 반환한다.\n❹ 이어서 ref.id( ) 메소드를 호출한다. ❺번으로 이동한다.\n※ id( ) 메소드는 static으로 선언된 정적 메소드입니다. 정적 메소드는 컴파일 시점에 객체 변수가 부모\n클래스의 타입으로 결정되므로, Parent의 id( ) 메소드가 호출됩니다.\n❺ 문자를 반환하는 id( ) 메소드의 시작점이다. “P”를 메소드를 호출했던 ❻번으로 반환한다.\n❻ ❸번으로부터 반환받은 5에 ❺번으로부터 반환받은 “P”를 덧붙여 출력한 후 커서를 다음 줄 처음으로 이\n동한다.\n결과 5P",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-019",
+      "subject": "실기",
+      "number": 19,
+      "points": 5,
+      "content": "다음 Java로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력\n서식을 준수하시오.) (5점)\npublic class Main {\npublic static class BO {\npublic int v;\npublic BO(int v) {\nthis.v = v;\n}\n}\npublic static void main(String[] args) {\nBO a = new BO(1);\nBO b = new BO(2);\nBO c = new BO(3);\nBO[] arr = {a, b, c};\nBO t = arr[0];\narr[0] = arr[2];\narr[2] = t;\narr[1].v = arr[0].v;\nSystem.out.println(a.v + \"a\" + b.v + \"b\" + c.v);\n}\n}",
+      "rawAnswerText": "1a3b3",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "1a3b3"
+          ]
+        }
+      ],
+      "explanation": "public class Main {\npublic static class BO {\npublic int v;\n❷❺❽ public BO(int v) {\n❸❻❾ this.v = v;\n}\n}\npublic static void main(String[] args) {\n❶ BO a = new BO(1);\n❹ BO b = new BO(2);\n❼ BO c = new BO(3);\n❿ BO[] arr = {a, b, c};\n⓫ BO t = arr[0];\n⓬ arr[0] = arr[2];\n⓭ arr[2] = t;\n⓮ arr[1].v = arr[0].v;\n⓯ System.out.println(a.v + \"a\" + b.v + \"b\" + c.v);\n}\n}\n모든 Java 프로그램은 반드시 main( ) 메소드에서 시작한다.\n❶ 클래스 BO의 객체 변수 a를 선언하고, 생성자에 인수 1을 전달한다. ❷번으로 이동한다.\n❷ BO 클래스의 생성자 BO( )의 시작점이다. ❶번에서 전달받은 1을 정수형 변수 v가 받는다.\n❸ 현재 클래스(BO 클래스)의 v에 1을 저장한다. 생성자가 종료되면 호출했던 ❶번의 다음 줄인 ❹번으로 제\n어를 옮긴다. (이후 그림에서 객체 변수 a가 저장된 주소는 임의로 정한 것이며, 이해를 돕기 위해 10진\n수로 표현했음)\n메모리\n주소\n0000\nㆍㆍㆍ\n4Byte\n1000 1004 1008 1012 1016 1020 1024 1028 ㆍㆍㆍ\na\n1000\nint v\n1\nㆍㆍㆍ\n9999\n❹ 클래스 BO의 객체 변수 b를 선언하고, 생성자에 인수 2를 전달한다. ❺번으로 이동한다.\n❺ BO 클래스의 생성자 BO( )의 시작점이다. ❹번에서 전달받은 2를 정수형 변수 v가 받는다.\n❻ 현재 클래스(BO 클래스)의 v에 2를 저장한다. 생성자가 종료되면 호출했던 ❹번의 다음 줄인 ❼번으로 제\n어를 옮긴다.\n메모리\n주소\n0000\nㆍㆍㆍ\n4Byte\n1000 1004 1008 1012 1016 1020 1024 1028 ㆍㆍㆍ\na b\n1000\nint v int v\n1 2\nㆍㆍㆍ\n9999\n❼ 클래스 BO의 객체 변수 c를 선언하고, 생성자에 인수 3을 전달한다. ❽번으로 이동한다.\n❽ BO 클래스의 생성자 BO( )의 시작점이다. ❼번에서 전달받은 3을 정수형 변수 v가 받는다.\n❾ 현재 클래스(BO 클래스)의 v에 3을 저장한다. 생성자가 종료되면 호출했던 ❼번의 다음 줄인 ❿번으로 제\n어를 옮긴다.\n메모리\n주소\n0000\nㆍㆍㆍ\n4Byte\n1000 1004 1008 1012 1016 1020 1024 1028 ㆍㆍㆍ\na b c\n1000\nint v int v int v\n1 2 3\nㆍㆍㆍ\n9999\n❿ 3개의 요소를 갖는 BO 클래스 배열 arr을 선언하고 객체 변수 a, b, c로 초기화한다. arr[0]은 객체 변수\na의 주소를, arr[1]은 객체 변수 b의 주소를, arr[2]는 객체 변수 c의 주소를 가리키게 된다.\n메모리\n주소\n0000\nㆍㆍㆍ\n1000 1004 1008 1012 1016 1020 1024 1028\na b c\n1000\nint v int v int v\n1 2 3\nㆍㆍㆍ ㆍㆍㆍ\n2000 2004 2008 2012 2016 2020 2024 2028\narr[0] arr[1] arr[2]\n2000\n1008 1016 1024\nㆍㆍㆍ\n9999\n⓫ 클래스 BO 자료형 변수 t를 선언하고 arr[0]을 저장한다.\n메모리\n주소\n0000\nㆍㆍㆍ\n1000 1004 1008 1012 1016 1020 1024 1028\na b c\n1000\nint v int v int v\n1 2 3\nㆍㆍㆍ ㆍㆍㆍ t 1008\n2000 2004 2008 2012 2016 2020 2024 2028\narr[0] arr[1] arr[2]\n2000\n1008 1016 1024\nㆍㆍㆍ\n9999\n⓬ arr[0]에 arr[2]를 저장한다. 이제 arr[0]과 arr[2] 모두 객체 변수 c의 주소를 가리키게 된다.\n메모리\n주소\n0000\nㆍㆍㆍ\n1000 1004 1008 1012 1016 1020 1024 1028\na b c\n1000\nint v int v int v\n1 2 3\nㆍㆍㆍ ㆍㆍㆍ t 1008\n2000 2004 2008 2012 2016 2020 2024 2028\narr[0] arr[1] arr[2]\n2000\n1024 1016 1024\nㆍㆍㆍ\n9999\n⓭ t를 arr[2]에 저장한다.\n메모리\n주소\n0000\nㆍㆍㆍ\n1000 1004 1008 1012 1016 1020 1024 1028\na b c\n1000\nint v int v int v\n1 2 3\nㆍㆍㆍ ㆍㆍㆍ t 1008\n2000 2004 2008 2012 2016 2020 2024 2028\narr[0] arr[1] arr[2]\n2000\n1024 1016 1008\nㆍㆍㆍ\n9999\n⓮ arr[0]의 v를 arr[1]의 v에 저장한다.\n메모리\n주소\n0000\nㆍㆍㆍ\n1000 1004 1008 1012 1016 1020 1024 1028\na b c\n1000\nint v int v int v\n1 3 3\nㆍㆍㆍ ㆍㆍㆍ\n2000 2004 2008 2012 2016 2020 2024 2028\narr[0] arr[1] arr[2]\n2000\n1024 1016 1008\nㆍㆍㆍ\n9999\n⓯ a.v의 값, “a” 문자, b.v의 값, “b” 문자, c.v의 값을 모두 붙여 출력한다.\n결과 1a3b3",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-2-020",
+      "subject": "실기",
+      "number": 20,
+      "points": 5,
+      "content": "다음 C 언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력\n서식을 준수하시오.) (5점)\n#include <stdio.h>\n#include <stdlib.h>\nstruct node {\nchar c;\nstruct node* p;\n};\nstruct node* func(char* s) {\nstruct node* h = NULL, *n;\nwhile(*s) {\nn = malloc(sizeof(struct node));\nn -> c = *s++;\nn -> p = h;\nh = n;\n}\nreturn h;\n}\nint main( ) {\nstruct node* n = func(\"BEST\");\nwhile(n) {\nputchar(n -> c);\nstruct node* t = n;\nn = n -> p;\nfree(t);\n}\nreturn 0;\n}",
+      "rawAnswerText": "TSEB",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "TSEB"
+          ]
+        }
+      ],
+      "explanation": "#include <stdio.h>\n#include <stdlib.h>\nstruct node { // 구조체 node를 정의한다.\nchar c; // 문자형 변수 c를 선언한다.\nstruct node* p; // node의 구조체 포인터 변수 p를 선언한다.\nstruct node\nchar c (1Byte) struct node* p (4Byte)\n데이터를 저장할 멤버 다음 노드의 주소를 저장할 멤버\n};\nint main( ) {\n❶ struct node* n = func(\"BEST\");\nwhile(n) {\nputchar(n -> c);\nstruct node* t = n;\nn = n -> p;\nfree(t);\n}\nreturn 0;\n}\n모든 C 언어 프로그램은 반드시 main( ) 함수에서 시작한다.\n❶ node 자료형 포인터 변수 n을 선언하고, “BEST”를 인수로 func( ) 함수를 호출한 후 반환받은 값으로 초\n기화한다.\n※ 인수로 문자열을 지정하면 메모리의 저장된 문자열의 시작 주소가 전달됩니다. 이후 그림에서 지정한\n주소는 임의로 정한 것이며, 이해를 돕기 위해 10진수로 표현했습니다.\n메모리\n주소\n0000\n...\n0500 ‘B’ ‘E’ ‘S’ ‘T’ ‘\\0’\n[0] [1] [2] [3] [4]\n...\n9999\n❷ struct node* func(char* s) {\n❸ struct node* h = NULL, *n;\n❹ while(*s) {\n❺ n = malloc(sizeof(struct node));\n❻ n -> c = *s++;\n❼ n -> p = h;\n❽ h = n;\n}\nreturn h;\n}\n❷ node 자료형 포인터를 반환하는 func( ) 함수의 시작점이다. ❶번에서 전달한 “BEST” 문자열의 시작 주\n소를 문자형 포인터 변수 s가 받는다.\n❸ node 자료형 포인터 변수 h와 n을 선언하고, h는 NULL로 초기화한다.\n❹ s가 가리키는 값이 NULL이 아닌 동안 ❺~❽번을 반복 수행한다.\n[첫 번째 반복]\n❺ malloc 함수가 메모리에서 node 자료형의 크기, 즉 5Byte의 빈 영역을 찾아 할당한 다음 그 영역의 시작\n주소를 포인터 변수 n에 저장한다. 이제 n은 할당된 공간의 시작 주소를 가리킨다.\n※ malloc 함수가 동적으로 할당하는 것이므로 여기서 지정한 주소는 임의로 정한 것이며, 이해를 돕기\n위해 주소를 10진수로 표현했습니다. 또한 malloc 함수는 메모리 크기를 바이트 단위로 지정합니다.\n※ 동적 주소가 저장되는 n은 반복되는 동안 매번 새롭게 만들어지는 것으로, 구분하기 쉽게 n1, n2, n3,\n…과 같이 일련번호를 부여하겠습니다.\n메모리\n주소 s 500\n0000\n500 501 502 503 504 …\n... 1Byte 1Byte 1Byte 1Byte 1Byte h NULL\n0500 ‘B’ ‘E’ ‘S’ ‘T’ ‘\\0’\n[0] [1] [2] [3] [4]\n... n1 1000\n5Byte\nc p\n1000\n...\n9999\n❻ s가 가리키는 곳의 값 ‘B’를 n이 가리키는 곳의 c에 저장한 후 s의 값을 1 증가시킨다.\n❼ h의 값 NULL을 n이 가리키는 곳의 p에 저장한다.\n❽ n의 값을 h에 저장한다.\n메모리\n주소 s 501\n0000\n500 501 502 503 504 …\n... 1Byte 1Byte 1Byte 1Byte 1Byte h 1000\n0500 ‘B’ ‘E’ ‘S’ ‘T’ ‘\\0’\n[0] [1] [2] [3] [4]\nn1 1000\n...\nc p\n1000 ‘B’ NULL\n...\n9999\n[두 번째 반복]\n❺ malloc 함수가 메모리에서 node 자료형의 크기, 즉 5Byte의 빈 영역을 찾아 할당한 다음 그 영역의 시작\n주소를 포인터 변수 n에 저장한다. 이제 n은 할당된 공간의 시작 주소를 가리킨다.\n메모리\n주소\n0000\n500 501 502 503 504 … s 501\n... 1Byte 1Byte 1Byte 1Byte 1Byte\n0500 ‘B’ ‘E’ ‘S’ ‘T’ ‘\\0’\n[0] [1] [2] [3] [4] h 1000\n...\n1000 ‘B’ NULL\nn2 2000\n... c p\n2000\n...\n9999\n❻ s가 가리키는 곳의 값 ‘E’를 n이 가리키는 곳의 c에 저장한 후 s의 값을 1 증가시킨다.\n❼ h의 값 1000을 n이 가리키는 곳의 p에 저장한다.\n❽ n의 값을 h에 저장한다.\n메모리\n주소\n0000\n500 501 502 503 504 … s 502\n... 1Byte 1Byte 1Byte 1Byte 1Byte\n0500 ‘B’ ‘E’ ‘S’ ‘T’ ‘\\0’\n[0] [1] [2] [3] [4] h 2000\n...\n1000 ‘B’ NULL\nn2 2000\n... c p\n2000 ‘E’ 1000\n...\n9999\n[세 번째 반복]\n❺ malloc 함수가 메모리에서 node 자료형의 크기, 즉 5Byte의 빈 영역을 찾아 할당한 다음 그 영역의 시작\n주소를 포인터 변수 n에 저장한다. 이제 n은 할당된 공간의 시작 주소를 가리킨다.\n메모리\n주소\n0000\n500 501 502 503 504 …\n... 1Byte 1Byte 1Byte 1Byte 1Byte\n0500 ‘B’ ‘E’ ‘S’ ‘T’ ‘\\0’\ns 502\n[0] [1] [2] [3] [4]\n...\n1000 ‘B’ NULL h 2000\n...\n2000 ‘E’ 1000\nn3 3000\n... c p\n3000\n...\n9999\n❻ s가 가리키는 곳의 값 ‘S’를 n이 가리키는 곳의 c에 저장한 후 s의 값을 1 증가시킨다.\n❼ h의 값 2000을 n이 가리키는 곳의 p에 저장한다.\n❽ n의 값을 h에 저장한다.\n메모리\n주소\n0000\n500 501 502 503 504 …\n... 1Byte 1Byte 1Byte 1Byte 1Byte\n0500 ‘B’ ‘E’ ‘S’ ‘T’ ‘\\0’ s 503\n[0] [1] [2] [3] [4]\n...\n1000 ‘B’ NULL h 3000\n...\n2000 ‘E’ 1000\nn3 3000\n... c p\n3000 ‘S’ 2000\n...\n9999\n[네 번째 반복]\n❺ malloc 함수가 메모리에서 node 자료형의 크기, 즉 5Byte의 빈 영역을 찾아 할당한 다음 그 영역의 시작\n주소를 포인터 변수 n에 저장한다. 이제 n은 할당된 공간의 시작 주소를 가리킨다.\n메모리\n주소\n0000\n500 501 502 503 504 …\n... 1Byte 1Byte 1Byte 1Byte 1Byte\n0500 ‘B’ ‘E’ ‘S’ ‘T’ ‘\\0’\n[0] [1] [2] [3] [4]\n...\ns 503\n1000 ‘B’ NULL\n...\n2000 ‘E’ 1000 h 3000\n...\n3000 ‘S’ 2000\nn4 4000\n... c p\n4000\n...\n9999\n❻ s가 가리키는 곳의 값 ‘T’를 n이 가리키는 곳의 c에 저장한 후 s의 값을 1 증가시킨다.\n❼ h의 값 3000을 n이 가리키는 곳의 p에 저장한다.\n❽ n의 값을 h에 저장한다.\n메모리\n주소\n0000\n500 501 502 503 504 …\n... 1Byte 1Byte 1Byte 1Byte 1Byte\n0500 ‘B’ ‘E’ ‘S’ ‘T’ ‘\\0’\n[0] [1] [2] [3] [4]\n...\ns 504\n1000 ‘B’ NULL\n...\n2000 ‘E’ 1000 h 4000\n...\n3000 ‘S’ 2000\nn4 4000\n... c p\n4000 ‘T’ 3000\n...\n9999\n❷ struct node* func(char* s) {\n❸ struct node* h = NULL, *n;\n❹ while(*s) {\n❺ n = malloc(sizeof(struct node));\n❻ n -> c = *s++;\n❼ n -> p = h;\n❽ h = n;\n}\n❾ return h;\n}\n❹ s가 가리키는 값이 ‘\\0’, 즉 NULL이므로 반복을 중단하고 ❾번으로 이동한다.\n❾ h가 가리키는 주소를 func( ) 함수를 호출했던 ❿번으로 반환한다.\nint main( ) {\n❶❿ struct node* n = func(\"BEST\");\n⓫ while(n) {\n⓬ putchar(n -> c);\n⓭ struct node* t = n;\n⓮ n = n -> p;\n⓯ free(t);\n}\nreturn 0;\n}\n❿ ❾번으로부터 반환받은 h가 가리키는 주소 4000을 node 자료형 포인터 변수 n에 저장한다.\n⓫ n이 NULL이 아닌 동안 ⓬~⓯번을 반복 수행한다.\n[첫 번째 반복]\n⓬ n이 가리키는 c의 값 ‘T’를 출력한다.\n결과 T\n⓭ node 자료형 포인터 변수 t를 선언하고, n으로 초기화한다.\n메모리\n주소\n0000\n...\n1000 ‘B’ NULL\n...\n2000 ‘E’ 1000\n...\n3000 ‘S’ 2000\nn 4000\n... c p\n4000 ‘T’ 3000\n... t 4000\n9999\n⓮ n이 가리키는 곳의 p의 값을 n에 저장한다.\n⓯ t가 가리키고 있는 메모리 공간을 해제한다. 즉 t가 가리키고 있는 4000 번지부터 할당된 5Byte 공간을\n해제한다.\n※ free( ) : malloc( ) 함수에 의해 동적으로 할당된 메모리를 해제함\n메모리\n주소\n0000\n...\n1000 ‘B’ NULL\n...\n2000 ‘E’ 1000 n 3000\n...\n3000 ‘S’ 2000\nt 4000\n...\n4000 메모리 해제됨\n...\n9999\n[두 번째 반복]\n⓬ n이 가리키는 c의 값 ‘S’를 출력한다.\n결과 TS\n⓭ node 자료형 포인터 변수 t를 선언하고, n으로 초기화한다.\n메모리\n주소\n0000\n...\n1000 ‘B’ NULL\n...\n2000 ‘E’ 1000\nn 3000\n... c p\n3000 ‘S’ 2000\n... t 3000\n9999\n⓮ n이 가리키는 곳의 p의 값을 n에 저장한다.\n⓯ t가 가리키고 있는 메모리 공간을 해제한다. 즉 t가 가리키고 있는 3000 번지부터 할당된 5Byte 공간을\n해제한다.\n메모리\n주소\n0000\n...\n1000 ‘B’ NULL n 2000\n...\n2000 ‘E’ 1000\nt 3000\n...\n3000 메모리 해제됨\n...\n9999\n[세 번째 반복]\n⓬ n이 가리키는 c의 값 ‘E’를 출력한다.\n결과 TSE\n⓭ node 자료형 포인터 변수 t를 선언하고, n으로 초기화한다.\n메모리\n주소\n0000\n...\n1000 ‘B’ NULL\nn 2000\n... c p\n2000 ‘E’ 1000\n... t 2000\n9999\n⓮ n이 가리키는 곳의 p의 값을 n에 저장한다.\n⓯ t가 가리키고 있는 메모리 공간을 해제한다. 즉 t가 가리키고 있는 2000 번지부터 할당된 5Byte 공간을\n해제한다.\n메모리\n주소\n0000 n 1000\n...\n1000 ‘B’ NULL\nt 2000\n...\n2000 메모리 해제됨\n...\n9999\n[네 번째 반복]\n⓬ n이 가리키는 c의 값 ‘B’를 출력한다.\n결과 TSEB\n⓭ node 자료형 포인터 변수 t를 선언하고, n으로 초기화한다.\n메모리\n주소\n0000\nn 1000\n...\n1000 ‘B’ NULL\n... t 1000\n2000\n...\n9999\n⓮ n이 가리키는 곳의 p의 값을 n에 저장한다.\n⓯ t가 가리키고 있는 메모리 공간을 해제한다. 즉 t가 가리키고 있는 1000 번지부터 할당된 5Byte 공간을\n해제한다.\nn NULL\n메모리\n주소\n0000\nt 1000\n...\n1000 메모리 해제됨\n...\n2000\n...\n9999\nint main( ) {\n❶❿ struct node* n = func(\"BEST\");\n⓫ while(n) {\n⓬ putchar(n -> c);\n⓭ struct node* t = n;\n⓮ n = n -> p;\n⓯ free(t);\n}\n⓰ return 0;\n}\n⓫ n이 NULL이므로 반복을 중단하고 ⓰번으로 이동한다.\n⓰ main( ) 함수에서의 ‘return 0’은 프로그램의 종료를 의미한다.",
+      "reviewed": false,
+      "published": false
+    }
+  ]
+}

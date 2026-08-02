@@ -1,0 +1,534 @@
+{
+  "examSlug": "jeongchogi",
+  "examType": "practical",
+  "year": 2025,
+  "round": 3,
+  "title": "2025년 3회 정보처리기사 실기",
+  "sourceLabel": "licensed-pdf-2025-3",
+  "pageCount": 27,
+  "extractedQuestionCount": 20,
+  "missingNumbers": [],
+  "missingAnswerNumbers": [],
+  "questions": [
+    {
+      "id": "jeongchogi-practical-2025-3-001",
+      "subject": "실기",
+      "number": 1,
+      "points": 5,
+      "content": "UML 다이어그램에 대한 다음 설명에서 괄호에 공통으로 들어갈 알맞은 용어를 쓰시오.\n(5점)\n( ) 다이어그램\n( )은(는) UML 정적 모델링의 하나로, 관련있는 객체들을 하나로 묶어 상위 개념으로 추상화한 것이\n다. 위의 그림과 같이 유스케이스나 클래스 등의 요소들을 그룹화하여 의존 관계를 표현하며, 대규모 시\n스템에서 주요 요소 간의 종속성을 파악하는 데 사용한다. 시스템의 구조를 간략하게 표현할 수 있고 의\n존 관계를 명확하게 파악할 수 있어, 불필요한 의존 관계를 제거하거나 간략화함으로써 시스템의 복잡도\n를 낮추는 곳에도 사용할 수 있다.",
+      "rawAnswerText": "패키지",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "패키지"
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-002",
+      "subject": "실기",
+      "number": 2,
+      "points": 5,
+      "content": "다음 설명에 해당하는 UNIX 명령어를 <보기>에서 찾아 쓰시오. (5점)\n• ( ① ) : 현재 작업중인 디렉터리 경로를 화면에 표시한다.\n• ( ② ) : 현재 디렉터리의 파일 목록을 표시한다.\n• ( ③ ) : 디렉터리의 위치를 변경한다.\n• ( ④ ) : 파일을 복사한다.\n<보기>\n• ls • fork • ps • cp\n• cat • pwd • chmod • cd",
+      "rawAnswerText": "① pwd ② ls ③ cd ④ cp",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "pwd"
+          ]
+        },
+        {
+          "blank": 2,
+          "accepted": [
+            "ls"
+          ]
+        },
+        {
+          "blank": 3,
+          "accepted": [
+            "cd"
+          ]
+        },
+        {
+          "blank": 4,
+          "accepted": [
+            "cp"
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-003",
+      "subject": "실기",
+      "number": 3,
+      "points": 5,
+      "content": "화이트박스 테스트의 검증 기준에 대한 다음 설명에 해당하는 용어를 <보기>에서 찾아\n쓰시오. (5점)\n테스트 케이스를 소스 코드의 조건문에 포함된 개별 조건식의 결과가 True인 경우와 False인 경우가 한\n번 이상 수행되도록 설계한다.\n<보기>\n• 문장 커버리지 • 분기 커버리지 • 조건 커버리지 • 분기/조건 커버리지",
+      "rawAnswerText": "조건 커버리지",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "조건 커버리지"
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-004",
+      "subject": "실기",
+      "number": 4,
+      "points": 5,
+      "content": "다음 설명에서 괄호(①~⑤)에 들어갈 알맞은 용어를 <보기>에서 찾아 기호(㉠~㉧)로\n쓰시오. (5점)\n• ( ① ) 코드는 데이터 전송 시 오류를 검출하고 수정하는 코드로, 데이터 전송 과정에서 발생한 오류\n를 검출해 재전송 요구 없이 수신측에서 스스로 수정하는 ( ② ) 방식에 속한다.\n• 이에 반해 오류 발생 시 송신측에 재전송을 요구하는 방식은 ( ③ )이며, 대표적인 종류에는 ( ④ )\n검사와 ( ⑤ ) 검사가 있다.\n• ( ① ) 코드 : 전송 데이터에 n비트의 검사 비트를 추가해 오류를 검출하고, 수정한다.\n• ( ④ ) 검사 : 전송 데이터의 한 블록 끝에 1비트의 검사 비트 추가하여 오류를 검출한다.\n• ( ⑤ ) 검사 : 송신측과 수신측이 동일한 특정 다항식을 사용하여 오류를 검출한다.\n<보기>\n㉠ CRC ㉡ FEC ㉢ BEC ㉣ NAK\n㉤ Parity ㉥ MD5 ㉦ BCD ㉧ Hamming",
+      "rawAnswerText": "① ㉧ ② ㉡ ③ ㉢ ④ ㉤ ⑤ ㉠",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "㉧"
+          ]
+        },
+        {
+          "blank": 2,
+          "accepted": [
+            "㉡"
+          ]
+        },
+        {
+          "blank": 3,
+          "accepted": [
+            "㉢"
+          ]
+        },
+        {
+          "blank": 4,
+          "accepted": [
+            "㉤"
+          ]
+        },
+        {
+          "blank": 5,
+          "accepted": [
+            "㉠"
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-005",
+      "subject": "실기",
+      "number": 5,
+      "points": 5,
+      "content": "다음 C 언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력\n서식을 준수하시오.) (5점)\n#include <stdio.h>\nstruct Test {\nint i;\nconst char *g;\n};\nint main( ) {\nstruct Test test[ ] = {{1, \"AB\"}, {2, \"DC\"}, {3, \"EB\"}};\nstruct Test *p = &test[1];\nprintf(\"%s\", p->g + (p->i - 1));\nreturn 0;\n}",
+      "rawAnswerText": "C",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "C"
+          ]
+        }
+      ],
+      "explanation": "#include <stdio.h>\nstruct Test { // 구조체 Test를 정의합니다.\nint i; // 정수형 변수 i를 선언합니다.\nconst char *g; // 문자형 포인터 상수 g를 선언합니다.\nstruct Test\nint i(4Byte) char *g(8Byte)\n정수를 저장할 멤버 문자열이 저장된 주소를 저장할 멤버\n};\nint main( ) {\n❶ struct Test test[ ] = {{1, \"AB\"}, {2, \"DC\"}, {3, \"EB\"}};\n❷ struct Test *p = &test[1];\n❸ printf(\"%s\", p->g + (p->i - 1));\n❹ return 0;\n}\n모든 C 프로그램은 반드시 main( ) 메소드에서 시작한다.\n❶ 구조체 Test 자료형으로 3개짜리 배열 test를 선언하고 초기화한다. 배열을 선언할 때 배열의 크기를 지정\n하지 않으면 초기값의 개수로 배열의 요소가 만들어진다.\n메모리\n주소\n0000\nㆍㆍㆍ test[0] test[1] test[2]\n1000 1004 1008 1012 1016 1020 1024 1028 1032 1036 1040 ㆍㆍㆍ\n1000 i *g i *g i *g\n1 2000 2 2004 3 2008\nㆍㆍㆍ\n2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 ㆍㆍㆍ\n2000\nA B ‘\\0’ D C ‘\\0’ E B ‘\\0’\nㆍㆍㆍ\n9999\n❷ Test 구조체를 가리키는 포인터 변수 p를 선언하고, test[1]의 주소를 저장한다. p는 1016번지 이후의\n12Byte를 의미한다. (이후 그림에서 지정한 주소는 임의로 정한 것이며, 이해를 돕기 위해 10진수로 표현했\n다.)\n메모리\n주소\n0000 p 1016\nㆍㆍㆍ test[0] test[1] test[2]\n1000 1004 1008 1012 1016 1020 1024 1028 1032 1036 1040 ㆍㆍㆍ\n1000 i *g i *g i *g\n1 2000 2 2004 3 2008\nㆍㆍㆍ\n2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 ㆍㆍㆍ\n2000\nA B ‘\\0’ D C ‘\\0’ E B ‘\\0’\nㆍㆍㆍ\n9999\n❸ p가 가리키는 곳의 g가 가리키는 곳의 주소에서 1만큼 증가한 곳의 값을 문자열로 출력한다. 문자열의 출력\n은 문자열의 시작 위치부터 문자열의 끝을 의미하는 널 문자(‘\\0’) 전까지를 출력한다.\np->g + (p->i – 1)\n①\n②\n③\nㆍ① p->i : p가 가리키는 곳의 i 값은 2다.\nㆍ② ① - 1 → 2 - 1 : 1\nㆍ③ p->g + ② → p->g + 1 : p가 가리키는 곳의 g가 가리키는 곳의 주소인 2004에서 1만큼 증가한 곳인\n2005 번지의 값은 “C”다.\n결과 C\n❹ main( ) 함수에서의 ‘return 0’은 프로그램의 종료를 의미한다.",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-006",
+      "subject": "실기",
+      "number": 6,
+      "points": 5,
+      "content": "다음 Java로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력\n서식을 준수하시오.) (5점)\nenum Tri {\nA(\"A\"), B(\"AB\"), C(\"ABC\");\nprivate String code;\nTri(String code) {\nthis.code = code;\n}\npublic String code( ) {\nreturn code;\n}\n}\npublic class Main {\npublic static void main(String[] args) {\nTri t = Tri.values( )[Tri.A.name( ).length( )];\nSystem.out.print(t.code( ));\n}\n}",
+      "rawAnswerText": "AB",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "AB"
+          ]
+        }
+      ],
+      "explanation": "enum Tri { // 열거형 Tri 클래스를 정의한다.\n① A(\"A\"), B(\"AB\"), C(\"ABC\"); // 열거형 Tri 클래스의 객체 상수 A, B, C를 정의한다.\nprivate String code; // 문자열 변수 code를 객체 상수의 속성으로 정의한다.\n② Tri(String code) { // 생성자로, 열거형 상수가 정의될 때 자동으로 호출된다.\n③ this.code = code;\n}\n❸ public String code( ) { // 메소드 code를 객체 상수의 메소드로 정의한다.\n❹ return code; // 해당 객체 상수의 속성 code를 반환한다.\n}\n}\npublic class Main {\npublic static void main(String[] args) {\n❶ Tri t = Tri.values( )[Tri.A.name( ).length( )];\n❷❺ System.out.print(t.code( ));\n}\n}\n모든 Java 프로그램은 main( ) 메소드에서 시작하는데, main( ) 메소드가 시작되기 전 다음과 같이 Tri 열거형\n클래스의 객체 상수 초기화 과정이 수행된다.\n① 열거형(enum) 객체 상수 A를 선언하면서 “A”를 인수로 생성자를 호출한다. 객체 상수가 정의될 때 해당 객\n체가 문자열 변수 code와 문자열을 반환하는 code( ) 메소드도 함께 정의된다.\n② 열거형 Tri의 생성자 Tri( )의 시작점이다. ①번에서 전달한 “A”를 code가 받는다.\n③ code에 “A”를 저장한다. 즉 객체 상수 A의 code에 “A”가 저장된다.\n※ 위와 같은 과정으로 객체 상수 B, C의 초기화도 수행되며, 수행된 결과는 다음과 같다. 열거형 상수는 내부적\n으로 선언 순서에 따라 순서가 부여되며, 이 순서는 배열에서 인덱스로 사용된다.\nTri[0] Tri[1] Tri[2]\nTri.A Tri.B Tri.C\ncode code( ) code code( ) code code( )\n“A” “AB” “ABC”\n모든 Java 프로그램은 반드시 main( ) 메소드에서 시작한다.\n❶ Tri 객체 변수 t에 Tri.values( )[1], 즉 Tri.B를 저장한다.\nTri.values( )[Tri.A.name( ).length( )];\n①\n②\n③\nㆍ① Tri.A.name( ) : Tri의 상수 A의 이름을 문자열 “A” 형태로 반환함\n※ name( ) : 열거형 상수의 이름을 문자열로 반환함\nㆍ② ①.length( ) → “A”.length( ) : 문자열 “A”의 길이인 1을 반환함\n※ length( ) : 문자열의 길이를 반환함\nㆍ③ Tri.values( )[②] → Tri.values( )[1] : 배열로 변환된 Tri의 상수 중 인덱스가 1인 요소, 즉 Tri.B를\n반환함\n※ values( ) : 열거형 상수를 배열의 형태로 변환함\n❷ t, 즉 Tri.B의 code( ) 메소드를 호출한 후 돌려받은 값을 출력한다. ❸번으로 이동한다.\n❸ 문자열을 반환하는 code( ) 메소드의 시작점이다. ❷번에서 Tri.B의 code( ) 메소드가 호출되었으므로 현재\ncode는 “AB”이다.\n❹ code의 값 “AB”를 메소드를 호출했던 ❺번으로 반환한다.\n❺ ❹번으로부터 반환받은 값 AB를 출력한다.\n결과 AB",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-007",
+      "subject": "실기",
+      "number": 7,
+      "points": 5,
+      "content": "<A> 테이블과 <B> 테이블을 참고하여 <SQL문>의 실행 결과를 쓰시오. (5점)\n<A> <B>\nNAME RULE\nSmith S%\nAllen %T%\nScott\n<SQL문>\nSELECT COUNT(*) CNT FROM A CROSS JOIN B WHERE A.NAME LIKE B.RULE;",
+      "rawAnswerText": "4",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "4"
+          ]
+        }
+      ],
+      "explanation": "SELECT COUNT(*) CNT\nFROM A CROSS JOIN B\nWHERE A.NAME LIKE B.RULE;\n질의문은 각 절을 분리하여 이해하면 쉽습니다.\nㆍSELECT COUNT(*) CNT : 튜플의 개수를 표시하되, 필드명은 ‘CNT’로 표시합니다.\n※ ‘SELECT COUNT(*) AS CNT’에서 AS가 생략된 형태입니다.\nㆍFROM A CROSS JOIN B : <A>와 <B>를 교차 조인(CROSS JOIN)한 결과를 대상으로 검색합니다.\nA.NAME B.RULE\nSmith S%\nSmith %T%\nAllen S%\nAllen %T%\nScott S%\nScott %T%\nㆍWHERE A.NAME LIKE B.RULE : <A> 테이블의 ‘NAME’ 필드 값이 <B> 테이블의 ‘RULE’ 필드에 저장된 문\n자열 패턴과 일치하는 튜플만을 대상으로 합니다.\n※ <B> 테이블의 ‘RULE’ 필드에 저장된 값은 ‘S%’와 ‘%T%’와 같이 문자 패턴인 ‘%’ 기호가 포함되어 있으므\n로, 조건문의 LIKE 연산자와 결합되면 다음과 같이 적용됩니다.\n- A.NAME LIKE S% : ‘A.NAME’이 “S”로 시작하는 레코드를 검색\nNAME RULE\nSmith S%\nSmith %T%\nAllen S%\nAllen %T%\nScott S%\nScott %T%\n- A.NAME LIKE %T% : ‘A.NAME’이 “T”를 포함하는 레코드를 검색\nNAME RULE\nSmith S%\nSmith %T%\nAllen S%\nAllen %T%\nScott S%\nScott %T%\n※ CROSS JOIN된 결과에서 조건을 만족하는 튜플은 다음과 같습니다. 그러므로 검색된 튜플의 개수는 4입니다.\nNAME RULE\nSmith S%\nSmith %T%\nScott S%\nScott %T%",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-008",
+      "subject": "실기",
+      "number": 8,
+      "points": 5,
+      "content": "다음 설명에 해당하는 용어를 <보기>에서 찾아 쓰시오. (5점)\n• 인터넷 애플리케이션에서 사용자 인증에 사용되는 표준 인증 방법으로, 공개 API(OpenAPI)로 구현되었\n다.\n• 인터넷 사용자가 웹사이트나 애플리케이션에 비밀번호를 제공하지 않고 자신에게 접근 권한을 부여하여\n사용할 수 있다.\n• 2010년 ETF에서 1.0이 공식 표준안으로 발표되었다.\n<보기>\n• OpenID • IDEA • OAuth • SSPI\n• SASL • PEAP • OIDC • JAAS",
+      "rawAnswerText": "oAuth",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "oAuth"
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-009",
+      "subject": "실기",
+      "number": 9,
+      "points": 5,
+      "content": "다음 설명에 해당하는 알맞은 용어를 영문 약어로 쓰시오. (5점)\n• 사용자가 패스워드를 요청할 때마다 암호 알고리즘과 해시 함수를 이용하여 새로운 일회용 패스워드를\n생성하며, 한 번 사용된 패스워드는 폐기되어 재사용할 수 없다.\n• 주로 은행 및 금융 거래 시 사용자 본인 인증을 강화하기 위해 널리 사용된다.",
+      "rawAnswerText": "OTP",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "OTP"
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-010",
+      "subject": "실기",
+      "number": 10,
+      "points": 5,
+      "content": "다음 Java로 구현된 프로그램을 분석하여 괄호에 들어갈 알맞은 코드를 쓰시오. (5점)\ninterface Cals {\npublic void get(int v);\n}\nclass Test ( ) Cals {\npublic void get(int v) {\nSystem.out.print(v*v);\n}\n}\npublic class Main {\npublic static void main(String[] args) {\nCals a = new Test();\na.get(10);\n}\n}",
+      "rawAnswerText": "implements",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "implements"
+          ]
+        }
+      ],
+      "explanation": "Ⓐ interface Cals {\nⒷ public void get(int v);\n}\nⒸ class Test implements Cals {\nⒹ ❸ public void get(int v) {\n❹ System.out.print(v*v);\n}\n}\npublic class Main {\npublic static void main(String[] args) {\n❶ Cals a = new Test();\n❷ a.get(10);\n} ❺\n}\nⒶ 인터페이스 Cals를 선언한다.\nⒷ 반환값이 없는 get( )을 선언한다. 인터페이스에 선언된 메소드는 선언만 있고 내부에 실행 코드가 없는 추\n상 메소드이므로, 이후 상속 관계가 설정된 자식 클래스에서 재정의한 후 사용한다.\nⒸ Cals 인터페이스를 상속받는 클래스 Test를 정의한다.\nⒹ 반환값이 없는 get( )을 정의한다. get( ) 메소드는 Ⓑ에서 선언된 추상 메소드(Ⓑ)를 재정의하는 것이다.\n※ 추상 메소드는 부모 클래스가 자식 클래스에게 주는 의무와 같습니다. 부모 클래스와 상속 관계에 있다면 반드시 부모 클래\n스의 추상 메소드를 재정의해야 합니다. 그렇지 않으면 프로그램에 오류가 발생합니다.\n모든 Java 프로그램은 반드시 main( ) 메소드에서 시작한다.\n❶ Test 클래스의 생성자를 이용하여 Cals의 객체 변수 a를 선언한다. 부모 클래스의 객체 변수를 선언하면서\n자식 클래스의 생성자를 사용하면 형 변환이 발생한다. 이렇게 형 변환이 발생했을 때 부모 클래스와 자식\n클래스에 동일한 속성이나 메소드가 있으면 부모클래스의 속성이나 메소드가 자식 클래스의 속성이나 메소\n드로 재정의된다.\n❷ 10을 인수로 하여 a의 get( ) 메소드를 호출한다. ❸번으로 이동한다.\n※ get( ) 메소드는 a 객체의 자료형이 Cals이므로 Cals 클래스의 get( )이라고 생각할 수 있지만 ❶번에서 클래스\n형 변환이 발생하였고, get( ) 메소드가 자식 클래스에서 재정의되었으므로 Test 클래스의 get( ) 메소드가 수행\n됩니다.\n❸ 반환값이 없는 get( ) 메소드의 시작점이다. ❷번에서 전달받은 10을 v가 받는다.\n❹ v*v의 결과값인 100을 출력한 후 메소드가 종료되면, 호출했던 ❷번의 다음 줄인 ❺번으로 이동하여 프로그\n램을 종료한다.\n결과 100",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-011",
+      "subject": "실기",
+      "number": 11,
+      "points": 5,
+      "content": "다음 Python으로 구현된 프로그램을 분석하여 출력값(①~⑧)에 들어갈 알맞은 값을 쓰\n시오. (5점)\ndata = [\n[3, 5, 2, 4, 1],\n[4, 5, 1],\n[4, 4, 1, 5, 4],\n[4, 5]\n]\nresult = { }\nfor index, lis in enumerate(data):\nlist_sum = sum(lis)\nlist_len = len(lis)\nresult[index] = (list_sum, list_len)\nprint(result)\n<출력값>\n{0: (①, ②), 1: (③, ④), 2: (⑤, ⑥), 3: (⑦, ⑧)}",
+      "rawAnswerText": "① 15 ② 5 ③10 ④ 3 ⑤ 18 ⑥ 5 ⑦ 9 ⑧ 2",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "15"
+          ]
+        },
+        {
+          "blank": 2,
+          "accepted": [
+            "5"
+          ]
+        },
+        {
+          "blank": 3,
+          "accepted": [
+            "10"
+          ]
+        },
+        {
+          "blank": 4,
+          "accepted": [
+            "3"
+          ]
+        },
+        {
+          "blank": 5,
+          "accepted": [
+            "18"
+          ]
+        },
+        {
+          "blank": 6,
+          "accepted": [
+            "5"
+          ]
+        },
+        {
+          "blank": 7,
+          "accepted": [
+            "9"
+          ]
+        },
+        {
+          "blank": 8,
+          "accepted": [
+            "2"
+          ]
+        }
+      ],
+      "explanation": "❶ data = [\n[3, 5, 2, 4, 1],\n[4, 5, 1],\n[4, 4, 1, 5, 4],\n[4, 5]\n]\n❷ result = { }\n❸ for index, lis in enumerate(data):\n❹ list_sum = sum(lis)\n❺ list_len = len(lis)\n❻ result[index] = (list_sum, list_len)\n❼ print(result)\n❶ 리스트 안에 리스트가 저장되는 다차원 리스트 data를 선언하고, 다음과 같이 초기화한다.\n리스트 data\n[0] [1] [2] [3] [4]\ndata[0] 3 5 2 4 1\ndata[1] 4 5 1\ndata[2] 4 4 1 5 4\ndata[3] 4 5\n❷ 딕셔너리 result를 선언한다.\n❸ 리스트 data의 요소 수만큼 ❹~❻번 문장을 반복 수행한다. 리스트 data는 4개의 요소를 가지므로 각 요소\n의 ‘인덱스’와 ‘요소값’을 index와 lis에 할당하면서 ❹~❻번 문장을 4회 수행한다.\nㆍenumerate( ) : 반복 가능한 객체를 대상으로 해당 객체의 요소를 ‘인덱스, 요소값’의 형태로, 인덱스와 요\n소를 묶어서 반환함\n❹ list_sum에 계산된 lis의 모든 요소의 합을 저장한다.\nㆍsum( ) : 리스트의 모든 요소의 합을 계산하여 반환함\n❺ list_len에 계산된 lis 요소의 개수를 저장한다.\nㆍlen( ) : 리스트 요소의 개수를 반환함\n❻ 딕셔너리 result의 index 위치에 (list_sum, list_len)을 값으로 저장한다.\n반복문 실행에 따른 변수들의 변화는 다음과 같다.\nindex lis list_sum list_len result\n[0]\n0 3 5 2 4 1 15 5\n15 5\n[0] [1]\n1 4 5 1 10 3\n15 5 10 3\n[0] [1] [2]\n2 4 4 1 5 4 18 5\n15 5 10 3 18 5\n[0] [1] [2] [3]\n3 4 5 9 2\n15 5 10 3 18 5 9 2\n❼ 딕셔너리 result를 출력한다.\n결과 {0: (15, 5), 1: (10, 3), 2: (18, 5), 3: (9, 2)}",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-012",
+      "subject": "실기",
+      "number": 12,
+      "points": 5,
+      "content": "다음 <R>과 <S> 테이블에 대해 ‘R ÷ S’를 실행했을 때 출력되는 결과를 테이블로 작성\n하시오. (5점)\n<R> <S>\nA B B\na1 b1 b1\na2 b2 b3\na1 b3",
+      "rawAnswerText": "A\na1",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "A a1"
+          ]
+        }
+      ],
+      "explanation": "‘R ÷ S’에서 ÷는 R의 속성 중 S의 속성값을 모두 가진 튜플에서 S가 가진 속성을 제외한 속성만을 구하는\n연산입니다.\n① R의 속성에서 S의 속성값을 모두 가진 튜플을 추출합니다.\n<R> <S> <R>\nA B B A B\na1 b1 b1 a1 b1\na2 b2 b3 a1 b3\na1 b3 ➡\n② ①의 결과에서 S가 가진 속성을 제외한 속성만 추출합니다. 결과를 만족하는 <R>의 속성은 ‘A’이며, ‘A’\n속성의 고유한 값은 a1입니다.\n<R> <R>\nA A\na1 a1\na1 ➡",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-013",
+      "subject": "실기",
+      "number": 13,
+      "points": 5,
+      "content": "접근 통제(Access Control)에 대한 다음 설명에서 괄호(①~③)에 들어갈 알맞은 용어를\n<보기>에서 찾아 쓰시오. (5점)\n• 주체와 객체의 등급을 비교하여 접근 권한을 부여하는 방식이다.\n• 시스템이 접근통제 권한을 지정한다.\n( ① )\n• 데이터베이스 객체별로 보안 등급을 부여할 수 있다.\n• 사용자별로 인가 등급을 부여할 수 있다.\n• 사용자의 역할에 따라 접근 권한을 부여하는 방식이다.\n• 중앙관리자가 접근통제 권한을 지정한다.\n( ② )\n• 임의 접근통제와 강제 접근통제의 단점을 보완하였다.\n• 다중 프로그래밍 환경에 최적화된 방식이다.\n• 데이터에 접근하는 사용자의 신원에 따라 접근 권한을 부여하는 방식이다.\n• 데이터 소유자가 접근통제 권한을 지정하고 제어한다.\n( ③ )\n• 객체를 생성한 사용자가 생성된 객체에 대한 모든 권한을 부여받고, 부여된 권한을 다른 사\n용자에게 허가할 수도 있다.\n<보기>\n• DAC(Discretionary Access Control)\n• MAC(Mandatory Access Control)\n• RBAC(Role Based Access Control)",
+      "rawAnswerText": "① MAC ② RBAC ③ DAC",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "MAC"
+          ]
+        },
+        {
+          "blank": 2,
+          "accepted": [
+            "RBAC"
+          ]
+        },
+        {
+          "blank": 3,
+          "accepted": [
+            "DAC"
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-014",
+      "subject": "실기",
+      "number": 14,
+      "points": 5,
+      "content": "다음 테스트 케이스를 참조하여 괄호(①~③)에 들어갈 테스트 케이스의 구성 요소를\n<보기>에서 찾아 쓰시오. (5점)\n식별자_ID 테스트 항목 ( ① ) ( ② ) ( ③ )\n아이디(test_a01)\nLS_W10_35 로그인 기능 사용자 초기 화면 로그인 성공\n비밀번호(203a!d5%ffa1)\n아이디(test_a01) 로그인 실패(1)\nLS_W10_36 로그인 기능 사용자 초기 화면\n비밀번호(1234) - 비밀번호 비일치\n아이디(“ ”) 로그인 실패(2)\nLS_W10_37 로그인 기능 사용자 초기 화면\n비밀번호(“ ”) - 미입력\n<보기>\n• 요구 절차 • 의존성 여부 • 테스트 데이터 • 테스트 조건\n• 하드웨어 환경 • 예상 결과 • 소프트웨어 환경 • 성공/실패 기준",
+      "rawAnswerText": "① 테스트 조건 ② 테스트 데이터 ③ 예상 결과",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "테스트 조건"
+          ]
+        },
+        {
+          "blank": 2,
+          "accepted": [
+            "테스트 데이터"
+          ]
+        },
+        {
+          "blank": 3,
+          "accepted": [
+            "예상 결과"
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-015",
+      "subject": "실기",
+      "number": 15,
+      "points": 5,
+      "content": "릴레이션을 구성하는 용어들에 대한 다음 설명에서 괄호(①~③)에 들어갈 알맞은 답을\n<보기>에서 찾아 쓰시오. (5점)\n• ( ① ) : 릴레이션을 구성하는 각각의 행을 의미하며, 파일 구조에서는 레코드에 해당함\n• ( ② ) : 데이터 개체를 구성하고 있는 속성들에 데이터 타입이 정의되어 구체적인 데이터 값을 가진\n것으로, 실제 값을 가진 튜플을 의미함\n• ( ③ ) : 튜플의 개수를 의미함\n<보기>\n• 도메인 • 차수 • 속성 • 튜플\n• 디그리 • 카디널리티 • 릴레이션 스키마 • 릴레이션 인스턴스",
+      "rawAnswerText": "① 튜플 ② 릴레이션 인스턴스 ③ 카디널리티",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "튜플"
+          ]
+        },
+        {
+          "blank": 2,
+          "accepted": [
+            "릴레이션 인스턴스"
+          ]
+        },
+        {
+          "blank": 3,
+          "accepted": [
+            "카디널리티"
+          ]
+        }
+      ],
+      "explanation": null,
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-016",
+      "subject": "실기",
+      "number": 16,
+      "points": 5,
+      "content": "다음 C 언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력\n서식을 준수하시오.) (5점)\n#include <stdio.h>\nint main(void) {\nchar str[ ] = \"REPUBLICOFKOREA\";\nint a = 0;\nwhile (str[a] != '\\0')\n++a;\nputchar(str[a-2]);\nreturn 0;\n}",
+      "rawAnswerText": "E",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "E"
+          ]
+        }
+      ],
+      "explanation": "#include <stdio.h>\nint main(void) {\n❶ char str[ ] = \"REPUBLICOFKOREA\";\n❷ int a = 0;\n❸ while (str[a] != '\\0')\n❹ ++a;\n❺ putchar(str[a-2]);\n❻ return 0;\n}\n❶ 문자형 배열 str을 선언하고 초기화한다. 배열의 크기를 생략하면, 초기값으로 지정한 개수만큼 배열이 선언\n되는데, 문자열의 경우 문자열의 끝을 의미하는 널 문자(‘\\0’)가 추가되어 16개의 요소를 갖는 배열로 선언된\n다.\n[0] [1] [2] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13] [14] [15]\nstr R E P U B L I C O F K O R E A \\0\n❷ 정수형 변수 a를 선언하고, 0으로 초기화한다.\n❸ str[a]가 ‘\\0’(널 문자)가 아닌 동안 ❹번을 반복 수행한다.\n❹ ‘a = a + 1;’과 동일하다. a의 값을 1씩 증가시킨다.\n반복문 실행에 따른 변수들의 변화는 다음과 같다.\na str[a] str[a] != ‘\\0’\n0 R No\n1 E No\n2 P No\n3 U No\n4 B No\n5 L No\n6 I No\n7 C No\n8 O No\n9 F No\n10 K No\n11 O No\n12 R No\n13 E No\n14 A No\n15 \\0 YES\n❻ str[a-2], 즉 str[13]의 값 E를 출력한다.\n결과 E\n❼ main( ) 함수에서의 ‘return 0;’은 프로그램의 종료를 의미한다.",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-017",
+      "subject": "실기",
+      "number": 17,
+      "points": 5,
+      "content": "다음 C 언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력\n서식을 준수하시오.) (5점)\n#include <stdio.h>\nint main( ) {\nint x = 7, y = 4, z;\nz = y % 3 < 3 ? 2 : 1;\nz = z & z >> 1;\nz = x > 5 && z <= 3 ? z * x : z / x;\nprintf(\"%d\", z);\nreturn 0;\n}",
+      "rawAnswerText": "0",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "0"
+          ]
+        }
+      ],
+      "explanation": "#include <stdio.h>\nint main( ) {\n❶ int x = 7, y = 4, z;\n❷ z = y % 3 < 3 ? 2 : 1;\n❸ z = z & z >> 1;\n❹ z = x > 5 && z <= 3 ? z * x : z / x;\n❺ printf(\"%d\", z);\n❻ return 0;\n}\n❶ 정수형 변수 x, y, z를 선언하고, x는 7로, y는 4로 초기화한다.\n❷ y를 3으로 나눈 나머지가 3보다 작으면 z에 2를 저장하고, 아니면 1을 저장한다. y의 값 4를 3으로 나눈 나\n머지 1은 3보다 작으므로 z에는 2가 저장된다.\n❸ ‘z & z >> 1’의 결과 0을 z에 저장한다.\nz & z >> 1\n①\n②\nㆍ① z >> 1 : z의 값 2(0010 )를 오른쪽으로 1비트 이동시킨 1(0001 )을 반환함\n2 2\nㆍ② z & ① → z & 1 : z의 값 2(0010 )와 1(0001 )의 논리곱(&) 연산의 결과인 0(0000 )을 반환함\n2 2 2\n❹ 조건이 참이면 ‘z*x’의 값을 저장하고, 아니면 ‘z/x’의 값을 z에 저장한다. 조건이 참이므로 ‘z*x’의 값 0을 z\n에 저장한다.\nx > 5 && z <= 3\n① ②\n③\nㆍ① x > 5 : x의 값 7은 5보다 크므로 참(True)을 반환\nㆍ② z <= 3 : z의 값 0은 3보다 작으므로 참(True)을 반환\nㆍ③ ① && ② → True && True : 두 항목 모두 참(True)이므로 z에는 ‘z*x’의 값 0이 저장됨\n❺ z의 값 0을 출력한다.\n결과 0\n❻ main( ) 함수에서의 ‘return 0;’은 프로그램의 종료를 의미한다.",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-018",
+      "subject": "실기",
+      "number": 18,
+      "points": 5,
+      "content": "다음 Java로 구현된 프로그램을 분석하여 괄호에 들어갈 알맞은 코드를 쓰시오. (5점)\nclass Rectangle {\nint x, y;\nRectangle(int x, int y) {\nthis.x = x;\nthis.y = y;\n}\nint getArea( ) {\nreturn x*y;\n}\n}\nclass Square extends Rectangle {\nSquare(int a) {\n( )(a, a);\n}\nint getSquareArea( ) {\nreturn x*y;\n}\n}\npublic class Main {\npublic static void main(String[] args) {\nSquare sq = new Square(10);\nSystem.out.println(sq.getSquareArea( ));\n}\n}",
+      "rawAnswerText": "super",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "super"
+          ]
+        }
+      ],
+      "explanation": "class Rectangle {\nint x, y;\n❹ Rectangle(int x, int y) {\n❺ this.x = x;\n❻ this.y = y;\n}\nint getArea( ) {\nreturn x*y;\n}\n}\nclass Square extends Rectangle { // Square를 클래스 정의하고 부모 클래스로 Rectangle을 지정하면\nRectangle에 속한 변수와 메소드를 상속받으므로, Square 클래스\n에서는 Rectangle의 변수와 메소드를 사용할 수 있게 된다.\n❷ Square(int a) {\n❸ super(a, a);\n}\n❽ int getSquareArea( ) {\n❾ return x*y;\n}\n}\npublic class Main {\npublic static void main(String[] args) {\n❶ Square sq = new Square(10);\n❼❿ System.out.println(sq.getSquareArea( ));\n}\n}\n❶ Square 클래스의 객체 변수 sq를 선언한다. 10을 인수로 하여 Square 클래스의 생성자를 호출한다.\n❷ Square 클래스의 생성자인 Square( ) 메소드의 시작점이다. ❷번에서 전달한 10을 a가 받는다.\n객체 변수 sq\nSquare\nSquare(int a)\na\n10\n❸ 부모 클래스의 생성자를 호출하며, 인수로 a와 a, 즉 10과 10을 전달한다.\nㆍsuper : 상속한 부모 클래스를 가리키는 예약어\n❹ 부모 클래스인 Rectangle 클래스의 생성자 Rectangle( )의 시작점이다. ❸번에서 전달한 10과 10을 x와 y가\n받는다.\n객체 변수 sq\nSquare Rectangle\nSquare(int a) 상속된 공용 변수 Rectangle(int x, int y)\na x y x y\n10 10 10\n❺ ‘Rectangle.x = x;’와 동일하다. Rectangle.x에 10을 저장한다.\nㆍthis : 현재 실행중인 메소드가 속한 클래스를 가리키는 예약어\n❻ Rectangle.y에 10을 저장한다.\nRectangle( ) 생성자가 종료되면 생성자를 호출했던 ❸번으로 돌아간 후 Square( ) 생성자도 종료되므로\nSquare( ) 생성자를 호출했던 ❶번의 다음 줄인 ❼번으로 이동한다.\n객체 변수 sq\nSquare Rectangle\nSquare(int a) 상속된 공용 변수 Rectangle(int x, int y)\na x y x y\n10 10 10 10 10\n❼ sq.getSquareArea( ) 메소드를 호출하여 반환받은 값을 출력한다. sq는 Square 클래스의 객체 변수이므로\nSquare 클래스의 getSquareArea( ) 메소드를 호출한다. ❽번으로 이동한다.\n❽ 정수를 반환하는 getSquareArea( ) 메소드의 시작점이다.\n❾ Square 클래스는 부모 클래스인 Rectangle 클래스의 변수를 상속 받았으므로, x*y의 값 100을 함수를 호출\n했던 ❿번으로 반환한다.\n객체 변수 sq\nSquare Rectangle\nSquare(int a) 상속된 공용 변수 Rectangle(int x, int y)\na x y x y\n10 10 10 10 10\n❿ ❾번으로부터 반환받은 값 100을 출력한다.\n결과 100",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-019",
+      "subject": "실기",
+      "number": 19,
+      "points": 5,
+      "content": "다음 C 언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력\n서식을 준수하시오.) (5점)\n#include <stdio.h>\nstruct Node {\nstruct Node* next;\nunsigned int x;\n};\nint main( ) {\nstruct Node t1 = {0, 5u};\nstruct Node t2 = {0, 7u};\nstruct Node t3 = {0, 11u};\nt3.next = &t2;\nt2.next = &t1;\nstruct Node* curr = &t3;\nint sum = 0;\nwhile (curr) {\nsum = sum * 3 + curr->x;\ncurr = curr->next;\n}\nsum = (sum ^ 42u) + 100u;\nprintf(\"%u\\n\", sum);\n}",
+      "rawAnswerText": "187",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "187"
+          ]
+        }
+      ],
+      "explanation": "#include <stdio.h>\nstruct Node { // Node 구조체를 정의한다.\nstruct Node* next; // Node 구조체의 포인터 변수 next를 선언한다.\nunsigned int x; // 부호없는 정수형 변수 x를 선언한다.\nstruct Node\nstruct Node* next (4Byte) unsigned int x (4Byte)\n다음 노드의 주소를 저장할 멤버 데이터를 저장할 멤버\n};\nint main( ) {\n❶ struct Node t1 = {0, 5u};\n❷ struct Node t2 = {0, 7u};\n❸ struct Node t3 = {0, 11u};\n❹ t3.next = &t2;\n❺ t2.next = &t1;\n❻ struct Node* curr = &t3;\n❼ int sum = 0;\n❽ while (curr) {\n❾ sum = sum * 3 + curr->x;\n❿ curr = curr->next;\n}\n⓫ sum = (sum ^ 42u) + 100u;\n⓬ printf(\"%u\\n\", sum);\n}\n❶ Node 자료형 변수 t1을 선언하고, Node의 next에 0을 Node의 x에 부호 없는 정수 5를 저장한다.\n. t1이 가리키고 있는 1008 번지는 Node 구조체의 크기만큼 할당된 공간이므로 t1은 1008번지 이후의 8Byte\n를 의미한다.\n. 이후 그림에서 지정한 주소는 임의로 정한 것이며, 이해를 돕기 위해 10진수로 표현했다.\n. 5u에서 ‘u’는 부호 없는 정수형 타입을 의미하는 접미사로 숫자 뒤에 ‘u’나 ‘U’를 붙이면 부호 없는 정수형으\n로 처리된다.\n. next에 0이 저장되어 있는 것은 어떤 곳도 가리키지 않고 있음을 의미한다.\n메모리\n주소\n0000 t1 1008\nㆍㆍㆍ\n8Byte\n1000 1004 1008 1012 1016 1020 1024 1028 ㆍㆍㆍ\n1000 next x\n0 5\nㆍㆍㆍ\n9999\n❷ Node 자료형 변수 t2를 선언하고, Node의 next에 0을 Node의 x에 7을 저장한다.\n메모리\n주소\nt1 1008\n0000\nㆍㆍㆍ\n8Byte\nt2 1024\n1000 1004 1008 1012 1016 1020 1024 1028 ㆍㆍㆍ\n1000 next x next x\n0 5 0 7\nㆍㆍㆍ\n9999\n❸ Node 자료형 변수 t3을 선언하고, Node의 next에 0을 Node의 x에 11을 저장한다.\n메모리\n주소\n0000 t1 1008\nㆍㆍㆍ\nt2 1024\n1000 1004 1008 1012 1016 1020 1024 1028\n1000 next x next x\n0 5 0 7\nㆍㆍㆍ ㆍㆍㆍ t3 2024\n2000 2004 2008 2012 2016 2020 2024 2028\n2000 next x\n0 11\nㆍㆍㆍ\n9999\n❹ t3의 next에 t2의 주소를 저장한다. next는 다음 노드의 주소를 가리키는 것이므로, 이제 t3의 다음 노드는\nt2이다.\n메모리\n주소\n0000\nㆍㆍㆍ\n1000 1004 1008 1012 1016 1020 1024 1028\n1000 next x next x\n0 5 0 7\nㆍㆍㆍ ㆍㆍㆍ\n2000 2004 2008 2012 2016 2020 2024 2028\n2000 next x\n1024 11\nㆍㆍㆍ\n9999\n❺ t2의 next에 t1의 주소를 저장한다. 이제 t2의 다음 노드는 t1이므로, 노드의 순서는 ‘t3 → t2 → t1’이 된\n다.\n메모리\n주소\n0000\nㆍㆍㆍ\n1000 1004 1008 1012 1016 1020 1024 1028\n1000 next x next x\n0 5 1008 7\nㆍㆍㆍ ㆍㆍㆍ\n2000 2004 2008 2012 2016 2020 2024 2028\n2000 next x\n1024 11\nㆍㆍㆍ\n9999\n❻ Node 자료형 포인터 변수 curr을 선언하고, t3의 주소를 저장한다.\n메모리\n주소\n0000\nㆍㆍㆍ\n1000 1004 1008 1012 1016 1020 1024 1028\n1000 next x next x\n0 5 1008 7\nㆍㆍㆍ ㆍㆍㆍ curr 2024\n2000 2004 2008 2012 2016 2020 2024 2028\n2000 next x\n1024 11\nㆍㆍㆍ\n9999\n❼ 정수형 변수 sum을 선언하고, 0으로 초기화한다.\n❽ curr이 참인 동안, 즉 0(거짓)이 아닌 동안 ❾, ❿번을 반복 수행한다.\n❾ ‘sum * 3 + curr->x’의 값을 sum에 저장한다.\n❿ curr이 가리키는 곳의 next를 curr에 저장한다.\n반복문 실행에 따른 변수들의 변화는 다음과 같다.\ncurr->x sum curr\n0 2024\n11 11 1024\n7 40 1008\n5 125 0\n⓫ ‘(sum ^ 42) + 100’, 즉 sum의 값 125와 42의 비트 XOR(^) 연산의 결과인 87에 100을 더한 값 187을\nsum에 저장한다.\n01111101 125\n^(XOR) 00101010 42\n01010111 87\n⓬ sum의 값 187을 부호 없는 정수형으로 출력한다.\n결과 187",
+      "reviewed": false,
+      "published": false
+    },
+    {
+      "id": "jeongchogi-practical-2025-3-020",
+      "subject": "실기",
+      "number": 20,
+      "points": 5,
+      "content": "다음 <A> 테이블을 참조하여 <SQL문>을 실행했을 때 출력되는 결과를 쓰시오. (<A>\n테이블에 표시된 ‘NULL’은 값이 없음을 의미한다.) (5점)\n<A>\nCOL1 COL2\n2 NULL\n3 6\n2 3\nNULL 3\n4 5\n<SQL문>\nSELECT COUNT(COL2)\nFROM A\nWHERE COL1 IN (2, 3)\nOR COL2 IN (3, 5);",
+      "rawAnswerText": "4",
+      "answerNote": null,
+      "answers": [
+        {
+          "blank": 1,
+          "accepted": [
+            "4"
+          ]
+        }
+      ],
+      "explanation": "SELECT COUNT(COL2) ‘COL2’의 개수를 표시한다.\nFROM A <A> 테이블을 대상으로 검색한다.\nWHERE COL1 IN (2, 3) ‘COL1’이 2 또는 3이거나,\nOR COL2 IN (3, 5); ‘COL2’가 3 또는 5인 튜플만을 대상으로 한다.\nㆍ질의문의 조건을 만족하는 튜플은 다음과 같습니다.\nINDEX COL1 COL2\n1 2 NULL\n2 3 6\n3 2 3\n4 NULL 3\n5 4 5\nㆍ모든 행이 조건에 맞으므로, ‘COL2’ 속성만 추출하면 다음과 같습니다.\nCOL2\nNULL\n6\n3\n3\n5\nㆍCOUNT(COL2)는 ‘COL2’ 필드의 개수를 계산하지만 ‘NULL’ 값은 제외하므로 COUNT(COL2)의 결과는 4입니\n다.",
+      "reviewed": false,
+      "published": false
+    }
+  ]
+}
