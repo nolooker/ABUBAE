@@ -1,7 +1,9 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { BookMarked, Download, UserRound } from 'lucide-react'
+import { BookMarked, Download, ShieldCheck, UserRound } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
+import { getCurrentUserRole } from '@/lib/master-auth'
+import AccountSettingsForm from '@/components/mypage/AccountSettingsForm'
 
 export const metadata = {
   title: '마이페이지',
@@ -15,6 +17,9 @@ export default async function MyPage() {
   if (!data.user) {
     redirect('/login')
   }
+
+  const role = await getCurrentUserRole(supabase)
+  const isMaster = role === 'master'
 
   const nickname = data.user.user_metadata?.nickname || data.user.email?.split('@')[0] || '학습자'
 
@@ -33,6 +38,7 @@ export default async function MyPage() {
           <UserRound size={20} className="text-[var(--primary)] mb-3" />
           <h2 className="text-[15px] font-bold text-[var(--text-primary)]">계정</h2>
           <p className="text-[13px] text-[var(--text-secondary)] mt-2">{data.user.email}</p>
+          <AccountSettingsForm currentNickname={nickname} />
         </div>
 
         <div className="bg-white border border-[var(--border)] rounded-[var(--radius-lg)] p-5">
@@ -46,6 +52,17 @@ export default async function MyPage() {
           <h2 className="text-[15px] font-bold text-[var(--text-primary)]">다운로드 자료</h2>
           <p className="text-[13px] text-[var(--text-secondary)] mt-2">무료 요약 PDF 연결을 준비 중입니다.</p>
         </div>
+
+        {isMaster && (
+          <Link
+            href="/admin"
+            className="bg-white border border-[var(--border)] rounded-[var(--radius-lg)] p-5 hover:border-[var(--primary)] transition-colors"
+          >
+            <ShieldCheck size={20} className="text-[var(--primary)] mb-3" />
+            <h2 className="text-[15px] font-bold text-[var(--text-primary)]">관리자 페이지</h2>
+            <p className="text-[13px] text-[var(--text-secondary)] mt-2">문제, 게시판 신고, 유저 관리로 이동합니다.</p>
+          </Link>
+        )}
       </div>
 
       <div className="mt-8">
