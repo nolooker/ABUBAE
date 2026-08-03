@@ -107,7 +107,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-[var(--border)] pt-6 text-[12px] text-[var(--text-muted)]">
+        <div className="mt-8 border-t border-[var(--border)] pt-6 text-center text-[12px] text-[var(--text-muted)]">
           <p>© 2025 아부배. All rights reserved.</p>
         </div>
       </div>
