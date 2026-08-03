@@ -67,10 +67,10 @@ export default function Header() {
           aria-label="아직 부족해도 괜찮은 배움 홈으로 이동"
         >
           <Image
-            src="/images/brand/abubae-logo-primary.png"
+            src="/images/brand/abubae-logo-horizontal-balanced.png"
             alt="아직 부족해도 괜찮은 배움 로고"
-            width={180}
-            height={180}
+            width={1915}
+            height={821}
             className="h-[62px] w-auto object-contain"
             priority
           />

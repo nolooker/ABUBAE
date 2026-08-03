@@ -56,6 +56,14 @@ export default async function ExamDetailPage({ params }: PageProps) {
             >
               요약 자료 보기
             </Link>
+            {exam.slug === 'jeongchogi' && (
+              <Link
+                href="/exam/jeongchogi/schedule"
+                className="inline-flex items-center justify-center gap-1.5 px-5 py-3 border border-[var(--border)] text-[var(--text-primary)] text-[14px] font-semibold rounded-xl hover:bg-[var(--bg-muted)] transition-colors"
+              >
+                시험일정 보기
+              </Link>
+            )}
           </div>
         </div>
 

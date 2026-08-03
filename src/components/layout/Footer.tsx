@@ -1,9 +1,9 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
-import { BookOpen } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 export default function Footer() {
@@ -41,13 +41,16 @@ export default function Footer() {
   return (
     <footer className="mt-20 border-t border-[var(--border)] bg-[var(--bg-subtle)]">
       <div className="mx-auto max-w-6xl px-4 py-10">
-        <div className="flex flex-col justify-between gap-8 md:flex-row">
-          <div>
-            <Link href="/" className="mb-3 flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[var(--primary)]">
-                <BookOpen size={13} color="white" strokeWidth={2.5} />
-              </div>
-              <span className="text-[14px] font-bold">아부배</span>
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))]">
+          <div className="col-span-2 md:col-span-1">
+            <Link href="/" className="mb-3 flex items-center">
+              <Image
+                src="/images/brand/abubae-logo-horizontal-balanced.png"
+                alt="아부배 로고"
+                width={1915}
+                height={821}
+                className="h-auto w-full max-w-[180px] object-contain"
+              />
             </Link>
             <p className="max-w-xs text-[13px] leading-relaxed text-[var(--text-secondary)]">
               자격증을 준비하는 모든 분을 위한
@@ -56,53 +59,56 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="flex gap-12 text-[13px]">
-            <div>
-              <p className="mb-2 font-semibold text-[var(--text-primary)]">시험</p>
-              <div className="flex flex-col gap-1.5 text-[var(--text-secondary)]">
-                <Link href="/exam/jeongchogi" className="hover:text-[var(--primary)]">
-                  정보처리기사
-                </Link>
-                <Link href="/exam/sqld" className="hover:text-[var(--primary)]">
-                  SQLD
-                </Link>
-                <Link href="/exam/comhwal" className="hover:text-[var(--primary)]">
-                  컴퓨터활용능력
-                </Link>
-              </div>
+          <div className="text-[13px]">
+            <p className="mb-2 font-semibold text-[var(--text-primary)]">시험</p>
+            <div className="flex flex-col gap-1.5 text-[var(--text-secondary)]">
+              <Link href="/exam/jeongchogi" className="hover:text-[var(--primary)]">
+                정보처리기사
+              </Link>
+              <Link href="/exam/jeongchogi/schedule" className="hover:text-[var(--primary)]">
+                시험일정
+              </Link>
             </div>
-            <div>
-              <p className="mb-2 font-semibold text-[var(--text-primary)]">서비스</p>
-              <div className="flex flex-col gap-1.5 text-[var(--text-secondary)]">
-                <Link href="/quiz/daily" className="hover:text-[var(--primary)]">
-                  문제풀기
+          </div>
+
+          <div className="text-[13px]">
+            <p className="mb-2 font-semibold text-[var(--text-primary)]">바로가기</p>
+            <div className="flex flex-col gap-1.5 text-[var(--text-secondary)]">
+              <Link href="/notices" className="hover:text-[var(--primary)]">
+                공지사항
+              </Link>
+              <Link href="/board" className="hover:text-[var(--primary)]">
+                자유게시판
+              </Link>
+              <Link href="/resources" className="hover:text-[var(--primary)]">
+                자료실
+              </Link>
+              <Link href="/mypage" className="hover:text-[var(--primary)]">
+                마이페이지
+              </Link>
+              {isMaster && (
+                <Link href="/admin" className="hover:text-[var(--primary)]">
+                  관리자
                 </Link>
-                <Link href="/resources" className="hover:text-[var(--primary)]">
-                  자료실
-                </Link>
-                <Link href="/mypage" className="hover:text-[var(--primary)]">
-                  마이페이지
-                </Link>
-                {isMaster && (
-                  <Link href="/admin" className="hover:text-[var(--primary)]">
-                    관리자
-                  </Link>
-                )}
-              </div>
+              )}
+            </div>
+          </div>
+
+          <div className="text-[13px]">
+            <p className="mb-2 font-semibold text-[var(--text-primary)]">약관</p>
+            <div className="flex flex-col gap-1.5 text-[var(--text-secondary)]">
+              <Link href="/terms" className="hover:text-[var(--primary)]">
+                이용약관
+              </Link>
+              <Link href="/privacy" className="hover:text-[var(--primary)]">
+                개인정보처리방침
+              </Link>
             </div>
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col items-center justify-between gap-2 border-t border-[var(--border)] pt-6 text-[12px] text-[var(--text-muted)] md:flex-row">
+        <div className="mt-8 border-t border-[var(--border)] pt-6 text-[12px] text-[var(--text-muted)]">
           <p>© 2025 아부배. All rights reserved.</p>
-          <div className="flex gap-4">
-            <Link href="/terms" className="hover:text-[var(--text-secondary)]">
-              이용약관
-            </Link>
-            <Link href="/privacy" className="hover:text-[var(--text-secondary)]">
-              개인정보처리방침
-            </Link>
-          </div>
         </div>
       </div>
     </footer>

@@ -323,14 +323,13 @@ export default async function HomePage() {
         <div className="mx-auto max-w-4xl px-4 py-6 text-center">
           <div className="mb-3 flex justify-center">
             <Image
-              src="/images/brand/abubae-logo-primary.png"
-              alt="아직 부족해도 괜찮은 배움 대표 로고"
-              width={180}
-              height={180}
-              className="h-auto w-[120px]"
+              src="/images/brand/abubae-logo-horizontal-balanced.png"
+              alt="아직 부족해도 괜찮은 배움 로고"
+              width={1915}
+              height={821}
+              className="h-auto w-full max-w-[300px]"
             />
           </div>
-          <p className="mb-2 text-sm font-bold text-[var(--text-primary)]">아직 부족해도 괜찮은 배움</p>
           <div className="mb-2 flex justify-center gap-4">
             {['공지사항', '합격후기', '이용약관', '개인정보처리방침'].map((label) => (
               <Link key={label} href="#" className="text-xs text-[var(--text-muted)] hover:text-[var(--text-secondary)]">

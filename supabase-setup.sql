@@ -385,6 +385,32 @@ ALTER TABLE public.resources ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS resources_public_read ON public.resources;
 CREATE POLICY resources_public_read ON public.resources FOR SELECT USING (is_published = true);
 
+-- Exam schedule: round-by-round written/practical dates, admin-managed and publicly readable.
+CREATE TABLE IF NOT EXISTS public.exam_schedules (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  exam_id UUID NOT NULL REFERENCES public.exams(id) ON DELETE CASCADE,
+  year INT NOT NULL,
+  round INT NOT NULL,
+  written_apply_start DATE,
+  written_apply_end DATE,
+  written_exam_date DATE,
+  written_result_date DATE,
+  practical_apply_start DATE,
+  practical_apply_end DATE,
+  practical_exam_date DATE,
+  final_result_date DATE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS exam_schedules_exam_year_round_unique
+  ON public.exam_schedules(exam_id, year, round);
+
+ALTER TABLE public.exam_schedules ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS exam_schedules_public_read ON public.exam_schedules;
+CREATE POLICY exam_schedules_public_read ON public.exam_schedules FOR SELECT USING (true);
+REVOKE INSERT, UPDATE, DELETE ON TABLE public.exam_schedules FROM PUBLIC, anon, authenticated;
+
 CREATE OR REPLACE FUNCTION public.is_master()
 RETURNS pg_catalog.bool LANGUAGE sql STABLE SECURITY DEFINER SET search_path = '' AS $$
   SELECT EXISTS (

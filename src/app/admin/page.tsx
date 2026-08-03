@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { BarChart3, FileText, Flag, Library, MessageSquareText, Settings, Users } from 'lucide-react'
+import { BarChart3, CalendarDays, FileText, Flag, Library, MessageSquareText, Settings, Users } from 'lucide-react'
 import { getCurrentUserRole } from '@/lib/master-auth'
 
 export const metadata = {
@@ -48,6 +48,13 @@ const adminCards = [
     icon: Users,
     status: '신규',
     href: '/admin/users',
+  },
+  {
+    title: '시험 일정 관리',
+    description: '정보처리기사 회차별 필기·실기 접수·시험·발표 일정을 관리합니다.',
+    icon: CalendarDays,
+    status: '신규',
+    href: '/admin/exam-schedules',
   },
   {
     title: '판매/전환 지표',

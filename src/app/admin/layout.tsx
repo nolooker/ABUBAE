@@ -8,6 +8,7 @@ const navItems = [
   { label: '기출문제 관리', href: '/admin/questions' },
   { label: '신고 관리', href: '/admin/reports' },
   { label: '유저 관리', href: '/admin/users' },
+  { label: '시험 일정 관리', href: '/admin/exam-schedules' },
 ]
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
