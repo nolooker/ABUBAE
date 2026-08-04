@@ -34,7 +34,7 @@ export default async function QuestionTypePage({ params }: Props) {
       <ExamTypeSelector examSlug={exam.slug} />
 
       <div className="mt-8 rounded-xl border border-blue-100 bg-[var(--primary-light)] px-5 py-4 text-sm leading-6 text-blue-800">
-        현재 무료 MVP는 정보처리기사 필기 기출문제를 먼저 제공합니다. 실기는 필기 기능이 안정화된 뒤 추가됩니다.
+        정보처리기사 필기·실기 기출문제를 모두 무료로 제공합니다.
       </div>
     </section>
   )
