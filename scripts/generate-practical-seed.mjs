@@ -7,9 +7,23 @@ const repositoryDirectory = dirname(scriptDirectory)
 const contentDirectory = join(repositoryDirectory, 'content', 'practical', 'jeongchogi')
 const outputDirectory = join(repositoryDirectory, 'supabase', 'seeds')
 
+// Dollar-quoting (Postgres $tag$...$tag$ strings) sidesteps quote-escaping
+// entirely, which matters here because exam text carries stray apostrophes
+// and typographic quotes that can otherwise survive a lossy copy/paste into
+// a SQL editor and prematurely close a '...' literal.
+const dollarQuote = (value) => {
+  let tag = 'q'
+  let suffix = 0
+  while (value.includes(`$${tag}$`)) {
+    suffix += 1
+    tag = `q${suffix}`
+  }
+  return `$${tag}$${value}$${tag}$`
+}
+
 const sqlLiteral = (value) => {
   if (value === null || value === undefined) return 'NULL'
-  return `'${String(value).replaceAll("'", "''")}'`
+  return dollarQuote(String(value))
 }
 
 const sqlTextArray = (values) => `ARRAY[${values.map(sqlLiteral).join(', ')}]::text[]`

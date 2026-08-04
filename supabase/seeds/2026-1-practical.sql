@@ -16,8 +16,8 @@ $$;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-001'), id, 'practical', 2026, 1, '실기', 1,
-  '디자인 패턴에 대한 다음 설명에서 괄호(①, ②)에 들어갈 알맞은 용어를 <보기>에서 찾아 쓰시오. (5
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-001$q$), id, 'practical', 2026, 1, $q$실기$q$, 1,
+  $q$디자인 패턴에 대한 다음 설명에서 괄호(①, ②)에 들어갈 알맞은 용어를 <보기>에서 찾아 쓰시오. (5
 점)
 • ( ① ) 패턴은 구현부에서 추상층을 분리하여, 서로가 독립적으로 확장할 수 있도록 구성한 패턴으로, 기
 능과 구현을 두 개의 별도 클래스로 구현한다는 특징이 있다.
@@ -26,48 +26,48 @@ SELECT
 (Subscribe)해야 할 때 이용한다.
 <보기>
 • Builder • Factory Method • Adapter • Bridge
-• Facade • Proxy • Observer • Mediator', NULL, FALSE, TRUE
+• Facade • Proxy • Observer • Mediator$q$, NULL, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-001:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-001'), 1, ARRAY['Bridge']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-001:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-001$q$), 1, ARRAY[$q$Bridge$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-001:blank:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-001'), 2, ARRAY['Observer']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-001:blank:2$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-001$q$), 2, ARRAY[$q$Observer$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-002'), id, 'practical', 2026, 1, '실기', 2,
-  '비기능 요구사항에 대한 다음 설명에서 괄호(①~③)에 들어갈 알맞은 답을 <보기>에서 찾아 쓰시오.
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-002$q$), id, 'practical', 2026, 1, $q$실기$q$, 2,
+  $q$비기능 요구사항에 대한 다음 설명에서 괄호(①~③)에 들어갈 알맞은 답을 <보기>에서 찾아 쓰시오.
 (5점)
 • ( ① ) : Windows, macOS, Linux 등 다양한 운영체제에서 정상적으로 동작해야 한다.
 • ( ② ) : 시스템은 메모리 사용량을 최소화하여 제한된 자원 환경에서도 안정적으로 실행되어야 한다.
 • ( ③ ) : 사용자의 요청에 대해 1초 이내에 응답해야 한다.
 <보기>
 • 운영요구사항 • 자원요구사항 • 성능요구사항
-• 시스템요구사항 • 사용자요구사항', NULL, FALSE, TRUE
+• 시스템요구사항 • 사용자요구사항$q$, NULL, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-002:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-002'), 1, ARRAY['운영요구사항']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-002:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-002$q$), 1, ARRAY[$q$운영요구사항$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-002:blank:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-002'), 2, ARRAY['자원요구사항']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-002:blank:2$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-002$q$), 2, ARRAY[$q$자원요구사항$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-002:blank:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-002'), 3, ARRAY['성능요구사항']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-002:blank:3$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-002$q$), 3, ARRAY[$q$성능요구사항$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-003'), id, 'practical', 2026, 1, '실기', 3,
-  '다음 C 언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-003$q$), id, 'practical', 2026, 1, $q$실기$q$, 3,
+  $q$다음 C 언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수
 하시오.) (5점)
 #include <stdio.h>
 double arr1(int p[], int len) {
@@ -91,7 +91,7 @@ int arr[10] = {70, 50, 80, 30, 45, 55, 65, 95, 15, 25};
 int len = 10;
 printf("%.2f", arr1(arr, len) + arr2(arr, len));
 return 0;
-}', '#include <stdio.h>
+}$q$, $q$#include <stdio.h>
 ❹ double arr1(int p[], int len) {
 ❺ double av = 0;
 ❻ int i;
@@ -198,18 +198,18 @@ i *(p+i) av
 ⓰ ‘av / len’, 즉 ‘530/10’의 결과인 53을 함수를 호출했던 ⓱번으로 반환한다.
 ⓱ ❾번에서 돌려받은 값 53과 ⓰번에서 돌려받은 값 53의 합인 106을 “%.2f” 서식에 맞춰 정수 부분은 모두
 출력하고 소수점 이하는 3자리에서 반올림하여 2자리까지만 표시한 106.00을 출력한다.
-결과 106.00', FALSE, TRUE
+결과 106.00$q$, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-003:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-003'), 1, ARRAY['106.00 ※ 답안 작성 시 주의 사항 : 프로그램의 실행 결과는 부분 점수가 없으므로 정확하게 작성해야 합니다. 예를 들 어, 소수점을 생략하거나 자릿수를 잘못 지정하여 106 또는 106.0으로 썼을 경우 부분 점수 없이 완전히 틀 린 것으로 처리됩니다.']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-003:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-003$q$), 1, ARRAY[$q$106.00$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-004'), id, 'practical', 2026, 1, '실기', 4,
-  '다음은 CREATE 문을 이용해 <PLAYER> 테이블을 생성하는 <SQL> 문이다. <TEAM> 테이블의
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-004$q$), id, 'practical', 2026, 1, $q$실기$q$, 4,
+  $q$다음은 CREATE 문을 이용해 <PLAYER> 테이블을 생성하는 <SQL> 문이다. <TEAM> 테이블의
 TEAM_ID2 컬럼을 참조하여 외래키를 설정하려고 한다. 괄호(①~⑤)에 알맞은 구문을 넣어 <SQL문>을 완성하
 시오. (단, 외래키 제약조건의 명칭은 TEAM_TF로 정의한다.) (5점)
 <SQL문>
@@ -218,7 +218,7 @@ PLAYER_ID CHAR(7) NOT NULL,
 PLAYER_NAME VARCHAR2(20) NOT NULL,
 TEAM_ID CHAR(3) NOT NULL,
 PRIMARY KEY (PLAYER_ID),
-( ① ) TEAM_TF ( ② ) KEY ( ③ ) ( ④ ) TEAM ( ⑤ )', 'CREATE TABLE PLAYER ( <PLAYER> 테이블을 생성한다.
+( ① ) TEAM_TF ( ② ) KEY ( ③ ) ( ④ ) TEAM ( ⑤ )$q$, $q$CREATE TABLE PLAYER ( <PLAYER> 테이블을 생성한다.
 PLAYER_ID CHAR(7) NOT NULL, ‘PLAYER_ID’ 속성은 문자 7자로 NULL 값을 갖지 않는다.
 PLAYER_NAME VARCHAR2(20) NOT NULL, ‘PLAYER_NAME’ 속성은 가변길이 문자 20자로 NULL 값을 갖지 않는다.
 TEAM_ID CHAR(3) NOT NULL, ‘TEAM_ID’ 속성은 문자 3자로 NULL 값을 갖지 않는다.
@@ -226,41 +226,41 @@ PRIMARY KEY (PLAYER_ID), ‘PLAYER_ID’를 기본키로 정의한다.
 CONSTRAINT TEAM_TF 외래키 제약 조건의 이름은 ‘TEAM_TF’이며,
 FOREIGN KEY (TEAM_ID) ‘TEAM_ID’ 속성을 <TEAM> 테이블의 ‘TEAM_ID2’ 속성을 참조하는
 REFERENCES TEAM (TEAM_ID2) 외래키로 정의한다.
-);', FALSE, TRUE
+);$q$, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-004:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-004'), 1, ARRAY['CONSTRAINT']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-004:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-004$q$), 1, ARRAY[$q$CONSTRAINT$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-004:blank:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-004'), 2, ARRAY['FOREIGN']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-004:blank:2$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-004$q$), 2, ARRAY[$q$FOREIGN$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-004:blank:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-004'), 3, ARRAY['TEAM_ID']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-004:blank:3$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-004$q$), 3, ARRAY[$q$TEAM_ID$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-004:blank:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-004'), 4, ARRAY['REFERENCES']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-004:blank:4$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-004$q$), 4, ARRAY[$q$REFERENCES$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-004:blank:5'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-004'), 5, ARRAY['TEAM_ID2']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-004:blank:5$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-004$q$), 5, ARRAY[$q$TEAM_ID2$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-005'), id, 'practical', 2026, 1, '실기', 5,
-  '다음 Python으로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-005$q$), id, 'practical', 2026, 1, $q$실기$q$, 5,
+  $q$다음 Python으로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준
 수하시오.) (5점)
 lst = list(range(10))
 for c in lst[::-2]:
-print(c, end=''A'')
-print( )', '❶ lst = list(range(10))
+print(c, end='A')
+print( )$q$, $q$❶ lst = list(range(10))
 ❷ for c in lst[::-2]:
-❸ print(c, end=''A'')
+❸ print(c, end='A')
 ❹ print( )
 ❶ 리스트 lst를 선언하고, 0부터 9(10-1)까지의 정수로 초기화한다.
 [0] [1] [2] [3] [4] [5] [6] [7] [8] [9]
@@ -281,18 +281,18 @@ c 출력
 3 9A7A5A3A
 1 9A7A5A3A1A
 ❹ 인수가 없으므로 커서의 위치를 다음 줄 처음으로 이동한다. 즉 줄바꿈만 수행한다.
-결과 9A7A5A3A1A', FALSE, TRUE
+결과 9A7A5A3A1A$q$, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-005:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-005'), 1, ARRAY['9A7A5A3A1A ※ 답안 작성 시 주의 사항 : 프로그램의 실행 결과는 부분 점수가 없으므로 정확하게 작성해야 합니다. 예를 들 어, 대소문자 구분 없이 9a7a5a3a1a 또는 9A7a5A3a1A로 썼을 경우 부분 점수 없이 완전히 틀린 것으로 처리됩니다.']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-005:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-005$q$), 1, ARRAY[$q$9A7A5A3A1A$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-006'), id, 'practical', 2026, 1, '실기', 6,
-  '다음 Java로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-006$q$), id, 'practical', 2026, 1, $q$실기$q$, 6,
+  $q$다음 Java로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하
 시오.) (5점)
 class A {
 String f(Object x) {
@@ -315,7 +315,7 @@ public static void main(String[] args) {
 A a = new B( );
 System.out.println(a.g( ));
 }
-}', 'class A {
+}$q$, $q$class A {
 ❸ String g( ) {
 ❹❼ return f("a");
 }
@@ -354,33 +354,33 @@ public static void main(String[] args) {
 ❻ 문자열 2를 메소드를 호출했던 ❼번으로 반환한다.
 ❼ ❻번에서 돌려받은 값 2를 메소드를 호출했던 ❽번으로 반환한다.
 ❽ ❼번에서 돌려받은 값 2를 출력한 후 커서를 다음 줄 처음으로 이동한다.
-결과 2', FALSE, TRUE
+결과 2$q$, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-006:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-006'), 1, ARRAY['2']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-006:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-006$q$), 1, ARRAY[$q$2$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-007'), id, 'practical', 2026, 1, '실기', 7,
-  '정보 보호에 대한 다음 설명에 해당하는 용어를 영문 약어로 쓰시오. (5점)
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-007$q$), id, 'practical', 2026, 1, $q$실기$q$, 7,
+  $q$정보 보호에 대한 다음 설명에 해당하는 용어를 영문 약어로 쓰시오. (5점)
 정보 자산을 안전하게 보호하기 위한 보호 절차와 대책으로, 정보보호 관리 체계라고 한다. 조직에 맞는 정
 보보호 정책을 수립하고, 위험에 상시 대응하는 여러 보안 대책을 통합 관리한다. 공공 부문과 민간 기업 부
-문에서 이것을 평가하고 인증하는 사업을 한국인터넷진흥원(KISA)에서 운영중이다.', NULL, FALSE, TRUE
+문에서 이것을 평가하고 인증하는 사업을 한국인터넷진흥원(KISA)에서 운영중이다.$q$, NULL, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-007:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-007'), 1, ARRAY['ISMS']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-007:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-007$q$), 1, ARRAY[$q$ISMS$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-008'), id, 'practical', 2026, 1, '실기', 8,
-  'A의 IP 주소는 192.168.11.20이고, B의 IP 주소는 192.168.12.200이다. 서브넷 마스크가
-255.255.254.0일 때, A와 B가 속한 네트워크의 네트워크 주소를 CIDR 표기법으로 작성하시오. (5점)', '• CIDR(Classless Inter-Domain Routing)은 IP 주소 뒤에 /비트수를 붙여 네트워크 부분의 길이를 표시하는
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-008$q$), id, 'practical', 2026, 1, $q$실기$q$, 8,
+  $q$A의 IP 주소는 192.168.11.20이고, B의 IP 주소는 192.168.12.200이다. 서브넷 마스크가
+255.255.254.0일 때, A와 B가 속한 네트워크의 네트워크 주소를 CIDR 표기법으로 작성하시오. (5점)$q$, $q$• CIDR(Classless Inter-Domain Routing)은 IP 주소 뒤에 /비트수를 붙여 네트워크 부분의 길이를 표시하는
 방법으로, 서브넷 마스크의 1의 비트수로 표현합니다.
 - 서브넷 마스크 255.255.254.0을 2진수로 변환한 후 1의 개수를 구합니다.
 11111111.11111111.11111110.00000000
@@ -394,71 +394,71 @@ AND 연산 11000000.10101000.00001010.00000000 ← 192.168.10.0
 B의 IP 주소 11000000.10101000.00001100.11001000 ← 192.168.12.200
 서브넷 마스크 11111111.11111111.11111110.00000000 ← 255.255.254.0
 AND 연산 11000000.10101000.00001100.00000000 ← 192.168.12.0
-∴ B의 네트워크 주소를 CIDR 표기법으로 표현하면 192.168.12.0/23입니다.', FALSE, TRUE
+∴ B의 네트워크 주소를 CIDR 표기법으로 표현하면 192.168.12.0/23입니다.$q$, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-008:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-008'), 1, ARRAY['192.168.10.0/23']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-008:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-008$q$), 1, ARRAY[$q$192.168.10.0/23$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-008:blank:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-008'), 2, ARRAY['192.168.12.0/23']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-008:blank:2$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-008$q$), 2, ARRAY[$q$192.168.12.0/23$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-009'), id, 'practical', 2026, 1, '실기', 9,
-  '보안 위협에 대한 다음 설명에 해당하는 용어를 <보기>에서 찾아 쓰시오. (5점)
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-009$q$), id, 'practical', 2026, 1, $q$실기$q$, 9,
+  $q$보안 위협에 대한 다음 설명에 해당하는 용어를 <보기>에서 찾아 쓰시오. (5점)
 목표 조직이 자주 방문하는 웹 사이트를 사전에 감염시켜 목표 조직의 일원이 웹 사이트에 방문했을 때 악
 성 코드에 감염되게 한다. 이후에는 감염된 PC를 기반으로 조직의 중요 시스템에 접근하거나 불능으로 만드
 는 등의 영향력을 행사하는 웹 기반 공격이다.
 <보기>
 • Pharming • Drive-by Download • Watering Hole • Business SCAM
-• Phishing • Cyber Kill Chain • Ransomware • Sniffing', NULL, FALSE, TRUE
+• Phishing • Cyber Kill Chain • Ransomware • Sniffing$q$, NULL, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-009:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-009'), 1, ARRAY['Watering Hole']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-009:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-009$q$), 1, ARRAY[$q$Watering Hole$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-010'), id, 'practical', 2026, 1, '실기', 10,
-  '다음은 데이터베이스 구축까지의 과정을 나열한 것이다. 괄호(①~⑤)에 들어갈 알맞은 용어를 <보기>
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-010$q$), id, 'practical', 2026, 1, $q$실기$q$, 10,
+  $q$다음은 데이터베이스 구축까지의 과정을 나열한 것이다. 괄호(①~⑤)에 들어갈 알맞은 용어를 <보기>
 에서 찾아 쓰시오. (5점)
 ( ① ) → ( ② ) → ( ③ ) → ( ④ ) → ( ⑤ )
 <보기>
 • 개념적 설계 • 데이터베이스 구현 • 물리적 설계 • 요구 조건 분석
-• 인터페이스 설계 • 논리 스키마 설계 • 논리적 설계 • 트랜잭션 작성', NULL, FALSE, TRUE
+• 인터페이스 설계 • 논리 스키마 설계 • 논리적 설계 • 트랜잭션 작성$q$, NULL, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-010:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-010'), 1, ARRAY['요구 조건 분석']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-010:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-010$q$), 1, ARRAY[$q$요구 조건 분석$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-010:blank:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-010'), 2, ARRAY['개념적 설계']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-010:blank:2$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-010$q$), 2, ARRAY[$q$개념적 설계$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-010:blank:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-010'), 3, ARRAY['논리적 설계']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-010:blank:3$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-010$q$), 3, ARRAY[$q$논리적 설계$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-010:blank:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-010'), 4, ARRAY['물리적 설계']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-010:blank:4$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-010$q$), 4, ARRAY[$q$물리적 설계$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-010:blank:5'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-010'), 5, ARRAY['데이터베이스 구현']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-010:blank:5$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-010$q$), 5, ARRAY[$q$데이터베이스 구현$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-011'), id, 'practical', 2026, 1, '실기', 11,
-  '다음 <EMPLOYEE>와 <DEPT> 테이블을 참조하여 <SQL문>을 실행했을 때 출력되는 결과를 쓰시오.
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-011$q$), id, 'practical', 2026, 1, $q$실기$q$, 11,
+  $q$다음 <EMPLOYEE>와 <DEPT> 테이블을 참조하여 <SQL문>을 실행했을 때 출력되는 결과를 쓰시오.
 (5점)
 <EMPLOYEE> <DEPT>
 emp_id emp_name dep_id dep_id dep_name budget
@@ -469,7 +469,7 @@ E04 황진주 D04 D04 영업부 9,000
 <SQL문>
 SELECT COUNT(*) FROM EMPLOYEE e JOIN DEPT d
 ON e.dep_id = d.dep_id
-WHERE d.budget > (SELECT AVG(budget) FROM DEPT)', '문제의 질의문은 하위 질의가 있는 질의문입니다. 다음과 같이 안쪽 하위 질의의 SELECT문을 먼저 검색한 다
+WHERE d.budget > (SELECT AVG(budget) FROM DEPT)$q$, $q$문제의 질의문은 하위 질의가 있는 질의문입니다. 다음과 같이 안쪽 하위 질의의 SELECT문을 먼저 검색한 다
 음 그 검색 결과를 본 질의의 조건에 적용하면 됩니다.
 SELECT COUNT(*)
 FROM EMPLOYEE e JOIN DEPT d ON e.dep_id = d.dep_id
@@ -496,83 +496,83 @@ E01 김은소 D01 D01 총무부 3,000
 E02 강동준 D02 D02 인사부 5,000
 E03 고회식 D03 D03 개발부 7,000
 E04 황진주 D04 D04 영업부 9,000
-∴ 질의의 결과로 표시되는 레코드의 개수는 2입니다.', FALSE, TRUE
+∴ 질의의 결과로 표시되는 레코드의 개수는 2입니다.$q$, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-011:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-011'), 1, ARRAY['2']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-011:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-011$q$), 1, ARRAY[$q$2$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-012'), id, 'practical', 2026, 1, '실기', 12,
-  '모듈에 대한 다음 설명에서 각 지문(①~③)에 해당하는 응집도(Cohesion)를 <보기>에서 찾아 기호
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-012$q$), id, 'practical', 2026, 1, $q$실기$q$, 12,
+  $q$모듈에 대한 다음 설명에서 각 지문(①~③)에 해당하는 응집도(Cohesion)를 <보기>에서 찾아 기호
 (㉠~㉦)로 쓰시오. (5점)
 ① 내부의 요소들이 기능적으로 연관성은 없으나, 순차적으로 실행될 때의 응집도
 ② 서로 다른 기능을 수행하지만 동일한 입력과 출력을 사용할 때의 응집도
 ③ 하나의 기능에 밀접하게 관련되어 있거나 연관되어 있을 때의 응집도
 <보기>
 ㉠ 기능적 응집도 ㉡ 순차적 응집도 ㉢ 교환적 응집도 ㉣ 절차적 응집도
-㉤ 시간적 응집도 ㉥ 논리적 응집도 ㉦ 우연적 응집도', NULL, FALSE, TRUE
+㉤ 시간적 응집도 ㉥ 논리적 응집도 ㉦ 우연적 응집도$q$, NULL, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-012:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-012'), 1, ARRAY['㉣']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-012:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-012$q$), 1, ARRAY[$q$㉣$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-012:blank:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-012'), 2, ARRAY['㉢']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-012:blank:2$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-012$q$), 2, ARRAY[$q$㉢$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-012:blank:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-012'), 3, ARRAY['㉠']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-012:blank:3$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-012$q$), 3, ARRAY[$q$㉠$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-013'), id, 'practical', 2026, 1, '실기', 13,
-  '애플리케이션 테스트에 관한 다음 설명에서 괄호(①, ②)에 들어갈 알맞은 용어를 쓰시오. (5점)
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-013$q$), id, 'practical', 2026, 1, $q$실기$q$, 13,
+  $q$애플리케이션 테스트에 관한 다음 설명에서 괄호(①, ②)에 들어갈 알맞은 용어를 쓰시오. (5점)
 • 하향식 통합 테스트는 프로그램의 상위 모듈에서 하위 모듈 방향으로 통합하면서 테스트하는 기법이다. 깊
 이 우선 통합법이나 넓이 우선 통합법을 사용하며, 주요 제어 모듈의 종속 모듈들을 ( ① )으로 대체한다
 는 특징이 있다.
 • 상향식 통합 테스트는 프로그램의 하위 모듈에서 상위 모듈 방향으로 통합하면서 테스트하는 기법이다. 하
 위 모듈들을 클러스터(Cluster)로 결합하며, 상위 모듈에서 데이터의 입·출력을 확인하기 위해 더미 모듈인
-( ② )를 작성한다는 특징이 있다.', NULL, FALSE, TRUE
+( ② )를 작성한다는 특징이 있다.$q$, NULL, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-013:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-013'), 1, ARRAY['스텁', 'Stub']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-013:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-013$q$), 1, ARRAY[$q$스텁$q$, $q$Stub$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-013:blank:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-013'), 2, ARRAY['드라이버', 'Driver']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-013:blank:2$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-013$q$), 2, ARRAY[$q$드라이버$q$, $q$Driver$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-014'), id, 'practical', 2026, 1, '실기', 14,
-  '다음 설명에서 괄호에 공통으로 들어갈 알맞은 답을 쓰시오. (5점)
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-014$q$), id, 'practical', 2026, 1, $q$실기$q$, 14,
+  $q$다음 설명에서 괄호에 공통으로 들어갈 알맞은 답을 쓰시오. (5점)
 ( )는 파일이나 디렉터리를 가리키는 링크 파일이다. Windows의 바로 가기 아이콘과 비슷한 개념으로,
 다른 위치에 있는 파일이나 디렉터리의 경로 정보를 저장하여 해당 대상에 접근할 수 있게 한다.
 레이스 컨디션 공격의 한 종류인 ( ) 공격은 root 권한을 가진 프로세스가 임시 파일을 생성하는 과정에
 서 발생한다. 공격자는 임시 파일이 생성된 직후 이를 삭제하고, 같은 이름의 ( )를 만들어 중요한 파일
 을 가리키도록 설정한다.
 이를 방지하기 위해 프로그램은 임시 파일을 사용하기 전에 해당 파일이 ( )인지 확인하고, ( )가 아
-닌 경우에만 사용하거나 필요 시 삭제한다.', NULL, FALSE, TRUE
+닌 경우에만 사용하거나 필요 시 삭제한다.$q$, NULL, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-014:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-014'), 1, ARRAY['심볼릭 링크', 'Symbolic Link']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-014:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-014$q$), 1, ARRAY[$q$심볼릭 링크$q$, $q$Symbolic Link$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-015'), id, 'practical', 2026, 1, '실기', 15,
-  '다음 C 언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-015$q$), id, 'practical', 2026, 1, $q$실기$q$, 15,
+  $q$다음 C 언어로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수
 하시오.) (5점)
 #include <stdio.h>
 struct fns {
@@ -587,7 +587,7 @@ int n[] = {16, 32};
 mine.fn = dummy;
 printf("%x", *mine.fn(n));
 return 0;
-}', '#include <stdio.h>
+}$q$, $q$#include <stdio.h>
 struct fns { // 구조체 fns를 정의한다.
 int* (*fn)(int*); // 매개변수로 정수형 포인터(int*)를 하나 받고, 반환형이 정수형 포인터(int*)인 함
 수의 시작 주소를 저장할 수 있는 함수 포인터 fn을 선언한다.
@@ -656,31 +656,31 @@ int* dummy(int *d) {
 ※ 32 = 32 / 16 = 2(몫), 0(나머지) = 20
 10 16
 ※ *mine.fn(n), 즉 *(1012)는 1012 주소가 저장하고 있는 값을 의미합니다.
-결과 20', FALSE, TRUE
+결과 20$q$, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-015:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-015'), 1, ARRAY['20 ※ 답안 작성 시 주의 사항 : 프로그램의 실행 결과는 부분 점수가 없으므로 정확하게 작성해야 합니다. 예를 들 어, 출력값을 16진수가 아니라 10진수인 32로 썼을 경우 부분 점수 없이 완전히 틀린 것으로 처리됩니다.']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-015:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-015$q$), 1, ARRAY[$q$20$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-016'), id, 'practical', 2026, 1, '실기', 16,
-  '다음 Python으로 구현된 프로그램을 분석하여 HumanDev를 입력했을 때 그 실행 결과를 쓰시오.
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-016$q$), id, 'practical', 2026, 1, $q$실기$q$, 16,
+  $q$다음 Python으로 구현된 프로그램을 분석하여 HumanDev를 입력했을 때 그 실행 결과를 쓰시오.
 (단, 출력문의 출력 서식을 준수하시오.) (5점)
 i = input( )
 x = []
 for word in i.split( ):
 x.append(word)
-y = '' ''.join(x)
-z = ''''.join(c for c in y[::-1] if c not in ''ong'')
-print(z)', '❶ i = input( )
+y = ' '.join(x)
+z = ''.join(c for c in y[::-1] if c not in 'ong')
+print(z)$q$, $q$❶ i = input( )
 ❷ x = []
 ❸ for word in i.split( ):
 ❹ x.append(word)
-❺ y = '' ''.join(x)
-❻ z = ''''.join(c for c in y[::-1] if c not in ''ong'')
+❺ y = ' '.join(x)
+❻ z = ''.join(c for c in y[::-1] if c not in 'ong')
 ❼ print(z)
 ❶ 변수 i를 선언하고 키보드로 입력받은 문자열로 초기화한다. 문제에서 HumanDev를 입력받았다고 가정하였
 으므로 i에는 HumanDev로 초기화된다.
@@ -704,7 +704,7 @@ y “HumanDev”
 ❻ 변수 y에 저장된 문자열을 뒤에서부터 하나씩 추출하면서 해당 문자가 ‘o’, ‘n’, ‘g’가 아닌 경우만 결합하여
 변수 z에 저장한다. z에는 “veDamuH”가 저장된다.
 z “veDamuH”
-z = ''''.join(c for c in y[::-1] if c not in ''ong'')
+z = ''.join(c for c in y[::-1] if c not in 'ong')
 ⓐ
 ⓑ
 • ⓐ : 제너레이터 표현식(Generator Expression) 구문으로, y를 역순으로 순회하면서 if 문의 조건이 참인
@@ -718,18 +718,18 @@ z = ''''.join(c for c in y[::-1] if c not in ''ong'')
 ※ 제너레이터 표현식(Generator Expression) : (표현식 for 변수 in 반복가능객체 [if 조건]) 형태로 작성하
 며, 표현식의 결과를 필요할 때마다 하나씩 생성하는 객체(Generator)를 만듦
 ❼ z의 값 veDamuH를 출력한다.
-결과 veDamuH', FALSE, TRUE
+결과 veDamuH$q$, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-016:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-016'), 1, ARRAY['veDamuH ※ 답안 작성 시 주의 사항 : 프로그램의 실행 결과는 부분 점수가 없으므로 정확하게 작성해야 합니다. 예를 들 어, 출력값을 대소문자 구분 없이 vedamuh나 VEDAMUH로 썼을 경우 부분 점수 없이 완전히 틀린 것으로 처리됩니다.']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-016:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-016$q$), 1, ARRAY[$q$veDamuH$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-017'), id, 'practical', 2026, 1, '실기', 17,
-  'HDLC(High-level Data Link Control)에 대한 다음 설명에서 괄호(①~⑤)에 들어갈 알맞은 용어를
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-017$q$), id, 'practical', 2026, 1, $q$실기$q$, 17,
+  $q$HDLC(High-level Data Link Control)에 대한 다음 설명에서 괄호(①~⑤)에 들어갈 알맞은 용어를
 <보기>에서 찾아 쓰시오. (5점)
 HDLC는 비트(Bit) 위주의 프로토콜로, 각 프레임에 데이터 흐름을 제어하고 오류를 검출할 수 있는 비트 열
 을 삽입하여 전송한다. 포인트 투 포인트(Point-to-Point) 및 멀티 포인트(Multi-Point), 루프(Loop) 등 다양
@@ -752,70 +752,62 @@ HDLC의 프레임 구조는 헤더, 텍스트, 트레일러로 구분되며, 헤
 의 허가(Poll) 없이도 송신이 가능하지만 링크 설정이나 오류 복구 등의 제어 기능은 주국만 가능하다.
 <보기>
 • 비동기 응답 모드 •주소부 •제어부 •ARQ •정보
-• 비번호 •감독 •플래그 •비동기 균형 모드', NULL, FALSE, TRUE
+• 비번호 •감독 •플래그 •비동기 균형 모드$q$, NULL, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-017:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-017'), 1, ARRAY['정보']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-017:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-017$q$), 1, ARRAY[$q$정보$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-017:blank:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-017'), 2, ARRAY['감독']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-017:blank:2$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-017$q$), 2, ARRAY[$q$감독$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-017:blank:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-017'), 3, ARRAY['비번호']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-017:blank:3$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-017$q$), 3, ARRAY[$q$비번호$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-017:blank:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-017'), 4, ARRAY['비동기 균형 모드']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-017:blank:4$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-017$q$), 4, ARRAY[$q$비동기 균형 모드$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-017:blank:5'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-017'), 5, ARRAY['비동기 응답 모드']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-017:blank:5$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-017$q$), 5, ARRAY[$q$비동기 응답 모드$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-018'), id, 'practical', 2026, 1, '실기', 18,
-  '학생(STUDENT) 테이블에 전기과 학생이 50명, 전산과 학생이 100명, 전자과 학생이 50명 있다고
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-018$q$), id, 'practical', 2026, 1, $q$실기$q$, 18,
+  $q$학생(STUDENT) 테이블에 전기과 학생이 50명, 전산과 학생이 100명, 전자과 학생이 50명 있다고
 할 때, 다음 SQL문 ①, ②, ③의 실행 결과로 표시되는 튜플의 수를 쓰시오. (단, DEPT 필드는 학과를 의한미
 다) (5점)
 ① SELECT DEPT FROM STUDENT;
 ② SELECT DISTINCT DEPT FROM STUDENT;
-③ SELECT COUNT(DISTINCT DEPT) FROM STUDENT WHERE DEPT = ‘전산과’;', NULL, FALSE, TRUE
+③ SELECT COUNT(DISTINCT DEPT) FROM STUDENT WHERE DEPT = ‘전산과’;$q$, $q$① SELECT DEPT ‘DEPT’를 표시한다. FROM STUDENT; <STUDENT> 테이블을 대상으로 검색한다. • <STUDENT> 테이블에서 ‘DEPT’를 검색합니다. 총 200개의 튜플이 들어 있고 검색 조건이 없으므로 튜플의 수는 200입니다.
+
+② SELECT DISTINCT DEPT ‘DEPT’를 표시하되, 같은 ‘DEPT’ 속성의 값은 한 번만 표시한다. FROM STUDENT; <STUDENT> 테이블을 대상으로 검색한다. • <STUDENT> 테이블에서 ‘DEPT’를 검색하는 데 중복된 결과는 처음의 한 개만 검색에 포함시킵니다. 전기과 50개 튜플의 ‘DEPT’ 속성의 값이 같으므로 1개, 전산과 100개 튜플의 ‘DEPT’ 속성의 값이 같으므로 1개, 전 자과 50개 튜플의 ‘DEPT’ 속성의 값이 같으므로 1개를 검색에 포함시키므로 3개의 튜플이 검색됩니다.
+
+③ SELECT COUNT(DISTINCT DEPT) ‘DEPT’의 개수를 표시하되, 같은 ‘DEPT’ 속성의 값은 한 번만 계산한다. FROM STUDENT; <STUDENT> 테이블을 대상으로 검색한다. WHERE DEPT = ‘전산과’; ‘DEPT’가 “전산과”인 자료만을 대상으로 검색한다. • <STUDENT> 테이블에서 ‘DEPT’ 속성의 값이 ‘전산과’인 튜플에 대해 중복을 제거하고 개수를 세므로 1이 검 색 결과로 표시됩니다.$q$, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-018:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-018'), 1, ARRAY['200']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-018:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-018$q$), 1, ARRAY[$q$200$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-018:blank:2'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-018'), 2, ARRAY['3']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-018:blank:2$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-018$q$), 2, ARRAY[$q$3$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-018:blank:3'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-018'), 3, ARRAY['1 [풀이]']::text[])
-ON CONFLICT (question_id, blank_number) DO NOTHING;
-
-INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-018:blank:4'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-018'), 4, ARRAY['SELECT DEPT ‘DEPT’를 표시한다. FROM STUDENT; <STUDENT> 테이블을 대상으로 검색한다. • <STUDENT> 테이블에서 ‘DEPT’를 검색합니다. 총 200개의 튜플이 들어 있고 검색 조건이 없으므로 튜플의 수는 200입니다.']::text[])
-ON CONFLICT (question_id, blank_number) DO NOTHING;
-
-INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-018:blank:5'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-018'), 5, ARRAY['SELECT DISTINCT DEPT ‘DEPT’를 표시하되, 같은 ‘DEPT’ 속성의 값은 한 번만 표시한다. FROM STUDENT; <STUDENT> 테이블을 대상으로 검색한다. • <STUDENT> 테이블에서 ‘DEPT’를 검색하는 데 중복된 결과는 처음의 한 개만 검색에 포함시킵니다. 전기과 50개 튜플의 ‘DEPT’ 속성의 값이 같으므로 1개, 전산과 100개 튜플의 ‘DEPT’ 속성의 값이 같으므로 1개, 전 자과 50개 튜플의 ‘DEPT’ 속성의 값이 같으므로 1개를 검색에 포함시키므로 3개의 튜플이 검색됩니다.']::text[])
-ON CONFLICT (question_id, blank_number) DO NOTHING;
-
-INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-018:blank:6'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-018'), 6, ARRAY['SELECT COUNT(DISTINCT DEPT) ‘DEPT’의 개수를 표시하되, 같은 ‘DEPT’ 속성의 값은 한 번만 계산한다. FROM STUDENT; <STUDENT> 테이블을 대상으로 검색한다. WHERE DEPT = ‘전산과’; ‘DEPT’가 “전산과”인 자료만을 대상으로 검색한다. • <STUDENT> 테이블에서 ‘DEPT’ 속성의 값이 ‘전산과’인 튜플에 대해 중복을 제거하고 개수를 세므로 1이 검 색 결과로 표시됩니다.']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-018:blank:3$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-018$q$), 3, ARRAY[$q$1$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-019'), id, 'practical', 2026, 1, '실기', 19,
-  '다음 Java로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-019$q$), id, 'practical', 2026, 1, $q$실기$q$, 19,
+  $q$다음 Java로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준수하
 시오.) (5점)
 class Calc {
 int cc(int a, int b) {
@@ -832,11 +824,11 @@ class Main {
 public static void main(String[] args) {
 Calc calc = new Calc( );
 int a = calc.cc(5, 4);
-int b = calc.cc(''c'', ''a'');
-char c = calc.cc(''3'');
+int b = calc.cc('c', 'a');
+char c = calc.cc('3');
 System.out.println(a + b + "2" + c);
 }
-}', 'class Calc {
+}$q$, $q$class Calc {
 Ⓐ ❸ int cc(int a, int b) {
 ❹ return a + b;
 }
@@ -851,8 +843,8 @@ class Main {
 public static void main(String[] args) {
 ❶ Calc calc = new Calc( );
 ❷ int a = calc.cc(5, 4);
-❺ int b = calc.cc(''c'', ''a'');
-❽ char c = calc.cc(''3'');
+❺ int b = calc.cc('c', 'a');
+❽ char c = calc.cc('3');
 ⓫ System.out.println(a + b + "2" + c);
 }
 }
@@ -891,18 +883,18 @@ a + b + “2” + c
 • ⓒ ⓑ + c : ‘문자열+문자’이므로 “112”+‘3’ = “1123”
 ※ ‘숫자+숫자’는 두 숫자를 합한 값을 출력하지만, ‘문자열+숫자’,‘숫자+문자열’, ‘문자열+문자’와 같이 문자와
 숫자가 섞인 경우에는 모두 문자열로 인식되므로 값이 붙어서 출력됩니다.
-결과 1123', FALSE, TRUE
+결과 1123$q$, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-019:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-019'), 1, ARRAY['1123']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-019:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-019$q$), 1, ARRAY[$q$1123$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 INSERT INTO public.questions (id, exam_id, exam_type, year, round, subject, number, content, explanation, reviewed, published)
 SELECT
-  extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-020'), id, 'practical', 2026, 1, '실기', 20,
-  '다음 Python으로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준
+  extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-020$q$), id, 'practical', 2026, 1, $q$실기$q$, 20,
+  $q$다음 Python으로 구현된 프로그램을 분석하여 그 실행 결과를 쓰시오. (단, 출력문의 출력 서식을 준
 수하시오.) (5점)
 def f(a):
 m = [[x] for x in a]
@@ -910,7 +902,7 @@ b = m[:]
 for i in range(len(b) - 1):
 b[i+1] += b[i]
 return sum(len(x) for x in m)
-print(f([1, 2, 3, 4]))', '❷ def f(a): # def는 Python에서 메소드를 정의하는 예약어이다.
+print(f([1, 2, 3, 4]))$q$, $q$❷ def f(a): # def는 Python에서 메소드를 정의하는 예약어이다.
 ❸ m = [[x] for x in a]
 ❹ b = m[:]
 ❺ for i in range(len(b) - 1):
@@ -1055,12 +1047,12 @@ m 1 2 3 4
 • m[3]의 주소인 2036이 가리키는 곳의 내부 리스트는 [4, 3, 2, 1]이므로 길이는 4
 ∴ 반환되는 값은 1+2+3+4=10입니다.
 ❽ ❼번에서 돌려받은 값 10을 출력한다.
-결과 10', FALSE, TRUE
+결과 10$q$, FALSE, TRUE
 FROM public.exams WHERE slug = 'jeongchogi'
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.practical_answers (id, question_id, blank_number, accepted_answers)
-VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-020:blank:1'), extensions.uuid_generate_v5(extensions.uuid_ns_url(), 'abubae:practical:jeongchogi-practical-2026-1-020'), 1, ARRAY['10']::text[])
+VALUES (extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-020:blank:1$q$), extensions.uuid_generate_v5(extensions.uuid_ns_url(), $q$abubae:practical:jeongchogi-practical-2026-1-020$q$), 1, ARRAY[$q$10$q$]::text[])
 ON CONFLICT (question_id, blank_number) DO NOTHING;
 
 COMMIT;

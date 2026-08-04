@@ -86,4 +86,78 @@ describe('PracticalRoundRunner', () => {
       expect.objectContaining({ method: 'POST' }),
     )
   })
+
+  it('does not render editing for normal users', () => {
+    render(<PracticalRoundRunner canEdit={false} year={2025} round={2} title="2025년 2회" questions={questions} />)
+
+    expect(screen.queryByRole('button', { name: '문제 수정' })).not.toBeInTheDocument()
+  })
+
+  it('shows editing only to master and replaces the current question after saving', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        id: 'q1',
+        number: 1,
+        subject: '실기',
+        content: 'Updated question',
+        updatedAt: '2026-07-23T00:01:00.000Z',
+      }),
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    const user = userEvent.setup()
+    render(
+      <PracticalRoundRunner
+        canEdit
+        editableQuestions={{
+          q1: {
+            id: 'q1',
+            number: 1,
+            subject: '실기',
+            content: '첫 문제',
+            blankCount: 1,
+            updatedAt: '2026-07-23T00:00:00.000Z',
+            blanks: [{ blankNumber: 1, acceptedAnswers: ['SSH'] }],
+            explanation: 'Explanation',
+          },
+        }}
+        year={2025}
+        round={2}
+        title="2025년 2회"
+        questions={questions}
+      />,
+    )
+
+    await user.click(screen.getByRole('button', { name: '문제 수정' }))
+    await user.clear(screen.getByLabelText('문제'))
+    await user.type(screen.getByLabelText('문제'), 'Updated question')
+    await user.click(screen.getByRole('button', { name: '저장' }))
+
+    expect(await screen.findByRole('heading', { name: '1. Updated question' })).toBeInTheDocument()
+    expect(screen.getByRole('status')).toHaveTextContent('문제가 저장되었습니다.')
+  })
+
+  it('lazily loads editable details only after a master opens the current question editor', async () => {
+    const loadEditableQuestion = vi.fn().mockResolvedValue({
+      id: 'q1',
+      number: 1,
+      subject: '실기',
+      content: '첫 문제',
+      blankCount: 1,
+      updatedAt: '2026-07-23T00:00:00.000Z',
+      blanks: [{ blankNumber: 1, acceptedAnswers: ['SSH'] }],
+      explanation: 'Explanation',
+    })
+    const user = userEvent.setup()
+    render(
+      <PracticalRoundRunner canEdit loadEditableQuestion={loadEditableQuestion} year={2025} round={2} title="2025년 2회" questions={questions} />,
+    )
+
+    expect(loadEditableQuestion).not.toHaveBeenCalled()
+    await user.click(screen.getByRole('button', { name: '문제 수정' }))
+
+    expect(await screen.findByLabelText('해설')).toHaveValue('Explanation')
+    expect(loadEditableQuestion).toHaveBeenCalledOnce()
+    expect(loadEditableQuestion).toHaveBeenCalledWith('q1')
+  })
 })

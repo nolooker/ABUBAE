@@ -629,6 +629,130 @@ EXCEPTION
 END;
 $$;
 
+CREATE OR REPLACE FUNCTION public.get_practical_question_for_edit(
+  p_question_id pg_catalog.uuid
+)
+RETURNS pg_catalog.jsonb
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = ''
+AS $$
+DECLARE
+  question_for_edit pg_catalog.jsonb;
+BEGIN
+  IF NOT public.is_master() THEN
+    RAISE EXCEPTION 'master role required';
+  END IF;
+
+  SELECT pg_catalog.jsonb_build_object(
+    'question', pg_catalog.to_jsonb(question_row),
+    'blanks', (
+      SELECT COALESCE(
+        pg_catalog.jsonb_agg(pg_catalog.to_jsonb(blank_row) ORDER BY blank_row.blank_number),
+        '[]'::pg_catalog.jsonb
+      )
+      FROM public.practical_answers AS blank_row
+      WHERE blank_row.question_id = question_row.id
+    )
+  )
+  INTO question_for_edit
+  FROM public.questions AS question_row
+  WHERE question_row.id = p_question_id
+    AND question_row.exam_type = 'practical';
+
+  IF question_for_edit IS NULL THEN
+    RAISE EXCEPTION 'practical question not found';
+  END IF;
+
+  RETURN question_for_edit;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION public.update_practical_question(
+  p_question_id pg_catalog.uuid,
+  p_content pg_catalog.text,
+  p_explanation pg_catalog.text,
+  p_blanks pg_catalog.jsonb,
+  p_expected_updated_at pg_catalog.timestamptz
+)
+RETURNS public.questions
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = ''
+AS $$
+DECLARE
+  updated_question public.questions%ROWTYPE;
+  blank_count pg_catalog.int4;
+BEGIN
+  IF NOT public.is_master() THEN
+    RAISE EXCEPTION 'master role required';
+  END IF;
+
+  IF pg_catalog.jsonb_typeof(p_blanks) <> 'array' THEN
+    RAISE EXCEPTION 'blanks must be an array';
+  END IF;
+
+  SELECT pg_catalog.count(*) INTO blank_count FROM pg_catalog.jsonb_array_elements(p_blanks);
+  IF blank_count < 1 THEN
+    RAISE EXCEPTION 'at least one blank is required';
+  END IF;
+
+  IF EXISTS (
+    SELECT 1
+    FROM pg_catalog.jsonb_array_elements(p_blanks) AS blank_element
+    WHERE COALESCE(pg_catalog.jsonb_array_length(blank_element -> 'accepted_answers'), 0) = 0
+  ) THEN
+    RAISE EXCEPTION 'each blank must have at least one accepted answer';
+  END IF;
+
+  IF EXISTS (
+    SELECT 1
+    FROM pg_catalog.jsonb_array_elements(p_blanks) AS blank_element,
+      pg_catalog.jsonb_array_elements_text(blank_element -> 'accepted_answers') AS accepted_answer
+    WHERE pg_catalog.length(pg_catalog.btrim(accepted_answer)) = 0
+  ) THEN
+    RAISE EXCEPTION 'accepted answers must not be blank';
+  END IF;
+
+  UPDATE public.questions
+  SET content = p_content,
+      explanation = p_explanation,
+      reviewed = TRUE,
+      updated_at = pg_catalog.now(),
+      updated_by = auth.uid()
+  WHERE id = p_question_id
+    AND exam_type = 'practical'
+    AND updated_at = p_expected_updated_at
+  RETURNING * INTO updated_question;
+
+  IF NOT FOUND THEN
+    IF EXISTS (
+      SELECT 1
+      FROM public.questions
+      WHERE id = p_question_id AND exam_type = 'practical'
+    ) THEN
+      RAISE EXCEPTION 'stale question';
+    END IF;
+
+    RAISE EXCEPTION 'practical question not found';
+  END IF;
+
+  DELETE FROM public.practical_answers WHERE question_id = p_question_id;
+
+  INSERT INTO public.practical_answers (question_id, blank_number, accepted_answers)
+  SELECT
+    p_question_id,
+    (blank_element ->> 'blank_number')::pg_catalog.int4,
+    ARRAY(SELECT pg_catalog.jsonb_array_elements_text(blank_element -> 'accepted_answers'))
+  FROM pg_catalog.jsonb_array_elements(p_blanks) AS blank_element;
+
+  RETURN updated_question;
+EXCEPTION
+  WHEN unique_violation THEN
+    RAISE EXCEPTION 'blank numbers must be unique';
+END;
+$$;
+
 REVOKE ALL ON FUNCTION public.is_master() FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.is_master() TO authenticated;
 REVOKE ALL ON FUNCTION public.get_written_question_for_edit(pg_catalog.uuid) FROM PUBLIC, anon, authenticated;
@@ -637,6 +761,10 @@ REVOKE ALL ON FUNCTION public.update_written_question(pg_catalog.uuid, pg_catalo
 GRANT EXECUTE ON FUNCTION public.update_written_question(pg_catalog.uuid, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text, pg_catalog.timestamptz) TO authenticated;
 REVOKE ALL ON FUNCTION public.create_written_question(pg_catalog.text, pg_catalog.int4, pg_catalog.int4, pg_catalog.text, pg_catalog.int4, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.create_written_question(pg_catalog.text, pg_catalog.int4, pg_catalog.int4, pg_catalog.text, pg_catalog.int4, pg_catalog.text, pg_catalog.text[], pg_catalog.int4[], pg_catalog.text) TO authenticated;
+REVOKE ALL ON FUNCTION public.get_practical_question_for_edit(pg_catalog.uuid) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.get_practical_question_for_edit(pg_catalog.uuid) TO authenticated;
+REVOKE ALL ON FUNCTION public.update_practical_question(pg_catalog.uuid, pg_catalog.text, pg_catalog.text, pg_catalog.jsonb, pg_catalog.timestamptz) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.update_practical_question(pg_catalog.uuid, pg_catalog.text, pg_catalog.text, pg_catalog.jsonb, pg_catalog.timestamptz) TO authenticated;
 
 CREATE OR REPLACE FUNCTION public.delete_written_question(
   p_question_id pg_catalog.uuid

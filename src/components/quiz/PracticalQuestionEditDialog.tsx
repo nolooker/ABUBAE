@@ -1,0 +1,314 @@
+'use client'
+
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
+
+export type EditablePracticalBlank = {
+  blankNumber: number
+  acceptedAnswers: string[]
+}
+
+export type EditablePracticalQuestion = {
+  id: string
+  number: number
+  subject: string
+  content: string
+  blankCount: number
+  updatedAt: string
+  blanks: EditablePracticalBlank[]
+  explanation: string
+}
+
+export type EditedPracticalQuestion = EditablePracticalQuestion
+
+type Props = {
+  question: EditablePracticalQuestion
+  onClose: () => void
+  onSaved: (question: EditedPracticalQuestion) => void
+  onRefreshLatest: () => Promise<EditablePracticalQuestion>
+}
+
+function toBlankTexts(blanks: EditablePracticalBlank[]): string[] {
+  return blanks
+    .slice()
+    .sort((a, b) => a.blankNumber - b.blankNumber)
+    .map((blank) => blank.acceptedAnswers.join(', '))
+}
+
+function parseBlankTexts(blankTexts: string[]): EditablePracticalBlank[] {
+  return blankTexts.map((text, index) => ({
+    blankNumber: index + 1,
+    acceptedAnswers: text.split(',').map((answer) => answer.trim()).filter((answer) => answer.length > 0),
+  }))
+}
+
+export default function PracticalQuestionEditDialog({ question, onClose, onSaved, onRefreshLatest }: Props) {
+  const [baselineQuestion, setBaselineQuestion] = useState(question)
+  const [content, setContent] = useState(question.content)
+  const [blankTexts, setBlankTexts] = useState(toBlankTexts(question.blanks))
+  const [explanation, setExplanation] = useState(question.explanation)
+  const [isSaving, setIsSaving] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [hasConflict, setHasConflict] = useState(false)
+  const [announcement, setAnnouncement] = useState<string | null>(null)
+  const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false)
+  const editDialogRef = useRef<HTMLElement | null>(null)
+  const discardDialogRef = useRef<HTMLElement | null>(null)
+  const questionFieldRef = useRef<HTMLTextAreaElement | null>(null)
+  const editRestoreFocusRef = useRef<HTMLElement | null>(null)
+
+  useEffect(() => {
+    editRestoreFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    questionFieldRef.current?.focus()
+
+    return () => editRestoreFocusRef.current?.focus()
+  }, [])
+
+  useEffect(() => {
+    if (!showDiscardConfirmation) return
+
+    const returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    const firstFocusable = focusableElements(discardDialogRef.current)[0]
+    firstFocusable?.focus()
+
+    return () => returnFocus?.focus()
+  }, [showDiscardConfirmation])
+
+  const baselineBlankTexts = useMemo(() => toBlankTexts(baselineQuestion.blanks), [baselineQuestion])
+
+  const isDirty = useMemo(() => (
+    content !== baselineQuestion.content
+    || explanation !== baselineQuestion.explanation
+    || blankTexts.length !== baselineBlankTexts.length
+    || blankTexts.some((text, index) => text !== baselineBlankTexts[index])
+  ), [baselineBlankTexts, baselineQuestion, blankTexts, content, explanation])
+
+  const requestClose = () => {
+    if (isSaving || isRefreshing) return
+    if (isDirty) {
+      setShowDiscardConfirmation(true)
+      return
+    }
+    onClose()
+  }
+
+  const changeBlankText = (index: number, value: string) => {
+    setBlankTexts((previous) => previous.map((text, textIndex) => textIndex === index ? value : text))
+  }
+
+  const addBlank = () => {
+    setBlankTexts((previous) => [...previous, ''])
+  }
+
+  const removeBlank = (index: number) => {
+    setBlankTexts((previous) => previous.filter((_, textIndex) => textIndex !== index))
+  }
+
+  const save = async () => {
+    const blanks = parseBlankTexts(blankTexts)
+    if (!content.trim() || blanks.length === 0 || blanks.some((blank) => blank.acceptedAnswers.length === 0)) {
+      setError('문제와 각 빈칸의 정답을 모두 입력해 주세요.')
+      return
+    }
+
+    setIsSaving(true)
+    setError(null)
+    setHasConflict(false)
+    setAnnouncement(null)
+    try {
+      const response = await fetch(`/api/admin/practical-questions/${question.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          content,
+          explanation,
+          blanks,
+          expectedUpdatedAt: baselineQuestion.updatedAt,
+        }),
+      })
+      if (!response.ok) {
+        const apiError = await readRedactedError(response)
+        if (response.status === 409 && apiError === 'question was updated by another request') {
+          setHasConflict(true)
+          setError('다른 수정 사항이 먼저 저장되었습니다. 작성 중인 내용은 유지됩니다. 최신 내용을 불러와 저장 기준을 갱신해 주세요.')
+        } else if (response.status === 400 && apiError) {
+          setError('입력 내용을 확인해 주세요.')
+        } else {
+          setError('문제를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.')
+        }
+        return
+      }
+
+      const updated: unknown = await response.json()
+      if (!isEditedQuestion(updated, question.id)) throw new Error('invalid response')
+      setHasConflict(false)
+      onSaved({
+        ...updated,
+        blanks,
+        explanation,
+      })
+    } catch {
+      setError('문제를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.')
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  const refreshLatest = async () => {
+    setIsRefreshing(true)
+    setError(null)
+    setAnnouncement(null)
+    try {
+      const latestQuestion = await onRefreshLatest()
+      if (!isEditableQuestion(latestQuestion, question.id)) throw new Error('invalid refresh response')
+      setBaselineQuestion(latestQuestion)
+      setHasConflict(false)
+      setAnnouncement('최신 저장 기준을 불러왔습니다. 작성 중인 내용은 유지했습니다. 내용을 검토한 뒤 다시 저장해 주세요.')
+    } catch {
+      setError('최신 내용을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.')
+    } finally {
+      setIsRefreshing(false)
+    }
+  }
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      if (showDiscardConfirmation) {
+        setShowDiscardConfirmation(false)
+      } else {
+        requestClose()
+      }
+      return
+    }
+
+    if (event.key === 'Tab') {
+      trapFocus(event, showDiscardConfirmation ? discardDialogRef.current : editDialogRef.current)
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4" role="presentation" onKeyDown={handleKeyDown}>
+      <section ref={editDialogRef} role="dialog" aria-modal="true" aria-labelledby="edit-question-title" className="max-h-full w-full max-w-3xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold text-[var(--primary)]">{question.subject}</p>
+            <h2 id="edit-question-title" className="mt-1 text-xl font-bold">{question.number}번 문제 수정</h2>
+          </div>
+          <button type="button" aria-label="편집 닫기" className="ab-btn ab-btn-secondary ab-btn-md" onClick={requestClose} disabled={isSaving}>닫기</button>
+        </div>
+
+        <div className="mt-6 space-y-5">
+          <label className="block text-sm font-semibold">문제
+            <textarea ref={questionFieldRef} aria-label="문제" value={content} onChange={(event) => setContent(event.target.value)} disabled={isSaving} rows={6} className="mt-2 w-full rounded-lg border border-[var(--border)] p-3 font-normal" />
+          </label>
+
+          <fieldset>
+            <legend className="text-sm font-semibold">빈칸별 정답 (쉼표로 여러 정답 구분)</legend>
+            <div className="mt-2 space-y-3">
+              {blankTexts.map((text, index) => (
+                <div key={index} className="flex items-center gap-3">
+                  <span className="w-16 shrink-0 font-semibold">빈칸 {index + 1}</span>
+                  <input aria-label={`빈칸 ${index + 1} 정답`} value={text} onChange={(event) => changeBlankText(index, event.target.value)} disabled={isSaving} className="min-w-0 flex-1 rounded-lg border border-[var(--border)] p-3 font-normal" />
+                  <button type="button" aria-label={`빈칸 ${index + 1} 삭제`} onClick={() => removeBlank(index)} disabled={isSaving || blankTexts.length <= 1} className="ab-btn ab-btn-secondary ab-btn-md disabled:opacity-40">삭제</button>
+                </div>
+              ))}
+            </div>
+            <button type="button" onClick={addBlank} disabled={isSaving} className="ab-btn ab-btn-secondary ab-btn-md mt-3">빈칸 추가</button>
+          </fieldset>
+
+          <label className="block text-sm font-semibold">해설
+            <textarea aria-label="해설" value={explanation} onChange={(event) => setExplanation(event.target.value)} disabled={isSaving} rows={4} className="mt-2 w-full rounded-lg border border-[var(--border)] p-3 font-normal" />
+          </label>
+        </div>
+
+        {error && <p role="alert" className="mt-4 text-sm font-semibold text-red-600">{error}</p>}
+        <p role="status" aria-live="polite" className={announcement ? 'mt-4 text-sm font-semibold text-blue-700' : 'sr-only'}>{announcement ?? ''}</p>
+        {hasConflict && (
+          <div className="mt-4 rounded-xl bg-orange-50 p-4">
+            <button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={refreshLatest} disabled={isSaving || isRefreshing}>
+              {isRefreshing ? '불러오는 중...' : '최신 내용 불러오기'}
+            </button>
+          </div>
+        )}
+        <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+          <button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={requestClose} disabled={isSaving || isRefreshing}>취소</button>
+          <button type="button" className="ab-btn ab-btn-primary ab-btn-md" onClick={save} disabled={isSaving || isRefreshing}>{isSaving ? '저장 중…' : '저장'}</button>
+        </div>
+      </section>
+
+      {showDiscardConfirmation && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/50 p-4">
+          <section ref={discardDialogRef} role="alertdialog" aria-modal="true" aria-labelledby="discard-title" className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+            <h3 id="discard-title" className="text-lg font-bold">변경사항을 버릴까요?</h3>
+            <p className="mt-2 text-sm text-[var(--text-secondary)]">저장하지 않은 수정 내용이 사라집니다.</p>
+            <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+              <button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={() => setShowDiscardConfirmation(false)}>계속 편집</button>
+              <button type="button" className="ab-btn ab-btn-primary ab-btn-md" onClick={onClose}>변경사항 버리기</button>
+            </div>
+          </section>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function isEditedQuestion(value: unknown, expectedId: string): value is Omit<EditedPracticalQuestion, 'blanks' | 'explanation'> {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false
+  const question = value as Record<string, unknown>
+  return question.id === expectedId
+    && typeof question.number === 'number'
+    && Number.isSafeInteger(question.number)
+    && question.number > 0
+    && typeof question.subject === 'string'
+    && typeof question.content === 'string'
+    && typeof question.updatedAt === 'string'
+}
+
+function isEditableQuestion(value: unknown, expectedId: string): value is EditablePracticalQuestion {
+  if (!isEditedQuestion(value, expectedId)) return false
+  const question = value as EditablePracticalQuestion
+  return Array.isArray(question.blanks)
+    && question.blanks.length > 0
+    && question.blanks.every((blank) => (
+      Number.isSafeInteger(blank.blankNumber)
+      && blank.blankNumber > 0
+      && Array.isArray(blank.acceptedAnswers)
+      && blank.acceptedAnswers.length > 0
+      && blank.acceptedAnswers.every((answer) => typeof answer === 'string' && answer.trim().length > 0)
+    ))
+    && typeof question.explanation === 'string'
+}
+
+async function readRedactedError(response: Response): Promise<string | undefined> {
+  try {
+    const value: unknown = await response.json()
+    if (typeof value !== 'object' || value === null || Array.isArray(value)) return undefined
+    const error = (value as Record<string, unknown>).error
+    return typeof error === 'string' ? error : undefined
+  } catch {
+    return undefined
+  }
+}
+
+function focusableElements(container: HTMLElement | null): HTMLElement[] {
+  if (!container) return []
+
+  return Array.from(container.querySelectorAll<HTMLElement>('button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'))
+}
+
+function trapFocus(event: KeyboardEvent<HTMLDivElement>, container: HTMLElement | null) {
+  const focusable = focusableElements(container)
+  if (focusable.length === 0) return
+
+  const first = focusable[0]
+  const last = focusable[focusable.length - 1]
+  const activeElement = document.activeElement
+  if (event.shiftKey && (activeElement === first || !container?.contains(activeElement))) {
+    event.preventDefault()
+    last.focus()
+  } else if (!event.shiftKey && (activeElement === last || !container?.contains(activeElement))) {
+    event.preventDefault()
+    first.focus()
+  }
+}

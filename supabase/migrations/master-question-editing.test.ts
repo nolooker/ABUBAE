@@ -184,6 +184,7 @@ describe('master question editing migration', () => {
     const sqlWithoutSanctionedDeletes = sql
       .replace(/DELETE FROM public\.questions\s+WHERE id = p_question_id\s+AND exam_type = 'written';/, '')
       .replace(/DELETE FROM public\.questions\s+WHERE exam_id = target_exam_id\s+AND exam_type = 'written'\s+AND year = p_year\s+AND round = p_round;/, '')
+      .replace(/DELETE FROM public\.practical_answers WHERE question_id = p_question_id;/, '')
 
     expect(sql).not.toMatch(destructiveDropTable)
     expect(sql).not.toMatch(/\bTRUNCATE\b/i)
