@@ -35,9 +35,27 @@ describe('BoardPostForm', () => {
     expect(fetchMock).toHaveBeenCalledWith('/api/board/posts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: '제목입니다', content: '내용입니다' }),
+      body: JSON.stringify({ title: '제목입니다', content: '내용입니다', category: 'free' }),
     })
     await waitFor(() => expect(push).toHaveBeenCalledWith(`/board/${postId}`))
+  })
+
+  it('submits the review category once selected', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, status: 201, json: async () => ({ id: postId }) })
+    vi.stubGlobal('fetch', fetchMock)
+    const user = userEvent.setup()
+    render(<BoardPostForm mode="create" />)
+
+    await user.type(screen.getByLabelText('제목'), '제목입니다')
+    await user.type(screen.getByLabelText('내용'), '내용입니다')
+    await user.click(screen.getByRole('radio', { name: '후기' }))
+    await user.click(screen.getByRole('button', { name: '글 등록' }))
+
+    expect(fetchMock).toHaveBeenCalledWith('/api/board/posts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: '제목입니다', content: '내용입니다', category: 'review' }),
+    })
   })
 
   it('does not render a delete button in create mode', () => {
@@ -50,7 +68,7 @@ describe('BoardPostForm', () => {
     const fetchMock = vi.fn().mockResolvedValue({ ok: true, status: 200, json: async () => ({ id: postId }) })
     vi.stubGlobal('fetch', fetchMock)
     const user = userEvent.setup()
-    render(<BoardPostForm mode="edit" postId={postId} initialDraft={{ title: 'Original', content: 'Original content' }} />)
+    render(<BoardPostForm mode="edit" postId={postId} initialDraft={{ title: 'Original', content: 'Original content', category: 'free' }} />)
 
     await user.clear(screen.getByLabelText('제목'))
     await user.type(screen.getByLabelText('제목'), 'Revised')
@@ -59,7 +77,7 @@ describe('BoardPostForm', () => {
     expect(fetchMock).toHaveBeenCalledWith(`/api/board/posts/${postId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: 'Revised', content: 'Original content' }),
+      body: JSON.stringify({ title: 'Revised', content: 'Original content', category: 'free' }),
     })
     await waitFor(() => expect(push).toHaveBeenCalledWith(`/board/${postId}`))
   })
@@ -96,7 +114,7 @@ describe('BoardPostForm', () => {
     const fetchMock = vi.fn().mockResolvedValue({ ok: true, status: 204 })
     vi.stubGlobal('fetch', fetchMock)
     const user = userEvent.setup()
-    render(<BoardPostForm mode="edit" postId={postId} initialDraft={{ title: 'Title', content: 'Content' }} />)
+    render(<BoardPostForm mode="edit" postId={postId} initialDraft={{ title: 'Title', content: 'Content', category: 'free' }} />)
 
     await user.click(screen.getByRole('button', { name: '글 삭제' }))
 
@@ -109,7 +127,7 @@ describe('BoardPostForm', () => {
     const fetchMock = vi.fn()
     vi.stubGlobal('fetch', fetchMock)
     const user = userEvent.setup()
-    render(<BoardPostForm mode="edit" postId={postId} initialDraft={{ title: 'Title', content: 'Content' }} />)
+    render(<BoardPostForm mode="edit" postId={postId} initialDraft={{ title: 'Title', content: 'Content', category: 'free' }} />)
 
     await user.click(screen.getByRole('button', { name: '글 삭제' }))
 

@@ -28,7 +28,7 @@ function context(id = postId) {
   return { params: Promise.resolve({ postId: id }) }
 }
 
-function patchRequest(body: unknown = { title: 'Title', content: 'Content' }) {
+function patchRequest(body: unknown = { title: 'Title', content: 'Content', category: 'free' }) {
   return new Request(`http://localhost/api/board/posts/${postId}`, {
     method: 'PATCH',
     headers: { 'content-type': 'application/json' },
@@ -86,13 +86,13 @@ describe('/api/board/posts/[postId]', () => {
 
   it('updates a post owned by the caller', async () => {
     createClient.mockResolvedValue(supabaseClient(user))
-    const updatePost = vi.fn().mockResolvedValue({ id: postId, title: 'Title', content: 'Content' })
+    const updatePost = vi.fn().mockResolvedValue({ id: postId, title: 'Title', content: 'Content', category: 'free' })
     createBoardRepository.mockReturnValue({ updatePost })
 
     const response = await PATCH(patchRequest(), context())
 
     expect(response.status).toBe(200)
-    expect(updatePost).toHaveBeenCalledWith(postId, { title: 'Title', content: 'Content' })
+    expect(updatePost).toHaveBeenCalledWith(postId, { title: 'Title', content: 'Content', category: 'free' })
   })
 
   it('maps not-found (including someone else\'s post) to 404 on update and delete', async () => {
@@ -125,9 +125,11 @@ describe('/api/board/posts/[postId]', () => {
     const updatePost = vi.fn()
     createBoardRepository.mockReturnValue({ updatePost })
 
-    const response = await PATCH(patchRequest({ title: '', content: 'Content' }), context())
+    const response = await PATCH(patchRequest({ title: '', content: 'Content', category: 'free' }), context())
+    const missingCategory = await PATCH(patchRequest({ title: 'Title', content: 'Content' }), context())
 
     expect(response.status).toBe(400)
+    expect(missingCategory.status).toBe(400)
     expect(updatePost).not.toHaveBeenCalled()
   })
 })

@@ -1,6 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 
 import type {
+  BoardCategory,
   BoardComment,
   BoardCommentEditInput,
   BoardCommentInput,
@@ -52,6 +53,11 @@ function rows(value: unknown): RecordValue[] {
   return value
 }
 
+function categoryValue(value: unknown): BoardCategory {
+  if (value !== 'free' && value !== 'review') throw new BoardRepositoryError()
+  return value
+}
+
 function postRow(row: RecordValue): BoardPost {
   return {
     id: stringValue(row.id),
@@ -61,6 +67,7 @@ function postRow(row: RecordValue): BoardPost {
     authorNickname: stringValue(row.author_nickname),
     createdAt: stringValue(row.created_at),
     updatedAt: stringValue(row.updated_at),
+    category: categoryValue(row.category),
   }
 }
 
@@ -85,6 +92,7 @@ function summaryRow(row: RecordValue, commentCounts: Map<string, number>): Board
     authorNickname: stringValue(row.author_nickname),
     createdAt: stringValue(row.created_at),
     commentCount: commentCounts.get(id) ?? 0,
+    category: categoryValue(row.category),
   }
 }
 
@@ -107,17 +115,20 @@ function reportRow(row: RecordValue): BoardReport {
   }
 }
 
-const postFields = 'id,user_id,title,content,author_nickname,created_at,updated_at'
+const postFields = 'id,user_id,title,content,author_nickname,created_at,updated_at,category'
+const postSummaryFields = 'id,title,author_nickname,created_at,category'
 const commentFields = 'id,post_id,user_id,author_nickname,content,created_at,updated_at,parent_comment_id'
 const reportFields = 'id,target_type,target_id,post_id,reporter_user_id,reporter_nickname,reason,status,created_at'
 
 export function createBoardRepository(supabase: SupabaseClient) {
   return {
-    async listPosts(): Promise<BoardPostSummary[]> {
-      const { data: posts, error: postsError } = await supabase
+    async listPosts(category?: BoardCategory): Promise<BoardPostSummary[]> {
+      let query = supabase
         .from('board_posts')
-        .select('id,title,author_nickname,created_at')
+        .select(postSummaryFields)
         .order('created_at', { ascending: false })
+      if (category) query = query.eq('category', category)
+      const { data: posts, error: postsError } = await query
       if (postsError) throw new BoardRepositoryError(postsError.message)
 
       const { data: comments, error: commentsError } = await supabase
@@ -159,7 +170,7 @@ export function createBoardRepository(supabase: SupabaseClient) {
     async createPost(userId: string, authorNickname: string, input: BoardPostInput): Promise<BoardPost> {
       const { data, error } = await supabase
         .from('board_posts')
-        .insert({ user_id: userId, author_nickname: authorNickname, title: input.title, content: input.content })
+        .insert({ user_id: userId, author_nickname: authorNickname, title: input.title, content: input.content, category: input.category })
         .select(postFields)
         .single()
       if (error) throw new BoardRepositoryError(error.message)
@@ -169,7 +180,7 @@ export function createBoardRepository(supabase: SupabaseClient) {
     async updatePost(id: string, input: BoardPostInput): Promise<BoardPost> {
       const { data, error } = await supabase
         .from('board_posts')
-        .update({ title: input.title, content: input.content, updated_at: new Date().toISOString() })
+        .update({ title: input.title, content: input.content, category: input.category, updated_at: new Date().toISOString() })
         .eq('id', id)
         .select(postFields)
         .maybeSingle()

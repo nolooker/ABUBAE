@@ -1,9 +1,18 @@
+export type BoardCategory = 'free' | 'review'
+
+export const boardCategories: BoardCategory[] = ['free', 'review']
+
+export function boardCategoryLabel(category: BoardCategory): string {
+  return category === 'review' ? '후기' : '자유'
+}
+
 export type BoardPostSummary = {
   id: string
   title: string
   authorNickname: string
   createdAt: string
   commentCount: number
+  category: BoardCategory
 }
 
 export type BoardPost = {
@@ -14,6 +23,7 @@ export type BoardPost = {
   authorNickname: string
   createdAt: string
   updatedAt: string
+  category: BoardCategory
 }
 
 export type BoardComment = {
@@ -30,6 +40,7 @@ export type BoardComment = {
 export type BoardPostInput = {
   title: string
   content: string
+  category: BoardCategory
 }
 
 export type BoardCommentInput = {
@@ -103,15 +114,20 @@ export function validateBoardId(value: unknown): string {
 
 export function validateBoardPostInput(value: unknown): BoardPostInput {
   const input = recordValue(value)
-  const expectedKeys = ['title', 'content']
+  const expectedKeys = ['title', 'content', 'category']
 
   for (const key of Object.keys(input)) {
     if (!expectedKeys.includes(key)) throw new BoardValidationError(`unknown field: ${key}`)
   }
 
+  if (input.category !== 'free' && input.category !== 'review') {
+    throw new BoardValidationError('category must be "free" or "review"')
+  }
+
   return {
     title: stringField(input.title, 'title', MAX_TITLE_LENGTH),
     content: stringField(input.content, 'content', MAX_POST_CONTENT_LENGTH),
+    category: input.category,
   }
 }
 

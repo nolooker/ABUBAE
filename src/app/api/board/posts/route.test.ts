@@ -59,7 +59,7 @@ describe('/api/board/posts', () => {
     const createPost = vi.fn()
     createBoardRepository.mockReturnValue({ createPost })
 
-    const response = await POST(request({ title: 'Title', content: 'Content' }))
+    const response = await POST(request({ title: 'Title', content: 'Content', category: 'free' }))
 
     expect(response.status).toBe(401)
     expect(createPost).not.toHaveBeenCalled()
@@ -67,13 +67,23 @@ describe('/api/board/posts', () => {
 
   it('creates a post for the authenticated user, deriving the nickname from metadata', async () => {
     createClient.mockResolvedValue(supabaseClient(user))
-    const createPost = vi.fn().mockResolvedValue({ id: 'p1', userId: user.id, title: 'Title', content: 'Content', authorNickname: '아부배러너', createdAt: '2026-07-24T00:00:00Z', updatedAt: '2026-07-24T00:00:00Z' })
+    const createPost = vi.fn().mockResolvedValue({ id: 'p1', userId: user.id, title: 'Title', content: 'Content', authorNickname: '아부배러너', createdAt: '2026-07-24T00:00:00Z', updatedAt: '2026-07-24T00:00:00Z', category: 'free' })
     createBoardRepository.mockReturnValue({ createPost })
 
-    const response = await POST(request({ title: 'Title', content: 'Content' }))
+    const response = await POST(request({ title: 'Title', content: 'Content', category: 'free' }))
 
     expect(response.status).toBe(201)
-    expect(createPost).toHaveBeenCalledWith(user.id, '아부배러너', { title: 'Title', content: 'Content' })
+    expect(createPost).toHaveBeenCalledWith(user.id, '아부배러너', { title: 'Title', content: 'Content', category: 'free' })
+  })
+
+  it('creates a review post', async () => {
+    createClient.mockResolvedValue(supabaseClient(user))
+    const createPost = vi.fn().mockResolvedValue({})
+    createBoardRepository.mockReturnValue({ createPost })
+
+    await POST(request({ title: 'Title', content: 'Content', category: 'review' }))
+
+    expect(createPost).toHaveBeenCalledWith(user.id, '아부배러너', { title: 'Title', content: 'Content', category: 'review' })
   })
 
   it('falls back to the email prefix when nickname metadata is missing', async () => {
@@ -81,9 +91,9 @@ describe('/api/board/posts', () => {
     const createPost = vi.fn().mockResolvedValue({})
     createBoardRepository.mockReturnValue({ createPost })
 
-    await POST(request({ title: 'Title', content: 'Content' }))
+    await POST(request({ title: 'Title', content: 'Content', category: 'free' }))
 
-    expect(createPost).toHaveBeenCalledWith(user.id, 'runner', { title: 'Title', content: 'Content' })
+    expect(createPost).toHaveBeenCalledWith(user.id, 'runner', { title: 'Title', content: 'Content', category: 'free' })
   })
 
   it('returns 400 for malformed JSON and invalid payloads', async () => {
@@ -92,10 +102,12 @@ describe('/api/board/posts', () => {
     createBoardRepository.mockReturnValue({ createPost })
 
     const malformed = await POST(new Request('http://localhost', { method: 'POST', body: '{' }))
-    const invalid = await POST(request({ title: '', content: 'Content' }))
+    const invalid = await POST(request({ title: '', content: 'Content', category: 'free' }))
+    const missingCategory = await POST(request({ title: 'Title', content: 'Content' }))
 
     expect(malformed.status).toBe(400)
     expect(invalid.status).toBe(400)
+    expect(missingCategory.status).toBe(400)
     expect(createPost).not.toHaveBeenCalled()
   })
 })

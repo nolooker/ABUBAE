@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import BoardComments from '@/components/board/BoardComments'
 import BoardPostDeleteButton from '@/components/board/BoardPostDeleteButton'
 import BoardReportButton from '@/components/board/BoardReportButton'
-import { isValidBoardId } from '@/lib/board'
+import { boardCategoryLabel, isValidBoardId } from '@/lib/board'
 import { createBoardRepository } from '@/lib/board-repository'
 import { getCurrentUserRole } from '@/lib/master-auth'
 import { createClient } from '@/lib/supabase/server'
@@ -38,6 +38,9 @@ export default async function BoardPostPage({ params }: Props) {
 
       <div className="mt-6 mb-6 flex items-start justify-between gap-4">
         <div>
+          <span className="mb-2 inline-block rounded-full bg-[var(--primary-light)] px-2 py-0.5 text-[11px] font-bold text-[var(--primary)]">
+            {boardCategoryLabel(post.category)}
+          </span>
           <h1 className="text-2xl font-bold text-[var(--text-primary)] sm:text-3xl">{post.title}</h1>
           <p className="mt-3 text-[13px] text-[var(--text-muted)]">{post.authorNickname} · {formattedDate(post.createdAt)}</p>
         </div>

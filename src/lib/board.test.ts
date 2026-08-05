@@ -11,20 +11,31 @@ import {
 
 describe('validateBoardPostInput', () => {
   it('trims valid post fields without changing their types', () => {
-    expect(validateBoardPostInput({ title: ' 제목 ', content: ' 내용 ' })).toEqual({
+    expect(validateBoardPostInput({ title: ' 제목 ', content: ' 내용 ', category: 'free' })).toEqual({
       title: '제목',
       content: '내용',
+      category: 'free',
+    })
+  })
+
+  it('accepts the review category', () => {
+    expect(validateBoardPostInput({ title: '제목', content: '내용', category: 'review' })).toEqual({
+      title: '제목',
+      content: '내용',
+      category: 'review',
     })
   })
 
   it.each([
-    [{ title: '', content: 'content' }, 'title'],
-    [{ title: '   ', content: 'content' }, 'title'],
-    [{ title: 'x'.repeat(201), content: 'content' }, 'title'],
-    [{ title: 'title', content: '' }, 'content'],
-    [{ title: 'title', content: 'x'.repeat(5_001) }, 'content'],
-    [{ title: 'title', content: 'content', extra: 'nope' }, 'unknown'],
-    [{ title: 123, content: 'content' }, 'title'],
+    [{ title: '', content: 'content', category: 'free' }, 'title'],
+    [{ title: '   ', content: 'content', category: 'free' }, 'title'],
+    [{ title: 'x'.repeat(201), content: 'content', category: 'free' }, 'title'],
+    [{ title: 'title', content: '', category: 'free' }, 'content'],
+    [{ title: 'title', content: 'x'.repeat(5_001), category: 'free' }, 'content'],
+    [{ title: 'title', content: 'content', category: 'free', extra: 'nope' }, 'unknown'],
+    [{ title: 123, content: 'content', category: 'free' }, 'title'],
+    [{ title: 'title', content: 'content' }, 'category must be "free" or "review"'],
+    [{ title: 'title', content: 'content', category: 'other' }, 'category must be "free" or "review"'],
   ])('rejects invalid post payloads: %o', (input, message) => {
     expect(() => validateBoardPostInput(input)).toThrow(BoardValidationError)
     expect(() => validateBoardPostInput(input)).toThrow(message)

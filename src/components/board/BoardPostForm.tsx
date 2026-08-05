@@ -2,13 +2,15 @@
 
 import { useRef, useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
+import { boardCategories, boardCategoryLabel, type BoardCategory } from '@/lib/board'
 
 type Draft = {
   title: string
   content: string
+  category: BoardCategory
 }
 
-const emptyDraft: Draft = { title: '', content: '' }
+const emptyDraft: Draft = { title: '', content: '', category: 'free' }
 
 type BoardPostFormProps = {
   mode: 'create' | 'edit'
@@ -99,6 +101,25 @@ export default function BoardPostForm({ mode, postId, initialDraft }: BoardPostF
   return (
     <form onSubmit={submit} className="space-y-5" noValidate>
       <fieldset disabled={isSaving || isDeleting} className="space-y-5">
+        <div>
+          <p className="block text-sm font-semibold text-[var(--text-primary)]">카테고리</p>
+          <div role="radiogroup" aria-label="카테고리" className="mt-2 flex gap-2">
+            {boardCategories.map((category) => (
+              <button
+                key={category}
+                type="button"
+                role="radio"
+                aria-checked={draft.category === category}
+                onClick={() => updateDraft('category', category)}
+                className={`rounded-full px-4 py-1.5 text-[13px] font-bold ${
+                  draft.category === category ? 'bg-[var(--primary)] text-white' : 'bg-[var(--bg-subtle)] text-[var(--text-secondary)]'
+                }`}
+              >
+                {boardCategoryLabel(category)}
+              </button>
+            ))}
+          </div>
+        </div>
         <label className="block text-sm font-semibold text-[var(--text-primary)]">
           제목
           <input aria-label="제목" value={draft.title} onChange={(event) => updateDraft('title', event.target.value)} className="mt-2 w-full rounded-lg border border-[var(--border)] p-3 font-normal" />

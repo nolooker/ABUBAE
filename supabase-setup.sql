@@ -105,6 +105,11 @@ CREATE TABLE IF NOT EXISTS public.board_posts (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- Additive: categorize board posts as general discussion or success-story reviews.
+ALTER TABLE public.board_posts
+  ADD COLUMN IF NOT EXISTS category TEXT NOT NULL DEFAULT 'free'
+  CHECK (category IN ('free', 'review'));
+
 CREATE TABLE IF NOT EXISTS public.board_comments (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   post_id UUID NOT NULL REFERENCES public.board_posts(id) ON DELETE CASCADE,

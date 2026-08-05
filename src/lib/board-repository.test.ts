@@ -32,6 +32,7 @@ const post = {
   author_nickname: '아부배러너',
   created_at: '2026-07-24T00:00:00Z',
   updated_at: '2026-07-24T00:00:00Z',
+  category: 'free',
 }
 
 const comment = {
@@ -65,9 +66,21 @@ describe('board repository', () => {
     ])
 
     await expect(createBoardRepository(supabase as never).listPosts()).resolves.toEqual([
-      { id: post.id, title: post.title, authorNickname: post.author_nickname, createdAt: post.created_at, commentCount: 2 },
-      { id: 'e1111111-a5a8-4b6e-a0aa-550a4f5937a1', title: post.title, authorNickname: post.author_nickname, createdAt: post.created_at, commentCount: 0 },
+      { id: post.id, title: post.title, authorNickname: post.author_nickname, createdAt: post.created_at, commentCount: 2, category: 'free' },
+      { id: 'e1111111-a5a8-4b6e-a0aa-550a4f5937a1', title: post.title, authorNickname: post.author_nickname, createdAt: post.created_at, commentCount: 0, category: 'free' },
     ])
+  })
+
+  it('filters the list by category when one is given', async () => {
+    const { supabase, calls } = client([
+      { data: [post], error: null },
+      { data: [], error: null },
+    ])
+
+    await expect(createBoardRepository(supabase as never).listPosts('review')).resolves.toEqual([
+      { id: post.id, title: post.title, authorNickname: post.author_nickname, createdAt: post.created_at, commentCount: 0, category: 'free' },
+    ])
+    expect(calls).toContainEqual(['eq', ['category', 'review']])
   })
 
   it('reports a database failure while listing as unavailable', async () => {
@@ -91,6 +104,7 @@ describe('board repository', () => {
         authorNickname: post.author_nickname,
         createdAt: post.created_at,
         updatedAt: post.updated_at,
+        category: 'free',
       },
       comments: [{
         id: comment.id,
@@ -119,22 +133,24 @@ describe('board repository', () => {
     await expect(createBoardRepository(supabase as never).createPost(post.user_id, post.author_nickname, {
       title: post.title,
       content: post.content,
+      category: 'free',
     })).resolves.toMatchObject({ id: post.id, authorNickname: post.author_nickname })
     expect(calls).toContainEqual(['insert', [{
       user_id: post.user_id,
       author_nickname: post.author_nickname,
       title: post.title,
       content: post.content,
+      category: 'free',
     }]])
   })
 
   it('updates a post and reports RLS-filtered writes as not found', async () => {
     const found = client([{ data: { ...post, title: 'Updated' }, error: null }])
-    await expect(createBoardRepository(found.supabase as never).updatePost(post.id, { title: 'Updated', content: post.content }))
+    await expect(createBoardRepository(found.supabase as never).updatePost(post.id, { title: 'Updated', content: post.content, category: 'review' }))
       .resolves.toMatchObject({ title: 'Updated' })
 
     const notOwned = client([{ data: null, error: null }])
-    await expect(createBoardRepository(notOwned.supabase as never).updatePost(post.id, { title: 'Updated', content: post.content }))
+    await expect(createBoardRepository(notOwned.supabase as never).updatePost(post.id, { title: 'Updated', content: post.content, category: 'review' }))
       .rejects.toBeInstanceOf(BoardNotFoundError)
   })
 

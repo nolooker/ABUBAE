@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { boardCategoryLabel, type BoardCategory } from '@/lib/board'
 import { createBoardRepository } from '@/lib/board-repository'
 import { createClient } from '@/lib/supabase/server'
 
@@ -9,16 +10,29 @@ export const metadata = {
 
 export const revalidate = 0
 
+type Props = {
+  searchParams: Promise<{ category?: string }>
+}
+
+const tabs: { value: BoardCategory | undefined; label: string }[] = [
+  { value: undefined, label: '전체' },
+  { value: 'free', label: '자유' },
+  { value: 'review', label: '후기' },
+]
+
 function formattedDate(timestamp: string) {
   return new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }).format(
     new Date(timestamp),
   )
 }
 
-export default async function BoardPage() {
+export default async function BoardPage({ searchParams }: Props) {
+  const { category: rawCategory } = await searchParams
+  const category = rawCategory === 'free' || rawCategory === 'review' ? rawCategory : undefined
+
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  const posts = await createBoardRepository(supabase).listPosts().catch(() => [])
+  const posts = await createBoardRepository(supabase).listPosts(category).catch(() => [])
 
   return (
     <section className="mx-auto max-w-3xl px-4 py-12">
@@ -36,6 +50,20 @@ export default async function BoardPage() {
         </Link>
       </div>
 
+      <div className="mb-6 flex gap-2">
+        {tabs.map((tab) => (
+          <Link
+            key={tab.label}
+            href={tab.value ? `/board?category=${tab.value}` : '/board'}
+            className={`rounded-full px-4 py-1.5 text-[13px] font-bold ${
+              category === tab.value ? 'bg-[var(--primary)] text-white' : 'bg-[var(--bg-subtle)] text-[var(--text-secondary)]'
+            }`}
+          >
+            {tab.label}
+          </Link>
+        ))}
+      </div>
+
       {posts.length > 0 ? (
         <div className="space-y-2">
           {posts.map((post) => (
@@ -45,7 +73,12 @@ export default async function BoardPage() {
               className="ab-card flex items-center justify-between gap-4 p-5 transition-colors hover:bg-[var(--bg-subtle)]"
             >
               <div className="min-w-0">
-                <p className="truncate text-[15px] font-semibold text-[var(--text-primary)]">{post.title}</p>
+                <div className="flex items-center gap-2">
+                  <span className="shrink-0 rounded-full bg-[var(--primary-light)] px-2 py-0.5 text-[11px] font-bold text-[var(--primary)]">
+                    {boardCategoryLabel(post.category)}
+                  </span>
+                  <p className="truncate text-[15px] font-semibold text-[var(--text-primary)]">{post.title}</p>
+                </div>
                 <p className="mt-1 text-[13px] text-[var(--text-secondary)]">{post.authorNickname} · {formattedDate(post.createdAt)}</p>
               </div>
               <span className="shrink-0 text-[13px] text-[var(--text-muted)]">댓글 {post.commentCount}</span>

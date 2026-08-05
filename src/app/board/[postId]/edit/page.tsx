@@ -24,7 +24,7 @@ export default async function EditBoardPostPage({ params }: Props) {
       <p className="mb-2 text-[13px] font-bold text-[var(--primary)]">자유게시판</p>
       <h1 className="text-3xl font-bold text-[var(--text-primary)]">글 수정</h1>
       <div className="mt-8 rounded-[var(--radius-lg)] border border-[var(--border)] bg-white p-6">
-        <BoardPostForm mode="edit" postId={postId} initialDraft={{ title: result.post.title, content: result.post.content }} />
+        <BoardPostForm mode="edit" postId={postId} initialDraft={{ title: result.post.title, content: result.post.content, category: result.post.category }} />
       </div>
     </section>
   )
