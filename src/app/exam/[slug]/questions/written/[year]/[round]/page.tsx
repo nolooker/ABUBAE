@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 
 import WrittenRoundRunner from '@/components/quiz/WrittenRoundRunner'
 import type { EditableWrittenQuestion } from '@/components/quiz/WrittenQuestionEditDialog'
+import { createBookmarkRepository } from '@/lib/bookmark-repository'
 import { getCurrentUserRole } from '@/lib/master-auth'
 import { createClient } from '@/lib/supabase/server'
 import { getPublicWrittenRound } from '@/lib/written-content'
@@ -56,7 +57,13 @@ export default async function WrittenRoundPage({ params }: Props) {
   if (slug !== 'jeongchogi') notFound()
   const content = await getPublicWrittenRound(Number(year), Number(round))
   if (!content) notFound()
-  const role = await getCurrentUserRole()
+
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  const role = await getCurrentUserRole(supabase)
+  const bookmarkedIds = user
+    ? await createBookmarkRepository(supabase).listBookmarkedQuestionIds(user.id).catch(() => [])
+    : []
 
   async function loadEditableQuestion(questionId: string): Promise<EditableWrittenQuestion> {
     'use server'
@@ -80,6 +87,8 @@ export default async function WrittenRoundPage({ params }: Props) {
         round={Number(round)}
         title={content.title}
         questions={content.questions}
+        isLoggedIn={Boolean(user)}
+        initialBookmarkedIds={bookmarkedIds}
       />
     </section>
   )

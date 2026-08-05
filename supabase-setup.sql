@@ -850,4 +850,31 @@ ALTER TABLE public.practical_answers ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS practical_answers_public_read ON public.practical_answers;
 REVOKE SELECT ON TABLE public.practical_answers FROM PUBLIC, anon, authenticated;
 
+-- Member exam history and wrong-answer notebook. Each row is one graded
+-- submission (written or practical); the full graded result is kept as
+-- JSONB so the history/wrong-answer screens can redisplay per-question
+-- detail without a second normalized table. Self-service RLS: a member
+-- reads and writes only their own attempts, matching the board pattern.
+CREATE TABLE IF NOT EXISTS public.exam_attempts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  exam_id UUID REFERENCES public.exams(id) ON DELETE SET NULL,
+  exam_type TEXT NOT NULL CHECK (exam_type IN ('written', 'practical')),
+  year INT NOT NULL,
+  round INT NOT NULL,
+  total INT NOT NULL,
+  correct INT NOT NULL,
+  incorrect INT NOT NULL,
+  unanswered INT NOT NULL,
+  score INT NOT NULL,
+  result JSONB NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE public.exam_attempts ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS exam_attempts_select_own ON public.exam_attempts;
+CREATE POLICY exam_attempts_select_own ON public.exam_attempts FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS exam_attempts_insert_own ON public.exam_attempts;
+CREATE POLICY exam_attempts_insert_own ON public.exam_attempts FOR INSERT WITH CHECK (auth.uid() = user_id);
+
 COMMIT;

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { BookMarked, Download, ShieldCheck, UserRound } from 'lucide-react'
+import { BookMarked, Download, History, ShieldCheck, UserRound, XCircle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentUserRole } from '@/lib/master-auth'
 import AccountSettingsForm from '@/components/mypage/AccountSettingsForm'
@@ -29,7 +29,7 @@ export default async function MyPage() {
         <p className="text-[13px] font-semibold text-[var(--primary)] mb-2">마이페이지</p>
         <h1 className="text-3xl font-bold text-[var(--text-primary)]">{nickname}님, 다시 공부해볼까요?</h1>
         <p className="text-[15px] text-[var(--text-secondary)] mt-3">
-          지금은 계정 연결 확인용 기본 화면입니다. 다음 단계에서 즐겨찾기와 풀이 기록을 실제 DB와 연결합니다.
+          응시 기록, 오답노트, 즐겨찾기에서 지금까지의 학습 현황을 확인하세요.
         </p>
       </div>
 
@@ -41,17 +41,38 @@ export default async function MyPage() {
           <AccountSettingsForm currentNickname={nickname} />
         </div>
 
-        <div className="bg-white border border-[var(--border)] rounded-[var(--radius-lg)] p-5">
+        <Link
+          href="/mypage/bookmarks"
+          className="bg-white border border-[var(--border)] rounded-[var(--radius-lg)] p-5 hover:border-[var(--primary)] transition-colors"
+        >
           <BookMarked size={20} className="text-[var(--primary)] mb-3" />
           <h2 className="text-[15px] font-bold text-[var(--text-primary)]">즐겨찾기</h2>
-          <p className="text-[13px] text-[var(--text-secondary)] mt-2">아직 저장한 문제가 없습니다.</p>
-        </div>
+          <p className="text-[13px] text-[var(--text-secondary)] mt-2">다시 보고 싶어 표시해둔 문제를 확인합니다.</p>
+        </Link>
 
         <div className="bg-white border border-[var(--border)] rounded-[var(--radius-lg)] p-5">
           <Download size={20} className="text-[var(--primary)] mb-3" />
           <h2 className="text-[15px] font-bold text-[var(--text-primary)]">다운로드 자료</h2>
           <p className="text-[13px] text-[var(--text-secondary)] mt-2">무료 요약 PDF 연결을 준비 중입니다.</p>
         </div>
+
+        <Link
+          href="/mypage/history"
+          className="bg-white border border-[var(--border)] rounded-[var(--radius-lg)] p-5 hover:border-[var(--primary)] transition-colors"
+        >
+          <History size={20} className="text-[var(--primary)] mb-3" />
+          <h2 className="text-[15px] font-bold text-[var(--text-primary)]">응시 기록</h2>
+          <p className="text-[13px] text-[var(--text-secondary)] mt-2">채점했던 회차와 점수를 다시 확인합니다.</p>
+        </Link>
+
+        <Link
+          href="/mypage/wrong-answers"
+          className="bg-white border border-[var(--border)] rounded-[var(--radius-lg)] p-5 hover:border-[var(--primary)] transition-colors"
+        >
+          <XCircle size={20} className="text-[var(--primary)] mb-3" />
+          <h2 className="text-[15px] font-bold text-[var(--text-primary)]">오답노트</h2>
+          <p className="text-[13px] text-[var(--text-secondary)] mt-2">틀리거나 아직 못 맞춘 문제만 모아봅니다.</p>
+        </Link>
 
         {isMaster && (
           <Link

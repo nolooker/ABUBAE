@@ -32,14 +32,14 @@ describe('WrittenRoundPage editing boundary', () => {
 
   it('does not pass an edit action or editable details to non-master visitors', async () => {
     mocks.getCurrentUserRole.mockResolvedValue('user')
+    mocks.createClient.mockResolvedValue({ auth: { getUser: vi.fn().mockResolvedValue({ data: { user: null } }) } })
 
     const page = await WrittenRoundPage({ params: Promise.resolve({ slug: 'jeongchogi', year: '2021', round: '1' }) })
     const runnerProps = (page.props.children as Array<{ props: Record<string, unknown> }>)[1].props
 
-    expect(runnerProps).toEqual(expect.objectContaining({ canEdit: false }))
+    expect(runnerProps).toEqual(expect.objectContaining({ canEdit: false, isLoggedIn: false }))
     expect(runnerProps).not.toHaveProperty('editableQuestions')
     expect(runnerProps.loadEditableQuestion).toBeUndefined()
-    expect(mocks.createClient).not.toHaveBeenCalled()
   })
 
   it('passes a lazy master-only action that uses the authenticated RPC only when invoked', async () => {
@@ -56,7 +56,7 @@ describe('WrittenRoundPage editing boundary', () => {
       },
     })
     mocks.getCurrentUserRole.mockResolvedValue('master')
-    mocks.createClient.mockResolvedValue({ rpc })
+    mocks.createClient.mockResolvedValue({ rpc, auth: { getUser: vi.fn().mockResolvedValue({ data: { user: null } }) } })
 
     const page = await WrittenRoundPage({ params: Promise.resolve({ slug: 'jeongchogi', year: '2021', round: '1' }) })
     const runnerProps = (page.props.children as Array<{ props: Record<string, unknown> }>)[1].props

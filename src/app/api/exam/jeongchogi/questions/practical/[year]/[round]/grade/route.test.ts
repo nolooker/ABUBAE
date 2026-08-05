@@ -16,6 +16,19 @@ const { gradePracticalSubmission, PracticalContentUnavailableError } = vi.hoiste
 
 vi.mock('@/lib/practical-content', () => ({ gradePracticalSubmission, PracticalContentUnavailableError }))
 
+const { getUser, saveAttempt } = vi.hoisted(() => ({
+  getUser: vi.fn(),
+  saveAttempt: vi.fn(),
+}))
+
+vi.mock('@/lib/supabase/server', () => ({
+  createClient: vi.fn(async () => ({ auth: { getUser } })),
+}))
+
+vi.mock('@/lib/exam-attempt-repository', () => ({
+  createExamAttemptRepository: vi.fn(() => ({ saveAttempt })),
+}))
+
 import { POST } from './route'
 
 function request(body: unknown = { answers: {} }) {
@@ -29,6 +42,8 @@ function request(body: unknown = { answers: {} }) {
 describe('practical round grade API', () => {
   beforeEach(() => {
     gradePracticalSubmission.mockReset()
+    getUser.mockReset().mockResolvedValue({ data: { user: null } })
+    saveAttempt.mockReset().mockResolvedValue(undefined)
   })
 
   it('returns a grade only after answers are posted', async () => {
@@ -83,5 +98,41 @@ describe('practical round grade API', () => {
 
     expect(response.status).toBe(400)
     expect(gradePracticalSubmission).not.toHaveBeenCalled()
+  })
+
+  it('saves an attempt for a signed-in user without changing the response', async () => {
+    gradePracticalSubmission.mockResolvedValue({ total: 1, unanswered: 1, score: 0 })
+    getUser.mockResolvedValue({ data: { user: { id: 'user-1' } } })
+
+    const response = await POST(request({ answers: { q1: ['SSH'] } }), { params: Promise.resolve({ year: '2025', round: '2' }) })
+
+    expect(response.status).toBe(200)
+    expect(saveAttempt).toHaveBeenCalledWith(expect.objectContaining({
+      userId: 'user-1',
+      examSlug: 'jeongchogi',
+      examType: 'practical',
+      year: 2025,
+      round: 2,
+    }))
+  })
+
+  it('does not attempt to save a result for an anonymous submission', async () => {
+    gradePracticalSubmission.mockResolvedValue({ total: 1, unanswered: 1, score: 0 })
+
+    await POST(request(), { params: Promise.resolve({ year: '2025', round: '2' }) })
+
+    expect(saveAttempt).not.toHaveBeenCalled()
+  })
+
+  it('still returns the grade when saving the attempt fails', async () => {
+    gradePracticalSubmission.mockResolvedValue({ total: 1, unanswered: 1, score: 0 })
+    getUser.mockResolvedValue({ data: { user: { id: 'user-1' } } })
+    saveAttempt.mockRejectedValue(new Error('db unavailable'))
+
+    const response = await POST(request(), { params: Promise.resolve({ year: '2025', round: '2' }) })
+    const body = await response.json()
+
+    expect(response.status).toBe(200)
+    expect(body).toMatchObject({ total: 1, unanswered: 1, score: 0 })
   })
 })

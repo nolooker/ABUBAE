@@ -1,5 +1,7 @@
+import { createExamAttemptRepository } from '@/lib/exam-attempt-repository'
 import { gradeWrittenSubmission, WrittenContentUnavailableError } from '@/lib/written-content'
 import type { WrittenAnswers } from '@/lib/written-exam'
+import { createClient } from '@/lib/supabase/server'
 
 type Context = {
   params: Promise<{ year: string; round: string }>
@@ -27,6 +29,24 @@ export async function POST(request: Request, { params }: Context) {
 
     const result = await gradeWrittenSubmission(parsedYear, parsedRound, payload.answers as WrittenAnswers)
     if (!result) return Response.json({ error: 'round not found' }, { status: 404 })
+
+    try {
+      const supabase = await createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        await createExamAttemptRepository(supabase).saveAttempt({
+          userId: user.id,
+          examSlug: 'jeongchogi',
+          examType: 'written',
+          year: parsedYear,
+          round: parsedRound,
+          result,
+        })
+      }
+    } catch {
+      // best-effort: grading still succeeds even if the attempt record fails to save
+    }
+
     return Response.json(result)
   } catch (error) {
     if (error instanceof WrittenContentUnavailableError) {

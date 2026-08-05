@@ -12,9 +12,9 @@ type PracticalRoundQuestion = {
   blankCount: number
 }
 
-type Props = { title: string; questions: PracticalRoundQuestion[]; result: PracticalGradeResult; onRetry: () => void }
+type Props = { title: string; questions: PracticalRoundQuestion[]; result: PracticalGradeResult; onRetry: () => void; savedNotice?: string }
 
-export default function PracticalRoundResult({ title, questions, result, onRetry }: Props) {
+export default function PracticalRoundResult({ title, questions, result, onRetry, savedNotice }: Props) {
   const [onlyWrong, setOnlyWrong] = useState(false)
   const questionMap = new Map(questions.map((question) => [question.id, question]))
   const visibleResults = onlyWrong ? result.questions.filter((question) => !question.isCorrect) : result.questions
@@ -25,7 +25,7 @@ export default function PracticalRoundResult({ title, questions, result, onRetry
         <p className="text-sm font-semibold text-[var(--primary)]">{title} 채점 결과</p>
         <h1 className="mt-2 text-4xl font-black">{result.score}점</h1>
         <p className="mt-3 text-[var(--text-secondary)]">총 {result.total}문제 · 정답 {result.correct} · 오답 {result.incorrect} · 미응답 {result.unanswered}</p>
-        <p className="mt-3 text-sm font-semibold text-orange-700">이 결과는 저장되지 않습니다.</p>
+        <p className="mt-3 text-sm font-semibold text-orange-700">{savedNotice ?? '이 결과는 저장되지 않습니다.'}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={() => setOnlyWrong((value) => !value)}>{onlyWrong ? '전체 문항 보기' : '오답·미응답만 보기'}</button>
           <button type="button" className="ab-btn ab-btn-primary ab-btn-md" onClick={onRetry}>다시 풀기</button>

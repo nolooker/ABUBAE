@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 import type { PracticalGradeResult } from '@/lib/practical-exam'
+import BookmarkToggleButton from './BookmarkToggleButton'
 import PracticalRoundResult from './PracticalRoundResult'
 import PracticalQuestionEditDialog, { type EditablePracticalQuestion, type EditedPracticalQuestion } from './PracticalQuestionEditDialog'
 
@@ -23,13 +24,15 @@ type Props = {
   canEdit?: boolean
   editableQuestions?: Record<string, EditablePracticalQuestion>
   loadEditableQuestion?: (questionId: string) => Promise<EditablePracticalQuestion>
+  isLoggedIn?: boolean
+  initialBookmarkedIds?: string[]
 }
 
 function isAnswered(blanks: string[] | undefined): boolean {
   return Boolean(blanks?.some((blank) => blank.trim()))
 }
 
-export default function PracticalRoundRunner({ year, round, title, questions, canEdit = false, editableQuestions, loadEditableQuestion }: Props) {
+export default function PracticalRoundRunner({ year, round, title, questions, canEdit = false, editableQuestions, loadEditableQuestion, isLoggedIn = false, initialBookmarkedIds = [] }: Props) {
   const [roundQuestions, setRoundQuestions] = useState(questions)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string[]>>({})
@@ -178,7 +181,16 @@ export default function PracticalRoundRunner({ year, round, title, questions, ca
           <p className="mt-7 text-sm font-semibold text-[var(--text-secondary)]">{current.subject}</p>
           <h1 className="mt-2 whitespace-pre-wrap text-xl font-bold leading-8">{current.number}. {current.content}</h1>
 
-          {canEdit && <div className="mt-5"><button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={openEditDialog}>문제 수정</button></div>}
+          <div className="mt-5 flex flex-wrap gap-2">
+            {canEdit && <button type="button" className="ab-btn ab-btn-secondary ab-btn-md" onClick={openEditDialog}>문제 수정</button>}
+            <BookmarkToggleButton
+              key={current.id}
+              questionId={current.id}
+              initiallyBookmarked={initialBookmarkedIds.includes(current.id)}
+              isLoggedIn={isLoggedIn}
+              loginRedirectPath={`/exam/jeongchogi/questions/practical/${year}/${round}`}
+            />
+          </div>
 
           <fieldset className="mt-7 space-y-3">
             <legend className="sr-only">{current.number}번 답안 입력</legend>
