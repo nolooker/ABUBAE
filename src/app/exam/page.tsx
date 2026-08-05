@@ -1,4 +1,5 @@
-import { getExams } from '@/lib/data'
+import { getExams, getResources } from '@/lib/data'
+import { getJeongchogiContentStats } from '@/lib/exam-content-stats'
 import ExamCard from '@/components/exam/ExamCard'
 
 export const metadata = {
@@ -7,7 +8,17 @@ export const metadata = {
 }
 
 export default async function ExamListPage() {
-  const exams = await getExams()
+  const [exams, resources, jeongchogiStats] = await Promise.all([
+    getExams(),
+    getResources(),
+    getJeongchogiContentStats(),
+  ])
+
+  const examsWithRealStats = exams.map((exam) => ({
+    ...exam,
+    questionCount: exam.slug === 'jeongchogi' ? jeongchogiStats.questionCount : 0,
+    resourceCount: resources.filter((resource) => resource.examSlug === exam.slug).length,
+  }))
 
   return (
     <section className="max-w-6xl mx-auto px-4 py-12">
@@ -20,7 +31,7 @@ export default async function ExamListPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {exams.map((exam) => (
+        {examsWithRealStats.map((exam) => (
           <ExamCard key={exam.slug} exam={exam} />
         ))}
       </div>

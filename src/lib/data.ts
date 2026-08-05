@@ -3,32 +3,11 @@ import {
   exams as mockExams,
   getExam as getMockExam,
   getResource as getMockResource,
-  questions as mockQuestions,
   resources as mockResources,
 } from '@/lib/mock-data'
 
 export type ExamView = (typeof mockExams)[number]
 export type ResourceView = (typeof mockResources)[number]
-export type QuestionView = (typeof mockQuestions)[number]
-
-type ChoiceRow = {
-  number: number
-  content: string
-  is_correct: boolean
-}
-
-type QuestionRow = {
-  id: string
-  exam_id: string
-  year: number
-  round: number
-  subject: string
-  number: number
-  content: string
-  explanation: string | null
-  difficulty: number | null
-  choices?: ChoiceRow[]
-}
 
 function toExamView(row: {
   slug: string
@@ -64,25 +43,6 @@ function toResourceView(row: {
     pages: 0,
     price: row.price || 0,
     type: 'PDF',
-  }
-}
-
-function toQuestionView(row: QuestionRow, examSlug: string): QuestionView {
-  const choices = [...(row.choices || [])].sort((a, b) => a.number - b.number)
-  const answerIndex = Math.max(0, choices.findIndex((choice) => choice.is_correct))
-
-  return {
-    id: row.id,
-    examSlug,
-    year: row.year,
-    round: row.round,
-    subject: row.subject,
-    number: row.number,
-    difficulty: row.difficulty || 2,
-    content: row.content,
-    choices: choices.map((choice) => choice.content),
-    answer: answerIndex,
-    explanation: row.explanation || '해설을 준비 중입니다.',
   }
 }
 
@@ -150,45 +110,4 @@ export async function getResources(): Promise<ResourceView[]> {
 export async function getResource(id: string): Promise<ResourceView | undefined> {
   const resources = await getResources()
   return resources.find((resource) => resource.id === id) || getMockResource(id)
-}
-
-export async function getQuestionsByExam(slug: string): Promise<QuestionView[]> {
-  try {
-    const supabase = await createClient()
-    const { data: exam } = await supabase
-      .from('exams')
-      .select('id, slug')
-      .eq('slug', slug)
-      .maybeSingle()
-
-    if (!exam) {
-      return mockQuestions.filter((question) => question.examSlug === slug)
-    }
-
-    const { data, error } = await supabase
-      .from('questions')
-      .select('id, exam_id, year, round, subject, number, content, explanation, difficulty, choices(number, content, is_correct)')
-      .eq('exam_id', exam.id)
-      .order('year', { ascending: false })
-      .order('round', { ascending: false })
-      .order('number', { ascending: true })
-
-    if (error || !data?.length) {
-      return mockQuestions.filter((question) => question.examSlug === slug)
-    }
-
-    return (data as QuestionRow[]).map((row) => toQuestionView(row, exam.slug))
-  } catch {
-    return mockQuestions.filter((question) => question.examSlug === slug)
-  }
-}
-
-export async function getQuestion(slug: string, id: string): Promise<QuestionView | undefined> {
-  const questions = await getQuestionsByExam(slug)
-  return questions.find((question) => question.id === id)
-}
-
-export async function getDailyQuestion(): Promise<QuestionView> {
-  const dbQuestions = await getQuestionsByExam('jeongchogi')
-  return dbQuestions[0] || mockQuestions[0]
 }

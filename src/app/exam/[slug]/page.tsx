@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowRight, CheckCircle, Download, ListChecks } from 'lucide-react'
-import { getExam, getQuestionsByExam, getResources } from '@/lib/data'
+import { getExam, getResources } from '@/lib/data'
+import { getJeongchogiContentStats } from '@/lib/exam-content-stats'
 
 type PageProps = {
   params: Promise<{ slug: string }>
@@ -29,11 +30,14 @@ export default async function ExamDetailPage({ params }: PageProps) {
     notFound()
   }
 
-  const [examQuestions, allResources] = await Promise.all([
-    getQuestionsByExam(exam.slug),
+  const isJeongchogi = exam.slug === 'jeongchogi'
+
+  const [contentStats, allResources] = await Promise.all([
+    isJeongchogi ? getJeongchogiContentStats() : Promise.resolve(undefined),
     getResources(),
   ])
   const examResources = allResources.filter((resource) => resource.examSlug === exam.slug)
+  const questionCount = contentStats?.questionCount ?? 0
 
   return (
     <section className="max-w-6xl mx-auto px-4 py-12">
@@ -56,7 +60,7 @@ export default async function ExamDetailPage({ params }: PageProps) {
             >
               요약 자료 보기
             </Link>
-            {exam.slug === 'jeongchogi' && (
+            {isJeongchogi && (
               <Link
                 href="/exam/jeongchogi/schedule"
                 className="inline-flex items-center justify-center gap-1.5 px-5 py-3 border border-[var(--border)] text-[var(--text-primary)] text-[14px] font-semibold rounded-xl hover:bg-[var(--bg-muted)] transition-colors"
@@ -70,7 +74,7 @@ export default async function ExamDetailPage({ params }: PageProps) {
         <aside className="bg-[var(--bg-subtle)] border border-[var(--border)] rounded-[var(--radius-lg)] p-5">
           <h2 className="text-[15px] font-bold text-[var(--text-primary)] mb-4">현재 준비된 콘텐츠</h2>
           <div className="space-y-3 text-[13px] text-[var(--text-secondary)]">
-            <p className="flex items-center gap-2"><ListChecks size={15} className="text-[var(--primary)]" /> 기출 {examQuestions.length || exam.questionCount}문제</p>
+            <p className="flex items-center gap-2"><ListChecks size={15} className="text-[var(--primary)]" /> 기출 {questionCount}문제</p>
             <p className="flex items-center gap-2"><Download size={15} className="text-[var(--primary)]" /> 자료 {examResources.length}개</p>
             <p className="flex items-center gap-2"><CheckCircle size={15} className="text-[var(--success)]" /> 무료 요약 자료 우선 제공</p>
           </div>
@@ -94,20 +98,36 @@ export default async function ExamDetailPage({ params }: PageProps) {
 
         <div>
           <h2 className="text-[20px] font-bold text-[var(--text-primary)] mb-4">최근 기출 미리보기</h2>
-          <div className="space-y-2">
-            {examQuestions.slice(0, 4).map((question) => (
-              <Link
-                key={question.id}
-                href={`/exam/${exam.slug}/questions/${question.id}`}
-                className="block bg-white border border-[var(--border)] rounded-xl p-4 hover:border-[var(--primary)] transition-colors"
-              >
-                <p className="text-[12px] text-[var(--text-muted)] mb-1">
-                  {question.year}년 {question.round}회 · {question.subject}
-                </p>
-                <p className="text-[14px] font-semibold text-[var(--text-primary)] line-clamp-2">{question.content}</p>
-              </Link>
-            ))}
-          </div>
+          {contentStats && (contentStats.latestWrittenRound || contentStats.latestPracticalRound) ? (
+            <div className="space-y-2">
+              {contentStats.latestWrittenRound && (
+                <Link
+                  href={`/exam/jeongchogi/questions/written/${contentStats.latestWrittenRound.year}/${contentStats.latestWrittenRound.round}`}
+                  className="block bg-white border border-[var(--border)] rounded-xl p-4 hover:border-[var(--primary)] transition-colors"
+                >
+                  <p className="text-[12px] text-[var(--text-muted)] mb-1">필기 · 최신 회차</p>
+                  <p className="text-[14px] font-semibold text-[var(--text-primary)]">
+                    {contentStats.latestWrittenRound.year}년 {contentStats.latestWrittenRound.round}회 · {contentStats.latestWrittenRound.questionCount}문제 풀러가기
+                  </p>
+                </Link>
+              )}
+              {contentStats.latestPracticalRound && (
+                <Link
+                  href={`/exam/jeongchogi/questions/practical/${contentStats.latestPracticalRound.year}/${contentStats.latestPracticalRound.round}`}
+                  className="block bg-white border border-[var(--border)] rounded-xl p-4 hover:border-[var(--primary)] transition-colors"
+                >
+                  <p className="text-[12px] text-[var(--text-muted)] mb-1">실기 · 최신 회차</p>
+                  <p className="text-[14px] font-semibold text-[var(--text-primary)]">
+                    {contentStats.latestPracticalRound.year}년 {contentStats.latestPracticalRound.round}회 · {contentStats.latestPracticalRound.questionCount}문제 풀러가기
+                  </p>
+                </Link>
+              )}
+            </div>
+          ) : (
+            <div className="bg-white border border-[var(--border)] rounded-xl p-4 text-[14px] text-[var(--text-secondary)]">
+              기출문제를 준비 중입니다.
+            </div>
+          )}
         </div>
       </div>
     </section>

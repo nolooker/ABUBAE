@@ -210,22 +210,6 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* [화면] 오늘의 문제 */}
-        <section className="mb-6 flex items-center justify-between gap-4 rounded-2xl bg-[var(--primary)] p-5">
-          <div>
-            <p className="mb-1.5 text-[10px] font-bold tracking-widest text-blue-100">
-              오늘의 문제 · 정처기 2023년 2회
-            </p>
-            <p className="text-sm font-semibold leading-relaxed text-white">
-              다음 C언어 코드의 출력 결과는?{' '}
-              <code className="font-mono text-xs opacity-80">int a=5; printf(&quot;%d&quot;, a++);</code>
-            </p>
-          </div>
-          <Link href="/quiz/daily" className="ab-btn ab-btn-secondary ab-btn-md shrink-0">
-            풀러가기 →
-          </Link>
-        </section>
-
         {/* [화면] 신뢰 지표 */}
         <section className="mb-8 grid grid-cols-2 gap-3 md:grid-cols-4">
           {stats.map((stat) => (

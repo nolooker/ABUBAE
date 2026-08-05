@@ -31,48 +31,6 @@ export const exams = [
   },
 ]
 
-export const questions = [
-  {
-    id: 'q-001',
-    examSlug: 'jeongchogi',
-    year: 2023,
-    round: 2,
-    subject: '소프트웨어 설계',
-    number: 1,
-    difficulty: 2,
-    content: '소프트웨어 설계에서 요구사항 분석 기법 중 구조적 분석 기법에 해당하지 않는 것은?',
-    choices: ['데이터 흐름도(DFD)', '자료 사전(DD)', '유스케이스 다이어그램', '소단위 명세서(Mini-Spec)'],
-    answer: 2,
-    explanation: '유스케이스 다이어그램은 객체지향 분석에서 주로 사용하는 UML 다이어그램입니다.',
-  },
-  {
-    id: 'q-002',
-    examSlug: 'jeongchogi',
-    year: 2023,
-    round: 2,
-    subject: '소프트웨어 개발',
-    number: 2,
-    difficulty: 3,
-    content: '소프트웨어 테스트에서 결함이 집중적으로 발생하는 모듈을 우선 점검하는 원리는?',
-    choices: ['살충제 패러독스', '파레토 법칙', '오류 부재의 궤변', '완벽한 테스트 불가능'],
-    answer: 1,
-    explanation: '파레토 법칙은 전체 결함의 상당수가 일부 모듈에 집중된다는 관점으로 설명됩니다.',
-  },
-  {
-    id: 'q-003',
-    examSlug: 'sqld',
-    year: 2024,
-    round: 1,
-    subject: 'SQL 기본 및 활용',
-    number: 1,
-    difficulty: 2,
-    content: 'GROUP BY 절과 함께 사용하며 그룹별 조건을 지정할 때 사용하는 절은?',
-    choices: ['WHERE', 'HAVING', 'ORDER BY', 'JOIN'],
-    answer: 1,
-    explanation: 'HAVING은 GROUP BY 결과에 대한 조건을 지정할 때 사용합니다.',
-  },
-]
-
 export const resources = [
   {
     id: '1',
