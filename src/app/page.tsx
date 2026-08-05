@@ -309,14 +309,19 @@ export default async function HomePage() {
             <Image
               src="/images/brand/abubae-logo-horizontal-balanced.png"
               alt="아직 부족해도 괜찮은 배움 로고"
-              width={1915}
-              height={821}
+              width={300}
+              height={129}
               className="h-auto w-full max-w-[300px]"
             />
           </div>
           <div className="mb-2 flex justify-center gap-4">
-            {['공지사항', '합격후기', '이용약관', '개인정보처리방침'].map((label) => (
-              <Link key={label} href="#" className="text-xs text-[var(--text-muted)] hover:text-[var(--text-secondary)]">
+            {[
+              { label: '공지사항', href: '/notices' },
+              { label: '합격후기', href: '#' },
+              { label: '이용약관', href: '/terms' },
+              { label: '개인정보처리방침', href: '/privacy' },
+            ].map(({ label, href }) => (
+              <Link key={label} href={href} className="text-xs text-[var(--text-muted)] hover:text-[var(--text-secondary)]">
                 {label}
               </Link>
             ))}
@@ -331,7 +336,7 @@ export default async function HomePage() {
           { icon: '🏠', label: '홈', href: '/', active: true },
           { icon: '📝', label: '문제풀기', href: '/exam/jeongchogi/questions', active: false },
           { icon: '📄', label: '자료', href: '/resources', active: false },
-          { icon: '⭐', label: '즐겨찾기', href: '/mypage', active: false },
+          { icon: '⭐', label: '즐겨찾기', href: '/mypage/bookmarks', active: false },
           { icon: '👤', label: '마이', href: '/mypage', active: false },
         ].map((tab) => (
           <Link key={tab.label} href={tab.href} className="flex flex-col items-center gap-0.5">

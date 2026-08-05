@@ -81,8 +81,8 @@ export default function Header() {
           <Image
             src="/images/brand/abubae-logo-horizontal-balanced.png"
             alt="아직 부족해도 괜찮은 배움 로고"
-            width={1915}
-            height={821}
+            width={145}
+            height={62}
             className="h-10 w-auto object-contain lg:h-[62px]"
             priority
           />

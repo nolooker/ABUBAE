@@ -47,8 +47,8 @@ export default function Footer() {
               <Image
                 src="/images/brand/abubae-logo-horizontal-balanced.png"
                 alt="아부배 로고"
-                width={1915}
-                height={821}
+                width={180}
+                height={77}
                 className="h-auto w-full max-w-[180px] object-contain"
               />
             </Link>
